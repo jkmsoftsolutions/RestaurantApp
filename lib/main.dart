@@ -10,6 +10,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
+
 ////
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _MyAppState extends State<MyApp> {
     checkUser();
   }
 
+  ///
   var isLggedin = false;
   checkUser() async {
     auth.authStateChanges().listen((User? user) {
