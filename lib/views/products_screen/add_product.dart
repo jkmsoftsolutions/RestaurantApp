@@ -7,19 +7,32 @@ import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:get/get.dart';
 
-class AddProduct extends StatelessWidget {
+class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
-  @override
-  Widget build(BuildContext context) {
-    var controller = Get.find<ProductsController>();
 
-    void cleartext() {
+  @override
+  State<AddProduct> createState() => _AddProductState();
+}
+
+class _AddProductState extends State<AddProduct> {
+  var controller = Get.find<ProductsController>();
+  void cleartext() {
+    setState(() {
       controller.pnameController.clear();
       controller.pdescController.clear();
       controller.ppriceController.clear();
       controller.pquantityController.clear();
-    }
+    });
+  }
 
+  @override
+  void initState() {
+    cleartext();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         backgroundColor: purpleColor,

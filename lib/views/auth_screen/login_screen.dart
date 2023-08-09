@@ -1,13 +1,32 @@
+import 'dart:convert';
+
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/controllers/auth_controller.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:emart_seller/views/widgets/our_button.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../home_screen/home.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  ///  Redict to dashboard -------------------------
+  _fnSaveUserData(value) async {
+    // redirect to dashboard
+    // var userData = value;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user', jsonEncode(value));
+
+    print("$value  +++++k+++++++");
+  }
+
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
@@ -92,6 +111,9 @@ class LoginScreen extends StatelessWidget {
                                     .loginMethod(context: context)
                                     .then((value) {
                                   if (value != null) {
+                                    var fkjf = {"djk": value};
+                                    // print("$fkjf  +++++k+++++++ ");
+                                    _fnSaveUserData(fkjf);
                                     VxToast.show(context, msg: "Logged in");
                                     controller.isloading(false);
                                     Get.offAll(() => const Home());

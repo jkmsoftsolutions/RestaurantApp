@@ -1,6 +1,7 @@
 import 'package:emart_seller/const/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   var isloading = false.obs;
