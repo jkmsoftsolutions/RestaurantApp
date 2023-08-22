@@ -26,13 +26,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
       controller.ppriceController.text = widget.data['p_price'];
       controller.pquantityController.text = widget.data['p_quantity'];
       // controller.categoryvalue.value = widget.data['p_category'];
-      // print("${widget.data['p_imgs']}++++++++++++");
-      setState(() {
-        controller.pImagesList = widget.data['p_imgs'];
-        // print("${controller.pImagesList} ++++++++++++++jjj+++++++++++");
-        // listimg = widget.data['p_imgs'];
-      });
     }
+
+    // print("${widget.data['p_imgs']}++++++++++++");
+    setState(() {
+      // listimg = widget.data['p_imgs'];
+    });
 
     super.initState();
   }

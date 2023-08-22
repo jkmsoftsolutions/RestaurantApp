@@ -25,6 +25,14 @@ class StoreServices {
         .snapshots();
   }
 
+  //get tables details
+  static gettables(uid) {
+    return firestore
+        .collection(tablesCollections)
+        .where('vendor_id', isEqualTo: uid)
+        .snapshots();
+  }
+
   //get all data list
   static getCounts(uid) async {
     var res = await Future.wait([

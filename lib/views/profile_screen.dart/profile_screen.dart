@@ -31,10 +31,8 @@ class ProfileScreen extends StatelessWidget {
               icon: const Icon(Icons.edit)),
           TextButton(
               onPressed: () async {
-                print("object  +++++out+++");
-                await Get.put(AuthController()).signoutMethod(context);
-                // Get.find<AuthController>().signoutMethod(context);
-                Get.offAll(() => const LoginScreen());
+                await Get.find<AuthController>().signoutMethod(context);
+                Get.offAll(() => LoginPage());
               },
               child: normalText(text: logout)),
         ],
@@ -71,6 +69,9 @@ class ProfileScreen extends StatelessWidget {
                               onTap: () {
                                 switch (index) {
                                   case 0:
+                                    Get.to(() => const ShopSettings());
+                                    break;
+                                  case 1:
                                     Get.to(() => const ShopSettings());
                                     break;
                                 }

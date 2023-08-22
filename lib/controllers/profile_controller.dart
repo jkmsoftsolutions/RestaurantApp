@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
-
 import '../const/const.dart';
 
 class ProfileController extends GetxController {
   late QueryDocumentSnapshot snapshotData;
+
   var profileImgPath = ''.obs;
   var profileImageLink = '';
   var isloading = false.obs;
@@ -19,6 +19,18 @@ class ProfileController extends GetxController {
   var nameController = TextEditingController();
   var oldpassController = TextEditingController();
   var newpassController = TextEditingController();
+
+  //create shope detils controller
+  var shopNameController = TextEditingController();
+  var shopeMobileController = TextEditingController();
+  var shopeDescController = TextEditingController();
+
+  // It is mandatory initialize with one value from listType
+  final selected = "some book type".obs;
+
+  void setSelected(String value) {
+    selected.value = value;
+  }
 
   changeImage(context) async {
     try {
