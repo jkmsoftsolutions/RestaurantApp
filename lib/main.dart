@@ -115,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
   //         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   //   }
   // }
-
+/////
   checkUser() async {
     auth.authStateChanges().listen((User? user) {
       if (user == null && mounted) {
