@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:emart_seller/views/auth_screen/user_screen/user_dasboard.dart';
 import 'package:emart_seller/views/home_screen/home.dart';
 import 'package:emart_seller/views/orders_screen/orders_screen.dart';
@@ -18,6 +19,37 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = new TextEditingController();
 
   final _auth = FirebaseAuth.instance;
+=======
+import 'dart:convert';
+
+import 'package:emart_seller/const/const.dart';
+import 'package:emart_seller/controllers/auth_controller.dart';
+import 'package:emart_seller/views/widgets/loading_indicator.dart';
+import 'package:emart_seller/views/widgets/normal_text.dart';
+import 'package:emart_seller/views/widgets/our_button.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../home_screen/home.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  ///  Redict to dashboard -------------------------
+  _fnSaveUserData(value) async {
+    // redirect to dashboard
+    // var userData = value;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user', jsonEncode(value));
+
+    print("$value  +++++k+++++++");
+  }
+
+>>>>>>> b534583fb5fbfac1a66404039269f81108f85660
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -222,6 +254,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(
+<<<<<<< HEAD
                       height: 5,
                     ),
                     Row(
@@ -244,6 +277,31 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ],
+=======
+                      width: context.screenWidth - 100,
+                      child: controller.isloading.value
+                          ? LoadingIndicator()
+                          : ourButton(
+                              title: login,
+                              onPress: () async {
+                                controller.isloading(true);
+                                await controller
+                                    .loginMethod(context: context)
+                                    .then((value) {
+                                  if (value != null) {
+                                    var fkjf = {"djk": value};
+                                    // print("$fkjf  +++++k+++++++ ");
+                                    _fnSaveUserData(fkjf);
+                                    VxToast.show(context, msg: "Logged in");
+                                    controller.isloading(false);
+                                    Get.offAll(() => const Home());
+                                  } else {
+                                    controller.isloading(false);
+                                  }
+                                });
+                              },
+                            ),
+>>>>>>> b534583fb5fbfac1a66404039269f81108f85660
                     ),
                   ],
                 ),
