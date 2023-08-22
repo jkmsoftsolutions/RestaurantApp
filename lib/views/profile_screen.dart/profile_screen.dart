@@ -31,15 +31,8 @@ class ProfileScreen extends StatelessWidget {
               icon: const Icon(Icons.edit)),
           TextButton(
               onPressed: () async {
-<<<<<<< HEAD
                 await Get.find<AuthController>().signoutMethod(context);
                 Get.offAll(() => LoginPage());
-=======
-                print("object  +++++out+++");
-                await Get.put(AuthController()).signoutMethod(context);
-                // Get.find<AuthController>().signoutMethod(context);
-                Get.offAll(() => const LoginScreen());
->>>>>>> b534583fb5fbfac1a66404039269f81108f85660
               },
               child: normalText(text: logout)),
         ],
