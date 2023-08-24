@@ -12,6 +12,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(HomeController());
+
     var navScreen = [
       const HomeScreen(),
       const ProductsScreen(),

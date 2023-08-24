@@ -1,4 +1,5 @@
 import 'package:emart_seller/const/const.dart';
+import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:emart_seller/views/widgets/our_button.dart';
 import 'package:get/get.dart';
@@ -71,7 +72,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       boldText(
-                          text: "Order status:",
+                          text: "ORDER STATUS:",
                           color: purpleColor,
                           size: 16.0),
                       SwitchListTile(
@@ -118,6 +119,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   )
                       .box
                       .padding(const EdgeInsets.all(8.0))
+                      .margin(const EdgeInsets.only(bottom: 10.0))
                       .outerShadowMd
                       .white
                       .border(color: lightGrey)
@@ -131,8 +133,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                     orderPlaceDetails(
                       d1: "${widget.data['order_code']}",
                       d2: "${widget.data['shipping_method']}",
-                      title1: "Order Code",
-                      title2: "Shipping Method",
+                      title1: "ORDER CODE",
+                      title2: "SHIPPING METHOD",
                     ),
                     orderPlaceDetails(
                       // d1:DateTime.now(),
@@ -140,14 +142,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                           .add_yMd()
                           .format((widget.data['order_date'].toDate())),
                       d2: "${widget.data['payment_method']}",
-                      title1: "Order Date",
-                      title2: "Payment Method",
+                      title1: "ORDER DATE",
+                      title2: "PAYMENT METHOD",
                     ),
                     orderPlaceDetails(
                       d1: "Unpaid",
                       d2: "Order Placed",
-                      title1: "Payment Status",
-                      title2: "Delivery Status",
+                      title1: "PAYMENT STATUS",
+                      title2: "DELIVERY STATUS",
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -160,7 +162,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                             children: [
                               // "Shipping Address".text.fontFamily(semibold).make(),
                               boldText(
-                                  text: "Shiping Adress", color: purpleColor),
+                                  text: "SHIPPING ADDRESS",
+                                  color: purpleColor,
+                                  size: 10.0),
                               "${widget.data['order_by_name']}".text.make(),
                               "${widget.data['order_by_email']}".text.make(),
                               "${widget.data['order_by_address']}".text.make(),
@@ -179,9 +183,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 boldText(
-                                    text: "Total Amount", color: purpleColor),
+                                    text: "Total Amount",
+                                    color: purpleColor,
+                                    size: 10.0),
                                 boldText(
-                                    text: "${widget.data['total_amount']}",
+                                    text: "₹${widget.data['total_amount']}",
                                     color: red,
                                     size: 16.0),
                               ],
@@ -200,36 +206,18 @@ class _OrderDetailsState extends State<OrderDetails> {
                     .make(),
                 const Divider(),
                 10.heightBox,
-                boldText(text: "Ordered Products", color: fontGrey, size: 16.0),
+                boldText(text: "ORDERED PRODUCTS", color: fontGrey, size: 16.0),
                 10.heightBox,
                 ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: List.generate(controller.orders.length, (index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        orderPlaceDetails(
-                            title1: "${controller.orders[index]['title']}",
-                            title2: "${controller.orders[index]['tprice']}",
-                            d1: "${controller.orders[index]['qty']}x",
-                            d2: "Refundable"),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Container(
-                            width: 30,
-                            height: 20,
-                            color: Color(controller.orders[index]['color']),
-                          ),
-                        ),
-                        const Divider()
-                      ],
-                    );
+                    return orderItems(data: controller.orders[index]);
                   }).toList(),
                 )
                     .box
                     .outerShadowMd
-                    .margin(const EdgeInsets.only(bottom: 4))
+                    .margin(const EdgeInsets.only(bottom: 10))
                     .white
                     .make(),
                 10.heightBox,

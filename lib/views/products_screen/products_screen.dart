@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/controllers/products_controller.dart';
 import 'package:emart_seller/services/store_services.dart';
@@ -35,14 +37,21 @@ class ProductsScreen extends StatelessWidget {
               return LoadingIndicator();
             } else {
               var data = snapshot.data!.docs;
+
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
-                    children: List.generate(
-                      data.length,
-                      (index) => Card(
+                    children: List.generate(data.length, (index) {
+                      var dataArr = data[index].data() as Map<dynamic, dynamic>;
+                      return Card(
+                        //
+                        color: (dataArr['status'] != null &&
+                                dataArr['status'].toString().toLowerCase() ==
+                                    'inactive')
+                            ? Color.fromARGB(255, 255, 215, 212)
+                            : Colors.white,
                         child: ListTile(
                           onTap: () {
                             Get.to(() => ProductDetails(
@@ -57,7 +66,7 @@ class ProductsScreen extends StatelessWidget {
                           subtitle: Row(
                             children: [
                               normalText(
-                                  text: "${data[index]['p_price']}",
+                                  text: "₹${data[index]['p_price']}",
                                   color: darkGrey),
                               10.widthBox,
                               boldText(
@@ -96,7 +105,7 @@ class ProductsScreen extends StatelessWidget {
                                                         : popupMenuTitles[i],
                                                 color: darkGrey)
                                           ],
-                                        ).onTap(() {
+                                        ).onTap(() async {
                                           switch (i) {
                                             case 0:
                                               if (data[index]['is_featured'] ==
@@ -113,9 +122,11 @@ class ProductsScreen extends StatelessWidget {
                                               }
                                               break;
                                             case 1:
+                                              await controller.getCategory();
+                                              controller.populateCategoryList();
                                               Get.to(() => EditProductScreen(
-                                                    data: data[index],
-                                                  ));
+                                                  data: data[index],
+                                                  productId: data[index].id));
                                               break;
                                             case 2:
                                               controller.removeProduct(
@@ -132,8 +143,8 @@ class ProductsScreen extends StatelessWidget {
                             child: const Icon(Icons.more_vert_rounded),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ),
               );

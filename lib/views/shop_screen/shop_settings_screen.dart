@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/views/products_screen/product_details.dart';
+import 'package:emart_seller/views/shop_screen/table_edit.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
@@ -23,7 +24,19 @@ class ShopSettings extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      appBar: appbarWidget(addtable),
+      //appBar: appbarWidget(addtable),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: darkGrey,
+          ),
+        ),
+        title: boldText(text: addtable, color: fontGrey, size: 16.0),
+      ),
       body: StreamBuilder(
           stream: StoreServices.gettables(currentUser!.uid),
           builder:
@@ -42,8 +55,9 @@ class ShopSettings extends StatelessWidget {
                       (index) => Card(
                         child: ListTile(
                           onTap: () {
-                            Get.to(() => ProductDetails(
+                            Get.to(() => TableEdit(
                                   data: data[index],
+                                  tableId: data[index].id,
                                 ));
                           },
                           leading: "${index + 1}".text.make(),
@@ -52,7 +66,9 @@ class ShopSettings extends StatelessWidget {
                               color: fontGrey),
                           subtitle: Row(
                             children: [
-                              normalText(text: "Status", color: darkGrey),
+                              normalText(
+                                  text: "${data[index]['status']}",
+                                  color: darkGrey),
                               10.widthBox,
                               boldText(
                                   text: data[index]['is_active'] == true
@@ -65,51 +81,32 @@ class ShopSettings extends StatelessWidget {
                             arrowSize: 0.0,
                             menuBuilder: () => Column(
                               children: List.generate(
-                                  popupMenuTitles.length,
+                                  tablePopMenuTitles.length,
                                   (i) => Padding(
                                         padding: const EdgeInsets.all(12.0),
                                         child: Row(
                                           children: [
                                             Icon(
-                                              popupMenuIcons[i],
-                                              color: data[index]['active_id'] ==
-                                                          currentUser!.uid &&
-                                                      i == 0
-                                                  ? green
-                                                  : darkGrey,
+                                              tableMenuIcons[i],
+                                              color: darkGrey,
                                             ),
                                             10.widthBox,
                                             normalText(
-                                                text: data[index]
-                                                                ['active_id'] ==
-                                                            currentUser!.uid &&
-                                                        i == 0
-                                                    ? 'Remove feature'
-                                                    : popupMenuTitles[i],
+                                                text: tablePopMenuTitles[i],
                                                 color: darkGrey)
                                           ],
                                         ).onTap(() {
                                           switch (i) {
                                             case 0:
-                                              if (data[index]['is_active'] ==
-                                                  true) {
-                                                controller.removeFeatured(
-                                                    data[index].id);
-                                                VxToast.show(context,
-                                                    msg: "Removed");
-                                              } else {
-                                                controller.addFeatured(
-                                                    data[index].id);
-                                                VxToast.show(context,
-                                                    msg: "Added");
-                                              }
+                                              Get.to(() => TableEdit(
+                                                  data: data[index],
+                                                  tableId: data[index].id));
                                               break;
-
                                             case 1:
                                               controller.removeProduct(
                                                   data[index].id);
                                               VxToast.show(context,
-                                                  msg: "Product removed");
+                                                  msg: "Table removed");
                                               break;
                                             default:
                                           }

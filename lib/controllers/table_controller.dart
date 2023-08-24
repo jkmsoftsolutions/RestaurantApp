@@ -12,6 +12,7 @@ class TablesController extends GetxController {
   var tadminController = TextEditingController();
   // ignore: prefer_typing_uninitialized_variables
   var currentSelectedValue;
+  var currentStatusValue;
 
   cleartext() {
     tnameController.clear();
@@ -21,19 +22,23 @@ class TablesController extends GetxController {
 
 // upload products method
 
-  uploadProduct(context) async {
-    var store = firestore.collection(tablesCollections).doc();
+  uploadTable(context, {id = ''}) async {
+    var store = (id == '')
+        ? firestore.collection(tablesCollections).doc()
+        : firestore.collection(tablesCollections).doc(id);
+
     await store.set({
       'is_active': false,
       't_desc': tdescController.text,
-      't_floor': currentSelectedValue,
+      //'t_floor': currentSelectedValue,
       't_admin': tadminController.text,
       'tab_no': tnameController.text,
       'vendor_id': currentUser!.uid,
+      'status': currentStatusValue,
       'active_id': '',
     });
     isloading(false);
-    VxToast.show(context, msg: "Table Add Successfully");
+    VxToast.show(context, msg: "Table Successfully Save");
     cleartext();
   }
 

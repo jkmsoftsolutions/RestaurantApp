@@ -8,18 +8,34 @@ import '../../controllers/table_controller.dart';
 // ignore: prefer_typing_uninitialized_variables
 
 // ignore: must_be_immutable
-class AddTable extends StatefulWidget {
-  const AddTable({super.key});
+class TableEdit extends StatefulWidget {
+  final dynamic data;
+  final dynamic tableId;
+  const TableEdit({super.key, this.data, this.tableId});
 
   @override
-  State<AddTable> createState() => _AddTableState();
+  State<TableEdit> createState() => _TableEditState();
 }
 
-class _AddTableState extends State<AddTable> {
+class _TableEditState extends State<TableEdit> {
+  //final List<String> _listNotifier = <String>["Floor1", "Floor2", "Floor3"];
+  final List<String> _listSatus = <String>["Active", "InActive"];
+  var controller = Get.find<TablesController>();
+
+  @override
+  void initState() {
+    if (widget.data != null) {
+      controller.tnameController.text = widget.data['tab_no'];
+      controller.tdescController.text = widget.data['t_desc'];
+      controller.tadminController.text = widget.data['t_admin'];
+      controller.currentStatusValue = widget.data['status'];
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<TablesController>();
-
     return Obx(
       () => Scaffold(
         backgroundColor: purpleColor,
@@ -41,7 +57,7 @@ class _AddTableState extends State<AddTable> {
                       controller.isloading(true);
 
                       // ignore: use_build_context_synchronously
-                      await controller.uploadTable(context);
+                      await controller.uploadTable(context, id: widget.tableId);
 
                       Get.back();
                     },
@@ -57,42 +73,6 @@ class _AddTableState extends State<AddTable> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 10.heightBox,
-                // Container(
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(10),
-                //     color: Colors.white,
-                //   ),
-                //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                //   child: FormField<String>(
-                //     builder: (FormFieldState<String> state) {
-                //       return InputDecorator(
-                //         decoration:
-                //             const InputDecoration(border: InputBorder.none),
-                //         child: DropdownButtonHideUnderline(
-                //           child: DropdownButton<String>(
-                //             hint: const Text("Select Floor"),
-                //             value: controller.currentStatusValue,
-                //             isDense: true,
-                //             onChanged: (newValue) {
-                //               setState(() {
-                //                 controller.currentStatusValue = newValue;
-                //               });
-
-                //               // print(currentSelectedValue);
-                //             },
-                //             items: _listNotifier.map((String value) {
-                //               return DropdownMenuItem<String>(
-                //                 value: value,
-                //                 child: Text(value),
-                //               );
-                //             }).toList(),
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
                 10.heightBox,
                 customTextField(
                     hint: "eg. Table 101",
