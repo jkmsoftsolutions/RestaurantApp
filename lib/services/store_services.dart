@@ -36,6 +36,14 @@ class StoreServices {
         .snapshots();
   }
 
+  //get Category details ====================================
+  static getCategories(uid) {
+    return firestore
+        .collection(categoryCollections)
+        .where('vendor_id', isEqualTo: uid)
+        .snapshots();
+  }
+
   //get tables details
   static gettables(uid) {
     return firestore

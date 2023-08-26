@@ -3,6 +3,7 @@ import 'package:emart_seller/controllers/auth_controller.dart';
 import 'package:emart_seller/controllers/profile_controller.dart';
 import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/views/auth_screen/login_screen.dart';
+import 'package:emart_seller/views/category_screen/category_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/edit_profilescreen.dart';
 import 'package:emart_seller/views/shop_screen/shop_settings_screen.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
@@ -72,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                                     Get.to(() => const ShopSettings());
                                     break;
                                   case 1:
-                                    Get.to(() => const ShopSettings());
+                                    Get.to(() => const CategoryScreen());
                                     break;
                                 }
                               },
