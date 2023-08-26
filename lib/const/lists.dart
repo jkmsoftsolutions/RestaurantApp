@@ -12,10 +12,14 @@ const tableStatusList = ['Active', 'InActive', 'Occupied'];
 const profileButtonsTitle = [
   addtable,
   'Category Management',
-  //shopSetting,
+  'Subcategory Managmnet',
 ];
 //const profileButtonsIcons = [Icons.settings, Icons.chat];
-const profileButtonsIcons = [Icons.table_bar_outlined, Icons.category_outlined];
+const profileButtonsIcons = [
+  Icons.table_bar_outlined,
+  Icons.category_outlined,
+  Icons.subject_outlined,
+];
 
 const catPopupMenuIcons = [Icons.edit];
 const catPopupMenuTitles = [edit];
