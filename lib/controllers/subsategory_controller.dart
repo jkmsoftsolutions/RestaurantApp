@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import '../models/category_model.dart';
+import '../theme/firebase_functions.dart';
 
 class SubCategoryController extends GetxController {
   var isloading = false.obs;
@@ -20,7 +21,6 @@ class SubCategoryController extends GetxController {
   var cDescController = TextEditingController();
 
   var statusList = ['Active', 'InActive'];
-  var catsList = ['Food', 'Lunch'];
   List<Category> category = [];
   var pImagesLinks = [];
 
@@ -31,7 +31,7 @@ class SubCategoryController extends GetxController {
 
   //pic image method
 
-  cat_pickImage(index, context) async {
+  sub_cat_pickImage(index, context) async {
     try {
       final img = await ImagePicker()
           .pickImage(source: ImageSource.gallery, imageQuality: 80);
@@ -59,6 +59,8 @@ class SubCategoryController extends GetxController {
           await ref.putFile(item);
           var n = await ref.getDownloadURL();
           pImagesLinks.add(n);
+
+          print("$pImagesLinks   ++++++++++hh");
         }
       }
     }
@@ -66,33 +68,39 @@ class SubCategoryController extends GetxController {
 
 // upload products method
 
-  cat_uploadProduct(context, {catId = ''}) async {
+  Sub_cat_uploadProduct(context, cate_sub, {catId = ''}) async {
+    print("$cate_sub   ++++++++");
     var store = (catId == '')
         ? firestore.collection(categoryCollections).doc()
         : firestore.collection(categoryCollections).doc(catId);
-
-    await store.set({
+    var w = {
       'is_featured': false,
-      'img': FieldValue.arrayUnion(pImagesLinks),
+      'img': pImagesLinks,
       'desc': cDescController.text,
-      'name': catsvalue.value,
+      'name': cNameController.text,
       'vender': Get.find<HomeController>().username,
       'vendor_id': currentUser!.uid,
       'p_rating': "5.0",
       'status': statusvalue.value,
-    });
-
-    //get  subcatdetails list
-    getSubcategoryDetails() {
-      for (var i = 0; i < catsList.length; i++) {
-        // subcat.add({
-
-        // });
-      }
+    };
+    // print("$w  +++  V+Ff++++=");
+    List<dynamic> listt = cate_sub;
+    listt.add(w);
+    print("$listt  ++++++++++++");
+    if (listt.isNotEmpty) {
+      await store.update({
+        "sub_category": listt //cate_sub.add(w)
+        // 'img': FieldValue.arrayUnion(pImagesLinks),
+      });
+    } else {
+      await store.update({
+        "sub_category": [w] //cate_sub.add(w)
+        // 'img': FieldValue.arrayUnion(pImagesLinks),
+      });
     }
 
     isloading(false);
-    VxToast.show(context, msg: "Category uploaded");
+    VxToast.show(context, msg: "Sub Category uploaded");
     cleartext();
   }
 

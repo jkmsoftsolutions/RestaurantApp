@@ -95,7 +95,6 @@ class CategoryController extends GetxController {
     var store = (catId == '')
         ? firestore.collection(categoryCollections).doc()
         : firestore.collection(categoryCollections).doc(catId);
-
     await store.set({
       'is_featured': false,
       'img': FieldValue.arrayUnion(pImagesLinks),

@@ -44,6 +44,14 @@ class StoreServices {
         .snapshots();
   }
 
+  //get Subcategor details ====================================
+  static getSubCategories(uid) {
+    return firestore
+        .collection(categoryCollections)
+        .where('vendor_id', isEqualTo: uid)
+        .snapshots();
+  }
+
   //get tables details
   static gettables(uid) {
     return firestore
