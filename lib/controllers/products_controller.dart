@@ -10,12 +10,11 @@ import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import '../models/category_model.dart';
+import '../theme/firebase_functions.dart';
 
 class ProductsController extends GetxController {
   var isloading = false.obs;
-
 //text field controller
-
   var pnameController = TextEditingController();
   var pdescController = TextEditingController();
   var ppriceController = TextEditingController();
@@ -38,9 +37,44 @@ class ProductsController extends GetxController {
   var subcategoryvalue = ''.obs;
   var selectColoIndex = 0.obs;
 
+//featch data in database category
+  var db = FirebaseFirestore.instance;
+
+  Map<String, dynamic> catdata = {};
+  var cate_id;
+  var dummyMap;
+  CateData() async {
+    categoryList.clear();
+    catdata = {};
+    Map<dynamic, dynamic> w = {
+      'table': 'categories',
+      //'status':'1',
+    };
+
+    // var dbData = await dbFindDynamic(db, w);
+    var dbData = await dbFindDynamic(db, w);
+
+    dbData.forEach((k, v) {
+      var myCat = {};
+      var subCat = [];
+      if (v['sub_category'] != null) {
+        v['sub_category'].forEach((vl) {
+          subCat.add(vl['name']);
+        });
+      }
+      myCat['name'] = v['name'];
+      myCat['subcategory'] = subCat;
+      categoryList.add(v['name']);
+
+      catdata[v['name']] = myCat;
+    });
+  }
+
   //choosen category method
   getCategory() async {
     var data = await rootBundle.loadString("lib/services/category_model.json");
+
+    //var data = catdata;
     var cat = categoryModelFromJson(data);
     category = cat.categories;
   }
@@ -51,18 +85,30 @@ class ProductsController extends GetxController {
     for (var item in category) {
       categoryList.add(item.name);
     }
+
+    //print(categoryList);
   }
 
   populateSubcategory(cat) {
     subcategoryList.clear();
-    var data = category.where((element) => element.name == cat).toList();
-    for (var i = 0; i < data.first.subcategory.length; i++) {
-      subcategoryList.add(data.first.subcategory[i]);
+    var TsubcategoryList =
+        (catdata[cat] != null && catdata[cat]['subcategory'] != null)
+            ? catdata[cat]['subcategory']
+            : [];
+    // subCate create
+    if (TsubcategoryList != null) {
+      TsubcategoryList.forEach((k) {
+        subcategoryList.add(k);
+      });
     }
+
+    // var data = category.where((element) => element.name == cat).toList();
+    // for (var i = 0; i < data.first.subcategory.length; i++) {
+    //   subcategoryList.add(data.first.subcategory[i]);
+    // }
   }
 
   //pic image method
-
   pickImage(index, context) async {
     try {
       final img = await ImagePicker()

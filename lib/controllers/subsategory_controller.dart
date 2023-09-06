@@ -19,7 +19,6 @@ class SubCategoryController extends GetxController {
 
   var cNameController = TextEditingController();
   var cDescController = TextEditingController();
-
   var statusList = ['Active', 'InActive'];
   List<Category> category = [];
   var pImagesLinks = [];
@@ -60,7 +59,7 @@ class SubCategoryController extends GetxController {
           var n = await ref.getDownloadURL();
           pImagesLinks.add(n);
 
-          print("$pImagesLinks   ++++++++++hh");
+          // print("$pImagesLinks   ++++++++++hh");
         }
       }
     }
@@ -69,7 +68,7 @@ class SubCategoryController extends GetxController {
 // upload products method
 
   Sub_cat_uploadProduct(context, cate_sub, {catId = ''}) async {
-    print("$cate_sub   ++++++++");
+    //print("$cate_sub   ++++gggfg++++");
     var store = (catId == '')
         ? firestore.collection(categoryCollections).doc()
         : firestore.collection(categoryCollections).doc(catId);
@@ -86,7 +85,7 @@ class SubCategoryController extends GetxController {
     // print("$w  +++  V+Ff++++=");
     List<dynamic> listt = cate_sub;
     listt.add(w);
-    print("$listt  ++++++++++++");
+    //print("$listt  +++++++cmc+++++");
     if (listt.isNotEmpty) {
       await store.update({
         "sub_category": listt //cate_sub.add(w)

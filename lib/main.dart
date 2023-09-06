@@ -1,6 +1,5 @@
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/views/auth_screen/login_screen.dart';
-import 'package:emart_seller/views/home_screen/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';

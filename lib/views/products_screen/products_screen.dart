@@ -22,8 +22,10 @@ class ProductsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: purpleColor,
         onPressed: () async {
-          await controller.getCategory();
-          controller.populateCategoryList();
+          await controller.CateData();
+          //await controller.getCategory();
+          // await controller.populateCategoryList();
+
           Get.to(() => const AddProduct());
         },
         child: const Icon(Icons.add),
@@ -122,6 +124,7 @@ class ProductsScreen extends StatelessWidget {
                                               }
                                               break;
                                             case 1:
+                                              //await controller.CateData();
                                               await controller.getCategory();
                                               controller.populateCategoryList();
                                               Get.to(() => EditProductScreen(
