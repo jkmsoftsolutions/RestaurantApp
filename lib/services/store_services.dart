@@ -1,7 +1,7 @@
 import 'package:emart_seller/const/const.dart';
 
 class StoreServices {
-  //get profile details
+  //get profile details ===================================
   static getProfile(uid) {
     return firestore
         .collection(vendorsCollections)
@@ -9,18 +9,45 @@ class StoreServices {
         .get();
   }
 
-//get orders detail
+//get orders detail =========================================
   static getOrders(uid) {
     return firestore
         .collection(ordersCollections)
         .where('vendors', arrayContains: uid)
+        .orderBy('order_date', descending: true)
         .snapshots();
   }
 
-  //get products details
+  static getOrdersRecent(uid) {
+    var r = firestore
+        .collection(ordersCollections)
+        .orderBy('order_date', descending: true)
+        .where('vendors', arrayContains: uid)
+        .limit(20)
+        .snapshots();
+    return r;
+  }
+
+  //get products details ====================================
   static getProducts(uid) {
     return firestore
         .collection(productsCollections)
+        .where('vendor_id', isEqualTo: uid)
+        .snapshots();
+  }
+
+  //get Category details ====================================
+  static getCategories(uid) {
+    return firestore
+        .collection(categoryCollections)
+        .where('vendor_id', isEqualTo: uid)
+        .snapshots();
+  }
+
+  //get Subcategor details ====================================
+  static getSubCategories(uid) {
+    return firestore
+        .collection(categoryCollections)
         .where('vendor_id', isEqualTo: uid)
         .snapshots();
   }

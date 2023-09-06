@@ -5,8 +5,21 @@ const profileIconsTitle = [shopSetting, messages, logout];
 const popupMenuTitles = [featured, edit, remove];
 const popupMenuIcons = [Icons.featured_play_list, Icons.edit, Icons.delete];
 
+const tablePopMenuTitles = [edit, remove];
+const tableMenuIcons = [Icons.edit, Icons.delete];
+const tableStatusList = ['Active', 'InActive', 'Occupied'];
+
 const profileButtonsTitle = [
   addtable,
-  shopSetting,
+  'Category Management',
+  'Subcategory Managmnet',
 ];
-const profileButtonsIcons = [Icons.settings, Icons.chat];
+//const profileButtonsIcons = [Icons.settings, Icons.chat];
+const profileButtonsIcons = [
+  Icons.table_bar_outlined,
+  Icons.category_outlined,
+  Icons.subject_outlined,
+];
+
+const catPopupMenuIcons = [Icons.edit];
+const catPopupMenuTitles = [edit];

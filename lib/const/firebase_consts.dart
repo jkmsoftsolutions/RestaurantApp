@@ -9,6 +9,7 @@ User? currentUser = auth.currentUser;
 
 const vendorsCollections = "vendors";
 const productsCollections = "products";
+const categoryCollections = "categories";
 const chatsCollections = "chats";
 const messagesCollections = "messages";
 const ordersCollections = "orders";

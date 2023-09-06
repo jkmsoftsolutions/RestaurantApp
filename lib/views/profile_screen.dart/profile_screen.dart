@@ -3,12 +3,14 @@ import 'package:emart_seller/controllers/auth_controller.dart';
 import 'package:emart_seller/controllers/profile_controller.dart';
 import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/views/auth_screen/login_screen.dart';
+import 'package:emart_seller/views/category_screen/category_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/edit_profilescreen.dart';
 import 'package:emart_seller/views/shop_screen/shop_settings_screen.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
+import '../subcategory_screen/subcategory_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -31,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
               icon: const Icon(Icons.edit)),
           TextButton(
               onPressed: () async {
-                await Get.find<AuthController>().signoutMethod(context);
+                await Get.put(AuthController()).signoutMethod(context);
                 Get.offAll(() => LoginPage());
               },
               child: normalText(text: logout)),
@@ -72,7 +74,10 @@ class ProfileScreen extends StatelessWidget {
                                     Get.to(() => const ShopSettings());
                                     break;
                                   case 1:
-                                    Get.to(() => const ShopSettings());
+                                    Get.to(() => const CategoryScreen());
+                                    break;
+                                  case 2:
+                                    Get.to(() => const SubCategoryScreen());
                                     break;
                                 }
                               },
