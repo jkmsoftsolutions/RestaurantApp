@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_element
+// ignore_for_file: non_constant_identifier_names, unused_element, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/const/const.dart';
@@ -51,9 +51,9 @@ class _AddSubcategoryState extends State<AddSubcategory> {
         cate_list.add(v["name"]);
         cate_id = v['id'];
         cate_sub = v["sub_category"];
-        // print("$cate_sub  ++++++++++cte===+++++++++++");
       });
     });
+    print("$cate_sub  ++++++++++cte===+++++++++++");
   }
 
   ///////============================================================

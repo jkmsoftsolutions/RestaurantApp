@@ -100,6 +100,17 @@ class CategoryController extends GetxController {
       'img': FieldValue.arrayUnion(pImagesLinks),
       'desc': cDescController.text,
       'name': cNameController.text,
+      "sub_category": [
+        {
+          "p_rating": "5.0",
+          "vendor_id": "uTANVVHKIbauK9FZCgztqBGXftN2",
+          "name": "yadu kkk",
+          "vender": "Sarkar",
+          "is_featured": false,
+          "status": "Inactive",
+          "desc": "hjghjhghjd"
+        }
+      ],
       'vender': Get.find<HomeController>().username,
       'vendor_id': currentUser!.uid,
       'p_rating': "5.0",
