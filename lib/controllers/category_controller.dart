@@ -100,17 +100,7 @@ class CategoryController extends GetxController {
       'img': FieldValue.arrayUnion(pImagesLinks),
       'desc': cDescController.text,
       'name': cNameController.text,
-      "sub_category": [
-        {
-          "p_rating": "5.0",
-          "vendor_id": "uTANVVHKIbauK9FZCgztqBGXftN2",
-          "name": "yadu kkk",
-          "vender": "Sarkar",
-          "is_featured": false,
-          "status": "Inactive",
-          "desc": "hjghjhghjd"
-        }
-      ],
+      "sub_category": "",
       'vender': Get.find<HomeController>().username,
       'vendor_id': currentUser!.uid,
       'p_rating': "5.0",
@@ -129,7 +119,7 @@ class CategoryController extends GetxController {
   }
 
   //Delete product method
-  removeProduct(docId) async {
+  removeCategory(docId) async {
     await firestore.collection(categoryCollections).doc(docId).delete();
   }
 }

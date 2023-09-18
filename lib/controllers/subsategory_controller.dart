@@ -86,7 +86,7 @@ class SubCategoryController extends GetxController {
     // print("$w  +++  V+Ff++++=");
     List<dynamic> listt = cate_sub;
     listt.add(w);
-    print("$listt  ++++++++++++");
+    // print("$listt  ++++++++++++");
     if (listt.isNotEmpty) {
       await store.update({
         "sub_category": listt //cate_sub.add(w)

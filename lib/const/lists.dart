@@ -21,5 +21,5 @@ const profileButtonsIcons = [
   Icons.subject_outlined,
 ];
 
-const catPopupMenuIcons = [Icons.edit];
-const catPopupMenuTitles = [edit];
+const catPopupMenuIcons = [Icons.edit, Icons.delete];
+const catPopupMenuTitles = [edit, remove];

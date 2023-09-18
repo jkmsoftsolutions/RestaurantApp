@@ -92,6 +92,12 @@ class CategoryScreen extends StatelessWidget {
                                                   data: data[index],
                                                   productId: data[index].id));
                                               break;
+                                            case 1:
+                                              controller.removeCategory(
+                                                  data[index].id);
+                                              VxToast.show(context,
+                                                  msg: "Category removed");
+                                              break;
                                             default:
                                           }
                                         }),
