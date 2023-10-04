@@ -4,7 +4,6 @@ import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/views/category_screen/add_category.dart';
 import 'package:emart_seller/views/category_screen/edit_category.dart';
 
-import 'package:emart_seller/views/products_screen/product_details.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';

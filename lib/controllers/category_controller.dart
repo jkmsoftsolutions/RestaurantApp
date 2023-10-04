@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/const/const.dart';
@@ -100,7 +102,7 @@ class CategoryController extends GetxController {
       'img': FieldValue.arrayUnion(pImagesLinks),
       'desc': cDescController.text,
       'name': cNameController.text,
-      "sub_category": "",
+      "sub_category": [],
       'vender': Get.find<HomeController>().username,
       'vendor_id': currentUser!.uid,
       'p_rating': "5.0",

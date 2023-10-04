@@ -4,6 +4,9 @@ import 'package:emart_seller/views/home_screen/home.dart';
 import 'package:emart_seller/views/orders_screen/orders_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../theme/style.dart';
+import '../views/auth_screen/login_screen.dart';
 
 class AuthController extends GetxController {
   var isloading = false.obs;
@@ -28,12 +31,19 @@ class AuthController extends GetxController {
   }
 
   //signout method
+  // signoutMethod(context) async {
+  //   try {
+  //     await auth.signOut();
+  //   } catch (e) {
+  //     VxToast.show(context, msg: e.toString());
+  //   }
+  // }
   signoutMethod(context) async {
-    try {
-      await auth.signOut();
-    } catch (e) {
-      VxToast.show(context, msg: e.toString());
-    }
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+    await themeAlert(context, "Logout !!");
+    await Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => LoginPage()));
   }
 
   void route() {

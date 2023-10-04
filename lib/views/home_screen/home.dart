@@ -6,6 +6,8 @@ import 'package:emart_seller/views/products_screen/products_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/profile_screen.dart';
 import 'package:get/get.dart';
 
+import '../Newuser_order/add_neworder.dart';
+
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -17,6 +19,7 @@ class Home extends StatelessWidget {
       const HomeScreen(),
       const ProductsScreen(),
       const OrdersScreen(),
+      const NewUserScreen(),
       const ProfileScreen(),
     ];
     var bottomNavbar = [
@@ -35,6 +38,13 @@ class Home extends StatelessWidget {
             width: 24,
           ),
           label: orders),
+      BottomNavigationBarItem(
+          icon: Image.asset(
+            icProfile,
+            color: darkGrey,
+            width: 24,
+          ),
+          label: newuser),
       BottomNavigationBarItem(
           icon: Image.asset(
             icGeneralSetting,
