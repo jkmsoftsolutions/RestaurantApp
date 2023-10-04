@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/controllers/products_controller.dart';
 import 'package:emart_seller/theme/function.dart';
@@ -55,7 +53,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -79,7 +77,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ))
         ],
       ),
-      body: (wait)
+      body: (widget.data == null)
           ? progress()
           : Padding(
               padding: const EdgeInsets.all(8.0),

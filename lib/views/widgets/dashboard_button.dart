@@ -25,3 +25,8 @@ Widget dashboardButton(context, {title, count, icon}) {
       .padding(const EdgeInsets.all(8.0))
       .make();
 }
+
+void nextScreen(context, page) async {
+  await Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+  Navigator.pop(context);
+}

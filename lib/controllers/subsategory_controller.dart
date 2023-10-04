@@ -69,7 +69,7 @@ class SubCategoryController extends GetxController {
 
   // ignore: non_constant_identifier_names
   Sub_cat_uploadProduct(context, cate_sub, {catId = ''}) async {
-    print("$cate_sub   ++++++++");
+    // print("$cate_sub   ++++++++");
     var store = (catId == '')
         ? firestore.collection(categoryCollections).doc()
         : firestore.collection(categoryCollections).doc(catId);
@@ -86,7 +86,7 @@ class SubCategoryController extends GetxController {
     // print("$w  +++  V+Ff++++=");
     List<dynamic> listt = cate_sub;
     listt.add(w);
-    print("$listt  ++++++++++++");
+    // print("$listt  ++++++++++++");
     if (listt.isNotEmpty) {
       await store.update({
         "sub_category": listt //cate_sub.add(w)
