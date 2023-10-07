@@ -5,6 +5,7 @@ import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
 import '../../controllers/table_controller.dart';
+import '../../theme/style.dart';
 import '../widgets/normal_text.dart';
 import 'add_table.dart';
 
@@ -51,6 +52,9 @@ class ShopSettings extends StatelessWidget {
                     children: List.generate(
                       data.length,
                       (index) => Card(
+                        color: (data[index]['is_active'])
+                            ? Color.fromARGB(255, 231, 232, 231)
+                            : Color.fromARGB(255, 246, 204, 204),
                         child: ListTile(
                           onTap: () {
                             Get.to(() => TableEdit(
@@ -68,11 +72,15 @@ class ShopSettings extends StatelessWidget {
                               //     text: "${data[index]['status']}",
                               //     color: darkGrey),
                               10.widthBox,
-                              boldText(
-                                  text: data[index]['is_active'] == true
-                                      ? "Active"
-                                      : '',
-                                  color: green),
+
+                              Text(
+                                "${(data[index]['is_active']) ? "Free table" : "Booked"}",
+                                style: themeTextStyle(
+                                    color: (data[index]['is_active'])
+                                        ? Colors.green
+                                        : Color.fromARGB(255, 157, 13, 13),
+                                    size: 11.0),
+                              )
                             ],
                           ),
                           trailing: VxPopupMenu(

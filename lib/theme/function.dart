@@ -312,3 +312,26 @@ String formatTime(int seconds) {
 }
 
 ///
+TimeStamp_for_today_query() {
+  final date = DateTime.now();
+  var newDate = DateTime(date.year, date.month, date.day - 1, 24);
+  return newDate;
+}
+
+TimeStamp_for_last7_query() {
+  final date = DateTime.now();
+  var newDate = DateTime(date.year, date.month, date.day - 7, 00);
+  return newDate;
+}
+
+TimeStamp_for_last30_query() {
+  final date = DateTime.now();
+  var newDate = DateTime(date.year, date.month, date.day - 30, 00);
+  return newDate;
+}
+
+yearStamp_for_query() {
+  final date = DateTime.now();
+  var newDate = DateTime(date.year, 01, 00, 24);
+  return newDate;
+}
