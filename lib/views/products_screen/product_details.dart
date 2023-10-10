@@ -75,46 +75,10 @@ class ProductDetails extends StatelessWidget {
                     maxRating: 5,
                   ),
                   10.heightBox,
+
                   boldText(text: "${data['p_price']}", color: red, size: 18.0),
                   20.heightBox,
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            child: normalText(text: "Color", color: fontGrey),
-                          ),
-                          Row(
-                            children: List.generate(
-                              data['p_colors'].length,
-                              (index) => VxBox()
-                                  .size(40, 40)
-                                  .roundedFull
-                                  .color(Color(data['p_colors'][index]))
-                                  .margin(
-                                      const EdgeInsets.symmetric(horizontal: 4))
-                                  .make()
-                                  .onTap(() {}),
-                            ),
-                          ),
-                        ],
-                      ),
-                      //quantity row
-                      10.heightBox,
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            child: normalText(text: "Quntity", color: fontGrey),
-                          ),
-                          normalText(
-                              text: "${data['p_quantity']} items",
-                              color: fontGrey),
-                        ],
-                      ),
-                    ],
-                  ).box.white.padding(const EdgeInsets.all(8.0)).make(),
+
                   const Divider(),
                   20.heightBox,
                   boldText(text: "Description", color: fontGrey),

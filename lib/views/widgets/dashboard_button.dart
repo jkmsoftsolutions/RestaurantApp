@@ -28,5 +28,9 @@ Widget dashboardButton(context, {title, count, icon}) {
 
 void nextScreen(context, page) async {
   await Navigator.push(context, MaterialPageRoute(builder: (context) => page));
-  Navigator.pop(context);
+}
+
+void nextScreenReplace(context, page) {
+  Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: (context) => page));
 }

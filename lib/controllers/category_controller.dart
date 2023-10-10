@@ -121,7 +121,7 @@ class CategoryController extends GetxController {
   }
 
   //Delete product method
-  removeProduct(docId) async {
+  removeCategory(docId) async {
     await firestore.collection(categoryCollections).doc(docId).delete();
   }
 }

@@ -52,11 +52,18 @@ class StoreServices {
         .snapshots();
   }
 
+  //get all produvt
+
+  static allproducts() {
+    return firestore.collection(productsCollections).snapshots();
+  }
+
   //get tables details
   static gettables(uid) {
     return firestore
         .collection(tablesCollections)
         .where('vendor_id', isEqualTo: uid)
+        //.orderBy('tab_no', descending: false)
         .snapshots();
   }
 
@@ -89,5 +96,30 @@ class StoreServices {
       }),
     ]);
     return res;
+  }
+
+  //get mathed all table
+  static allTables() {
+    return firestore
+        .collection(tablesCollections)
+        //  .where("status", "==" "Active")
+        .orderBy('tab_no', descending: false)
+        //.get();
+        .snapshots();
+  }
+
+//new order method
+  static getUserOrders() {
+    return firestore
+        .collection(ordersCollections)
+        .where('order_by', isEqualTo: 'Ab1KV0X8NbecGaHuuxZQuacjp2r1')
+        .snapshots();
+  }
+
+  static getUserDetails() {
+    return firestore
+        .collection(usersCollections)
+        .where('id', isEqualTo: 'Ab1KV0X8NbecGaHuuxZQuacjp2r1')
+        .snapshots();
   }
 }

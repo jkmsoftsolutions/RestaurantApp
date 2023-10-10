@@ -3,17 +3,28 @@ import 'package:emart_seller/views/auth_screen/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyApo_LXvkjDA1vLVt_x8naMvEnFOAgn2wo",
+            authDomain: "emart-dd54c.firebaseapp.com",
+            projectId: "emart-dd54c",
+            storageBucket: "emart-dd54c.appspot.com",
+            messagingSenderId: "503258272064",
+            appId: "1:503258272064:web:41b67b0a743f042df72aa5"));
+  } else {
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
 // guddu
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
