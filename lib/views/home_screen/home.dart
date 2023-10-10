@@ -5,7 +5,6 @@ import 'package:emart_seller/views/orders_screen/orders_screen.dart';
 import 'package:emart_seller/views/products_screen/products_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/profile_screen.dart';
 import 'package:get/get.dart';
-
 import '../Newuser_order/add_neworder.dart';
 
 class Home extends StatelessWidget {

@@ -12,13 +12,47 @@ import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:emart_seller/controllers/orders_controller.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
+import '../../controllers/dashboard_controller.dart';
 import '../widgets/appbar_widget.dart';
 import '../../theme/function.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var controller = Get.put(DashboardController());
+  @override
+  void initState() {
+    get_Orderdata();
+    get_odaydata();
+    super.initState();
+  }
+
+  bool wait = true;
+  var OrderList = [];
+  get_Orderdata() async {
+    OrderList = [];
+    OrderList = await controller.Ordersdata();
+    setState(() {
+      OrderList;
+      wait = false;
+    });
+  }
+
+  var TodayList = [];
+  get_odaydata() async {
+    TodayList = [];
+    OrderList = await controller.Todaydata();
+    setState(() {
+      TodayList;
+      wait = false;
+    });
+  }
+
   Widget build(BuildContext context) {
     Get.put(OrdersController());
     return Scaffold(
@@ -90,15 +124,30 @@ class HomeScreen extends StatelessWidget {
                                         icon: icProfile),
                                     dashboardButton(context,
                                         title: totalSales,
-                                        count: countData[3].toString(),
+                                        count:
+                                            '₹:-${controller.totalAmount} Q:-${countData[3].toString()}',
                                         icon: icStar),
+                                  ],
+                                ),
+                                10.heightBox,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    dashboardButton(context,
+                                        title: 'Today Sales',
+                                        count: '₹:-${controller.totayAmount}',
+                                        icon: icOreders),
+                                    dashboardButton(context,
+                                        title: 'Yestrady Sales',
+                                        count: '₹:-${controller.totayAmount}',
+                                        icon: icProfile),
                                   ],
                                 ),
                               ],
                             );
                           }
                         }),
-                    10.heightBox,
                     10.heightBox,
                     const Divider(),
                     10.heightBox,
