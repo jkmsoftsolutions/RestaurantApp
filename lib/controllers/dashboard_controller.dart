@@ -10,7 +10,7 @@ class DashboardController extends GetxController {
   var orderList = [];
   int totalAmount = 0;
   int totayAmount = 0;
-
+  int lastayAmount = 0;
   var orderbydate = [];
   var db = FirebaseFirestore.instance;
 
@@ -63,5 +63,30 @@ class DashboardController extends GetxController {
       totayAmount += int.parse(v['total_amount'].toString());
     });
     return totayAmount;
+  }
+
+  lastdaydata() async {
+    lastayAmount = 0;
+
+    var searchDate = TimeStamp_for_last30_query();
+    orderbydate.clear();
+    orderdata = {};
+
+    var dbData;
+    // get details
+
+    // Raw Query ==============================
+    if (dbData == null) {
+      var query = await FirebaseFirestore.instance
+          .collection('orders')
+          .where("date_at", isGreaterThan: searchDate);
+      dbData = await dbRawQuery(query);
+    }
+
+    // set data in map & calculate ==============================
+    dbData.forEach((k, v) {
+      lastayAmount += int.parse(v['total_amount'].toString());
+    });
+    return lastayAmount;
   }
 }

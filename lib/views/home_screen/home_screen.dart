@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     get_Orderdata();
     get_odaydata();
+    get_last3aydata();
     super.initState();
   }
 
@@ -47,6 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
   get_odaydata() async {
     TodayList = [];
     OrderList = await controller.Todaydata();
+    setState(() {
+      TodayList;
+      wait = false;
+    });
+  }
+
+  var last30dayList = [];
+  get_last3aydata() async {
+    TodayList = [];
+    OrderList = await controller.lastdaydata();
     setState(() {
       TodayList;
       wait = false;
@@ -99,7 +110,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           title: products,
                                           count: countData[0].toString(),
                                           icon: icProducts,
-                                        ),
+                                        )
+                                            .box
+                                            .shadowLg
+                                            .rounded
+                                            .color(purpleColor)
+                                            .make(),
                                       ),
                                     ),
                                     GestureDetector(
@@ -107,9 +123,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Get.to(() => OrdersScreen());
                                       },
                                       child: dashboardButton(context,
-                                          title: orders,
-                                          count: countData[1].toString(),
-                                          icon: icOreders),
+                                              title: orders,
+                                              count: countData[1].toString(),
+                                              icon: icOreders)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(
+                                              Color.fromARGB(255, 70, 104, 255))
+                                          .make(),
                                     ),
                                   ],
                                 ),
@@ -119,14 +141,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     dashboardButton(context,
-                                        title: listUser,
-                                        count: countData[2].toString(),
-                                        icon: icProfile),
-                                    dashboardButton(context,
-                                        title: totalSales,
-                                        count:
-                                            '₹:-${controller.totalAmount} Q:-${countData[3].toString()}',
-                                        icon: icStar),
+                                            title: listUser,
+                                            count: countData[2].toString(),
+                                            icon: icProfile)
+                                        .box
+                                        .shadowLg
+                                        .rounded
+                                        .color(Color.fromARGB(255, 241, 86, 34))
+                                        .make(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => OrdersScreen());
+                                      },
+                                      child: dashboardButton(context,
+                                              title: "Total Deliverd",
+                                              count:
+                                                  '₹:-${controller.totalAmount} Q:-${countData[3].toString()}',
+                                              icon: icStar)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(
+                                              Color.fromARGB(255, 7, 132, 49))
+                                          .make(),
+                                    ),
                                   ],
                                 ),
                                 10.heightBox,
@@ -134,14 +172,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    dashboardButton(context,
-                                        title: 'Today Sales',
-                                        count: '₹:-${controller.totayAmount}',
-                                        icon: icOreders),
-                                    dashboardButton(context,
-                                        title: 'Yestrady Sales',
-                                        count: '₹:-${controller.totayAmount}',
-                                        icon: icProfile),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => OrdersScreen());
+                                      },
+                                      child: dashboardButton(context,
+                                              title: 'Today Sales',
+                                              count:
+                                                  '₹:-${controller.totayAmount}',
+                                              icon: icOreders)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(
+                                              Color.fromARGB(255, 7, 143, 129))
+                                          .make(),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => OrdersScreen());
+                                      },
+                                      child: dashboardButton(context,
+                                              title: 'Last 30 Days Sales',
+                                              count:
+                                                  '₹:-${controller.lastayAmount}',
+                                              icon: icOreders)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(Color.fromARGB(
+                                              255, 243, 100, 100))
+                                          .make(),
+                                    ),
                                   ],
                                 ),
                               ],
@@ -190,6 +252,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           "${capitalize(data[index]['order_by_name'].toString())}",
                                           style: TextStyle(fontSize: 11.0),
                                         ),
+                                        Text(
+                                          "Order By:-${capitalize(data[index]['type'].toString())} ",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 10.0,
+                                          ),
+                                        ).color(green),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

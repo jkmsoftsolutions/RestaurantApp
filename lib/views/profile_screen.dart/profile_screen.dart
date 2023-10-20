@@ -10,6 +10,8 @@ import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
+import '../orders_screen/orders_screen.dart';
+import '../products_screen/products_screen.dart';
 import '../subcategory_screen/subcategory_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -19,10 +21,10 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileController());
     return Scaffold(
-      backgroundColor: purpleColor,
+      backgroundColor: Color.fromARGB(255, 248, 246, 246),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: boldText(text: settings, size: 16.0),
+        title: boldText(text: settings, color: Colors.black, size: 16.0),
         actions: [
           IconButton(
               onPressed: () {
@@ -30,20 +32,23 @@ class ProfileScreen extends StatelessWidget {
                       username: controller.snapshotData['vendor_name'],
                     ));
               },
-              icon: const Icon(Icons.edit)),
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.black,
+              )),
           TextButton(
               onPressed: () async {
                 await Get.put(AuthController()).signoutMethod(context);
                 Get.offAll(() => LoginPage());
               },
-              child: normalText(text: logout)),
+              child: normalText(text: logout, color: Colors.black)),
         ],
       ),
       body: FutureBuilder(
         future: StoreServices.getProfile(currentUser!.uid),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return LoadingIndicator(circleColor: white);
+            return LoadingIndicator(circleColor: black);
           } else {
             controller.snapshotData = snapshot.data!.docs[0];
 
@@ -56,9 +61,11 @@ class ProfileScreen extends StatelessWidget {
                       .clip(Clip.antiAlias)
                       .make(),
                   title: boldText(
-                      text: "${controller.snapshotData["vendor_name"]}"),
-                  subtitle:
-                      normalText(text: "${controller.snapshotData["email"]}"),
+                      text: "${controller.snapshotData["vendor_name"]}",
+                      color: black),
+                  subtitle: normalText(
+                      text: "${controller.snapshotData["email"]}",
+                      color: black),
                 ),
                 const Divider(),
                 10.heightBox,
@@ -71,22 +78,29 @@ class ProfileScreen extends StatelessWidget {
                               onTap: () {
                                 switch (index) {
                                   case 0:
-                                    Get.to(() => const ShopSettings());
+                                    Get.to(() => const ProductsScreen());
                                     break;
                                   case 1:
-                                    Get.to(() => const CategoryScreen());
+                                    Get.to(() => const OrdersScreen());
                                     break;
                                   case 2:
+                                    Get.to(() => const ShopSettings());
+                                    break;
+                                  case 3:
+                                    Get.to(() => const CategoryScreen());
+                                    break;
+                                  case 4:
                                     Get.to(() => const SubCategoryScreen());
                                     break;
                                 }
                               },
                               leading: Icon(
                                 profileButtonsIcons[index],
-                                color: white,
+                                color: black,
                               ),
-                              title:
-                                  normalText(text: profileButtonsTitle[index]),
+                              title: normalText(
+                                  text: profileButtonsTitle[index],
+                                  color: black),
                             )),
                   ),
                 ),

@@ -14,7 +14,6 @@ class OrdersController extends GetxController {
   var delivered = false.obs;
   var orderList = [];
   int totalAmount = 0;
-
   var orderbydate = [];
   var db = FirebaseFirestore.instance;
 

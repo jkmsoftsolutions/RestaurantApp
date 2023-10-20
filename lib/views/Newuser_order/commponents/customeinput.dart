@@ -53,14 +53,6 @@ Widget formInput(BuildContext context, label, controller, icon,
               decoration: inputStyle(label, icon),
               keyboardType:
                   (isNumber) ? TextInputType.number : TextInputType.text,
-
-              //inputFormatters: [DecimalTextInputFormatter(decimalRange: 1)],
-
-              // inputFormatters: (isNumber)
-              //     ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
-              //     : <TextInputFormatter>[
-              //         FilteringTextInputFormatter.singleLineFormatter
-              //       ],
               readOnly: readOnly,
               inputFormatters: (isNumber && isFloat)
                   ? <TextInputFormatter>[

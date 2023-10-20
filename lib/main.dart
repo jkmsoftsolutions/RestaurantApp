@@ -64,7 +64,6 @@ class _MyAppState extends State<MyApp> {
 
 // class SplashScreen extends StatefulWidget {
 //   const SplashScreen({Key? key}) : super(key: key);
-
 //   @override
 //   State<SplashScreen> createState() => _SplashScreenState();
 // }

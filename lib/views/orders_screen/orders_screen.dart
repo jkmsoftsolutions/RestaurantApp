@@ -41,9 +41,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
-
     return Scaffold(
         appBar: AppBar(
+          leading: const BackButton(
+            color: Colors.black, // <-- SEE HERE
+          ),
+          automaticallyImplyLeading: true,
           title: boldText(text: "Order List ", size: 16.0, color: Colors.black),
           actions: [
             PopupMenuButton(
@@ -207,6 +210,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           "${capitalize(OrderList[index]['order_by_name'].toString())}",
                                           style: TextStyle(fontSize: 11.0),
                                         ),
+                                        Text(
+                                          "Order By:-${capitalize(OrderList[index]['type'].toString())} ",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 10.0,
+                                          ),
+                                        ).color(green),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

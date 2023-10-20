@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //   'orderBy': 'phone',
 //   'limit': 1,
 // };
+
 //dbSave(db, where);
 //dbDelete(db, 'users', 'LQJbIfdB15SHDCf51p03');
 //print(dbFindDynamic(db, where));
@@ -25,6 +26,7 @@ dbUpdate(db, where) {
     return "Table name required!!";
     return false;
   }
+
   var table = (where['table']);
   where.remove('table');
 

@@ -22,7 +22,7 @@ class StoreServices {
     var r = firestore
         .collection(ordersCollections)
         .orderBy('order_date', descending: true)
-        .where('vendors', arrayContains: uid)
+        // .where('vendors', arrayContains: uid)
         .limit(20)
         .snapshots();
     return r;
@@ -32,7 +32,7 @@ class StoreServices {
   static getProducts(uid) {
     return firestore
         .collection(productsCollections)
-        .where('vendor_id', isEqualTo: uid)
+        // .where('vendor_id', isEqualTo: uid)
         .snapshots();
   }
 
@@ -40,7 +40,7 @@ class StoreServices {
   static getCategories(uid) {
     return firestore
         .collection(categoryCollections)
-        .where('vendor_id', isEqualTo: uid)
+        // .where('vendor_id', isEqualTo: uid)
         .snapshots();
   }
 
@@ -62,7 +62,7 @@ class StoreServices {
   static gettables(uid) {
     return firestore
         .collection(tablesCollections)
-        .where('vendor_id', isEqualTo: uid)
+        // .where('vendor_id', isEqualTo: uid)
         //.orderBy('tab_no', descending: false)
         .snapshots();
   }
@@ -72,14 +72,14 @@ class StoreServices {
     var res = await Future.wait([
       firestore
           .collection(productsCollections)
-          .where('vendor_id', isEqualTo: uid)
+          // .where('vendor_id', isEqualTo: uid)
           .get()
           .then((value) {
         return value.docs.length;
       }),
       firestore
           .collection(ordersCollections)
-          .where('vendors', arrayContains: uid)
+          // .where('vendors', arrayContains: uid)
           .get()
           .then((value) {
         return value.docs.length;
@@ -96,6 +96,11 @@ class StoreServices {
       }),
     ]);
     return res;
+  }
+
+// search method
+  static searchProducts(title) {
+    return firestore.collection(productsCollections).get();
   }
 
   //get mathed all table

@@ -45,7 +45,8 @@ Widget UserInfo(BuildContext context) {
         formInput(context, "name", controller.pNameController, Icons.person),
         const SizedBox(height: 20.0),
         formInput(context, "mobile", controller.pMobileController,
-            Icons.phone_android_rounded),
+            Icons.phone_android_rounded,
+            isNumber: true),
         const SizedBox(height: 20.0),
         formInput(
             context, "email", controller.pEmailController, Icons.email_rounded),
@@ -113,24 +114,19 @@ Widget BookTable(BuildContext context, List alltablesdata) {
                       borderRadius: BorderRadius.circular(15),
                       color: (controller.selectedtableIndex.value == index &&
                               alltablesdata[index]['is_active'])
-                          ? Colors.green
+                          ? Color.fromARGB(255, 132, 195, 134)
                           : (alltablesdata[index]['is_active'])
-                              ? Color.fromARGB(137, 138, 137, 137)
-                              : Color.fromARGB(255, 159, 28, 8),
+                              ? Color.fromARGB(135, 255, 255, 255)
+                              : Color.fromARGB(255, 227, 116, 100),
                       border: Border.all(
                           color: const Color.fromARGB(255, 45, 177, 115),
                           width: 1.0)),
                   child: GoogleText(
                       text:
-                          'Table ${alltablesdata[index]['is_active'] ? '${alltablesdata[index]['tab_no']}' : 'Booked'}',
-                      color: Colors.white,
+                          ' ${alltablesdata[index]['is_active'] ? '${alltablesdata[index]['tab_no']}' : 'Booked'}',
+                      color: Colors.black,
                       fsize: 14.0,
-                      fweight: FontWeight.w400)
-                  // Text(
-                  //   'Table ${alltablesdata[index]['is_active'] ? '${alltablesdata[index]['tab_no']}' : 'Booked'}'  ,
-
-                  // ),
-                  ),
+                      fweight: FontWeight.w400)),
             );
           }),
         ),
@@ -174,57 +170,48 @@ Widget CartPage(BuildContext context, Map Pdata) {
           ],
         ),
       ),
-      // Divider(color: Colors.black, thickness: 1.0),
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   children: [
-      //     const Center(
-      //       child: QRCode(
-      //         qrSize: 100,
-      //         qrData: 'https://insaaf99.com/',
-      //       ),
-      //     ),
-      //     themeButton3(context, () {
-      //       showDialog<String>(
-      //         context: context,
-      //         builder: (BuildContext context) => AlertDialog(
-      //           title: const Text('Fill Total Amount'),
-      //           content: Container(
-      //             width: 200,
-      //             child: TextFormField(
-      //               initialValue: "${controller.total}",
-      //               decoration: const InputDecoration(
-      //                 border: UnderlineInputBorder(),
-      //                 labelText: 'Enter your Amount',
-      //               ),
-      //             ),
-      //           ),
-      //           actions: <Widget>[
-      //             TextButton(
-      //               onPressed: () => Navigator.pop(context, 'Cancel'),
-      //               child: GoogleText(
-      //                   text: "Cancel",
-      //                   color: Colors.red,
-      //                   fweight: FontWeight.bold),
-      //             ),
-      //             TextButton(
-      //               onPressed: () {
-      //                 Navigator.pop(context, 'Submit');
-      //               },
-      //               child: GoogleText(
-      //                   text: "Submit",
-      //                   color: Colors.green,
-      //                   fweight: FontWeight.bold),
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     },
-      //         label: "    ${controller.total} Rs /-  ",
-      //         radius: 5.0,
-      //         buttonColor: Colors.green),
-      //   ],
-      // )
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: Colors.black12, borderRadius: BorderRadius.circular(10.0)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GoogleText(
+                    text: "Items",
+                    fsize: 16.0,
+                    fweight: FontWeight.bold,
+                    color: Colors.black),
+                10.heightBox,
+                GoogleText(
+                    text: "Total Price",
+                    fsize: 16.0,
+                    fweight: FontWeight.bold,
+                    color: Colors.black),
+              ],
+            ),
+            Column(
+              children: [
+                GoogleText(
+                    text: "${controller.cartData.length}",
+                    fsize: 15.0,
+                    fweight: FontWeight.bold,
+                    color: Colors.green),
+                10.heightBox,
+                GoogleText(
+                    text: "₹ ${controller.total} /-",
+                    fsize: 15.0,
+                    fweight: FontWeight.bold,
+                    color: Colors.green),
+              ],
+            ),
+          ],
+        ),
+      ),
     ],
   );
 }
@@ -262,7 +249,7 @@ Widget productListCon(context, Pdata) {
               children: [
                 RowTextWd(context, "Name", "${Pdata["p_name"]}"),
                 RowTextWd(context, "Price", "${Pdata["p_price"]} Rs"),
-                RowTextWd(context, "Quantity", "X${Pdata["qnt"]}"),
+                RowTextWd(context, "Quantity", "x${Pdata["qnt"]}"),
                 RowTextWd(context, "Total", "${Pdata["subTotal"]} Rs/-"),
               ],
             ),

@@ -16,43 +16,40 @@ class Home extends StatelessWidget {
 
     var navScreen = [
       const HomeScreen(),
-      const ProductsScreen(),
-      const OrdersScreen(),
       const NewUserScreen(),
+      //const ProductsScreen(),
+      // const OrdersScreen(),
+
       const ProfileScreen(),
     ];
     var bottomNavbar = [
-      const BottomNavigationBarItem(icon: Icon(Icons.home), label: dashboard),
+      const BottomNavigationBarItem(
+          icon: Icon(Icons.space_dashboard), label: dashboard),
       BottomNavigationBarItem(
           icon: Image.asset(
-            icProducts,
-            color: darkGrey,
-            width: 24,
+            icnewOreders,
+            color: Color.fromARGB(255, 184, 46, 194),
+            width: 50,
           ),
-          label: products),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icOreders,
-            color: darkGrey,
-            width: 24,
-          ),
-          label: orders),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icProfile,
-            color: darkGrey,
-            width: 24,
-          ),
-          label: newuser),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icGeneralSetting,
-            color: darkGrey,
-            width: 24,
-          ),
-          label: settings),
+          label: neworders),
+      // BottomNavigationBarItem(
+      //     icon: Image.asset(
+      //       icProducts,
+      //       color: darkGrey,
+      //       width: 24,
+      //     ),
+      //     label: products),
+      BottomNavigationBarItem(icon: Icon(Icons.dehaze_rounded), label: more),
     ];
     return Scaffold(
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {
+      //     Get.to(() => const NewUserScreen());
+      //   },
+      //   icon: Icon(Icons.article_outlined),
+      //   label: Text("New Orders"),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           onTap: (index) {

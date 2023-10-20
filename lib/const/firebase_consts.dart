@@ -15,3 +15,4 @@ const messagesCollections = "messages";
 const ordersCollections = "orders";
 const usersCollections = "user";
 const tablesCollections = "tables";
+const paymentCollection = "payment";

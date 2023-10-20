@@ -24,7 +24,13 @@ class CategoryScreen extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      appBar: appbarWidget("Category"),
+      appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.black, // <-- SEE HERE
+        ),
+        automaticallyImplyLeading: true,
+        title: boldText(text: "Category", color: Colors.black, size: 16.0),
+      ),
       body: StreamBuilder(
           stream: StoreServices.getCategories(currentUser!.uid),
           builder:

@@ -5,6 +5,7 @@ import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/Newuser_order/NewUser_widget.dart';
+import 'package:emart_seller/views/Newuser_order/search_screen.dart';
 import 'package:emart_seller/views/Newuser_order/select_table.dart';
 import 'package:emart_seller/views/widgets/dashboard_button.dart';
 import 'package:get/get.dart';
@@ -25,8 +26,10 @@ class NewUserScreen extends StatefulWidget {
 
 class _NewUserScreenState extends State<NewUserScreen> {
   var controller = Get.put(NewUserOrderController());
+  var db = FirebaseFirestore.instance;
 
   bool wait = true;
+
   @override
   void initState() {
     super.initState();
@@ -42,10 +45,17 @@ class _NewUserScreenState extends State<NewUserScreen> {
   }
 
   _fnNext() async {
+    var alert = "";
+    var pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+
     if (step == 1 &&
         controller.pNameController.text.isNotEmpty &&
-        controller.pEmailController.text.isNotEmpty &&
+        controller.pMobileController.text.length >= 10 &&
         controller.pMobileController.text.isNotEmpty &&
+        regex.hasMatch(controller.pEmailController.text) &&
+        controller.pEmailController.text.isNotEmpty &&
         controller.pAddressController.text.isNotEmpty) {
       var Cust_ID = await controller.storeUserData();
       setState(() {
@@ -83,8 +93,13 @@ class _NewUserScreenState extends State<NewUserScreen> {
         context,
       );
     } else {
-      if (step == 1) {
-        themeAlert(context, "Please Enter Required Value !!", type: "error");
+      if (step == 1 && controller.pMobileController.text.length < 10) {
+        themeAlert(context, "Mobile Number must be of 10 digit !!",
+            type: "error");
+        // themeAlert(context, "Please Enter Required Value !!", type: "error");
+      }
+      if (step == 1 && controller.pEmailController.text.isEmpty) {
+        themeAlert(context, "Please Enter Valid Email !!", type: "error");
       }
       if (step == 2) {
         themeAlert(context, "Please Select Table !!", type: "error");
@@ -99,14 +114,14 @@ class _NewUserScreenState extends State<NewUserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.black12,
-        title: GoogleText(
-            text: "New User Info",
-            color: Colors.black,
-            fsize: 18.0,
-            fweight: FontWeight.bold),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.black12,
+      //   title: GoogleText(
+      //       text: "New User Info",
+      //       color: Colors.black,
+      //       fsize: 18.0,
+      //       fweight: FontWeight.bold),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
@@ -182,33 +197,48 @@ class _NewUserScreenState extends State<NewUserScreen> {
 
 /////////  Widget for Product select ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   Widget ProductsScreen(BuildContext context) {
+    // for (var i = 0; i < controller.allproductsdata.length; i++) {
+    //    print("${controller.allproductsdata[i]}   +++++++");
+    //   }
     return StreamBuilder(
         stream: StoreServices.allproducts(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return LoadingIndicator();
           } else {
-            var allproductsdata = snapshot.data!.docs;
+            var allproductsdatavv = snapshot.data!.docs;
 
-            return Container(
+            return
+
+                // (controller.allproductsdata.isEmpty)
+                //     ? LoadingIndicator()
+                //     :
+                Container(
               child: Column(
                 children: [
                   Container(
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.production_quantity_limits,
-                          color: Colors.blue,
-                          size: 30,
+                    alignment: Alignment.center,
+                    height: 30,
+                    color: lightGrey,
+                    child: TextFormField(
+                      controller: controller.searchController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        suffixIcon: const Icon(Icons.search).onTap(() {
+                          if (controller
+                              .searchController.text.isNotEmptyAndNotNull) {
+                            Get.to(() => SearchScreen(
+                                  title: controller.searchController.text,
+                                ));
+                          }
+                        }),
+                        filled: true,
+                        fillColor: whiteColor,
+                        hintText: searchanything,
+                        hintStyle: const TextStyle(
+                          color: textfieldGrey,
                         ),
-                        SizedBox(width: 10),
-                        GoogleText(
-                            text: "Select Items Info",
-                            color: Colors.black,
-                            fsize: 16.0,
-                            fweight: FontWeight.bold,
-                            fstyle: FontStyle.italic),
-                      ],
+                      ),
                     ),
                   ),
                   const Divider(
@@ -222,9 +252,10 @@ class _NewUserScreenState extends State<NewUserScreen> {
                             crossAxisCount: 2),
                         children: [
                           for (var index = 0;
-                              index < allproductsdata.length;
+                              index < allproductsdatavv.length;
                               index++)
-                            ProductCon(context, allproductsdata[index])
+                            // Text("data")
+                            ProductCon(context, allproductsdatavv[index])
                         ]),
                   ),
                   Container(
@@ -310,6 +341,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                child: IncrDecre(context, pdata),
                 height: MediaQuery.of(context).size.height / 8.5,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -327,13 +359,17 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   fweight: FontWeight.bold),
               10.heightBox,
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GoogleText(
                       text: "₹ ${pdata['p_price']}",
                       color: redColor,
                       fsize: 15.0,
                       fweight: FontWeight.normal),
-                  IncrDecre(context, pdata),
+                  Text(
+                      '${(controller.cartData[pdata.id] != null) ? controller.cartData[pdata.id]['qnt'] : 0}'),
+                  //IncrDecre(context, pdata),
                 ],
               ),
             ],
@@ -346,56 +382,45 @@ class _NewUserScreenState extends State<NewUserScreen> {
     //print(controller.cartData);
     return Expanded(
       child: Container(
-        height: 25,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
                 onPressed: () async {
                   await fnAddProductInCart(pdata, 'decr');
                   controller.TempValue["items_data"] =
                       await controller.cartData;
-                  //fnAddProductInCart();
-                  // setState(() {
-                  //   if (quantity > 1) {
-                  //     quantity = quantity.value-- as RxInt;
-                  //   }
-                  // });
-                  // controller.decreaseQuantity();
-                  // setState(() {
-                  //   controller.calculateTotalPice(int.parse('${price}'),
-                  //       int.parse("${quantity.value}"));
-                  // });
                 },
                 icon: const Icon(
                   Icons.remove,
-                  color: Colors.red,
+                  color: Color.fromARGB(255, 228, 77, 67),
                   size: 30,
-                )),
-            //quantity.value.text.size(16).bold.color(red).make(),
-            Text(
-                '${(controller.cartData[pdata.id] != null) ? controller.cartData[pdata.id]['qnt'] : 0}'),
+                )
+                    .box
+                    .roundedFull
+                    .color(const Color.fromARGB(255, 28, 28, 28))
+                    .make()),
             IconButton(
                 onPressed: () async {
                   await fnAddProductInCart(pdata, 'incr');
                   controller.TempValue["items_data"] =
                       await controller.cartData;
-                  // //controller.increaseQuantity();
-                  // setState(() {
-                  //   quantity = quantity.value++ as RxInt;
-                  //   print("$quantity ===");
-                  //   controller.calculateTotalPice(int.parse('${price}'),
-                  //       int.parse("${quantity.value.text}"));
-                  // });
                 },
                 icon: const Icon(
                   Icons.add,
                   color: Colors.green,
                   size: 30,
-                )),
+                )
+                    .box
+                    .roundedFull
+                    .color(const Color.fromARGB(255, 28, 28, 28))
+                    .make()),
           ],
-        ).box.white.margin(const EdgeInsets.symmetric(horizontal: 4)).make(),
+        )
+            .box
+            .transparent
+            .margin(const EdgeInsets.symmetric(horizontal: 0))
+            .make(),
       ),
     );
   }

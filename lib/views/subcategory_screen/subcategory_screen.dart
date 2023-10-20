@@ -65,7 +65,14 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
               },
               child: const Icon(Icons.add),
             ),
-            appBar: appbarWidget("SubCategory"),
+            appBar: AppBar(
+              leading: const BackButton(
+                color: Colors.black, // <-- SEE HERE
+              ),
+              automaticallyImplyLeading: true,
+              title: boldText(
+                  text: "Subcategory", color: Colors.black, size: 16.0),
+            ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(

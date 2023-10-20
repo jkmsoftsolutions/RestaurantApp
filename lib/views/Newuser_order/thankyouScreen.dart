@@ -1,28 +1,61 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/const/const.dart';
+import 'package:emart_seller/theme/firebase_functions.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/Newuser_order/createInvoice.dart';
 import 'package:emart_seller/views/widgets/dashboard_button.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../controllers/home_controller.dart';
 import '../home_screen/home.dart';
 import 'invoice_serv.dart';
 
 class ThankScreen extends StatefulWidget {
-  ThankScreen({Key? key}) : super(key: key);
-
+  ThankScreen({Key? key, required this.OrderId}) : super(key: key);
+  final OrderId;
   @override
   State<ThankScreen> createState() => _ThankScreenState();
 }
 
 class _ThankScreenState extends State<ThankScreen> {
   var homeController = Get.put(HomeController());
+  var db = FirebaseFirestore.instance;
+  @override
+  void initState() {
+    InvoiceData(widget.OrderId);
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+
+// Get data order table
+
+  String _selected_order_name = '';
+
+  var OrderData = {};
+  InvoiceData(orderId) async {
+    Map<dynamic, dynamic> w = {
+      'table': 'orders',
+      "id": "${orderId}"
+      //'status':'1',
+    };
+
+    OrderData = await dbFind(w);
+    // print("$dbData  =======================");
+
+    // dbData.forEach((k, v) {
+    setState(() {
+      //orderList.add(v);
+
+      // print("$orderList   +++++++++=hhjhj+++++");
+    });
+    //});
+  }
 
   //creating method to change screen
   @override
@@ -38,11 +71,6 @@ class _ThankScreenState extends State<ThankScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Icon(
-          //   Icons.check_circle,
-          //   color: Colors.green,
-          //   size: 100,
-          // ),
           Image.asset(
             "assets/icons/thank2.gif",
             height: 150,
@@ -66,7 +94,6 @@ class _ThankScreenState extends State<ThankScreen> {
                 fontWeight: FontWeight.normal),
           ),
           SizedBox(height: 30.0),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -84,17 +111,19 @@ class _ThankScreenState extends State<ThankScreen> {
                       primary: Colors.green, // Background color
                     ),
                     onPressed: () async {
-                      final data = await InvoiceService(
-                        PriceDetail: edata,
-                      ).createInvoice();
+                      // Navigator.pop(context);
+                      // final data = await InvoiceService(
+                      //   PriceDetail: edata,
+                      // ).createInvoice();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Invoice_pdf(
-                              BytesCode: byteList, PriceDetail: PriceDetail),
+                          builder: (context) => Invoice_pdf(orderList: OrderData
+                              // BytesCode: byteList, PriceDetail: PriceDetail
+                              ),
                         ),
                       );
-                      themeAlert(context, "Successfully Download !!!");
+                      // themeAlert(context, "Successfully Download !!!");
                     },
                     child: Icon(Icons.download)),
               )
