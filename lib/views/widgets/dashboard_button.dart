@@ -19,9 +19,17 @@ Widget dashboardButton(context, {title, count, icon}) {
     ],
   )
       .box
-      .color(purpleColor)
       .rounded
-      .size(size.width * 0.4, 80)
+      .size(size.width * 0.4, 90)
       .padding(const EdgeInsets.all(8.0))
       .make();
+}
+
+void nextScreen(context, page) async {
+  await Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+}
+
+void nextScreenReplace(context, page) {
+  Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: (context) => page));
 }

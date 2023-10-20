@@ -12,13 +12,58 @@ import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:emart_seller/controllers/orders_controller.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
+import '../../controllers/dashboard_controller.dart';
 import '../widgets/appbar_widget.dart';
 import '../../theme/function.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var controller = Get.put(DashboardController());
+  @override
+  void initState() {
+    get_Orderdata();
+    get_odaydata();
+    get_last3aydata();
+    super.initState();
+  }
+
+  bool wait = true;
+  var OrderList = [];
+  get_Orderdata() async {
+    OrderList = [];
+    OrderList = await controller.Ordersdata();
+    setState(() {
+      OrderList;
+      wait = false;
+    });
+  }
+
+  var TodayList = [];
+  get_odaydata() async {
+    TodayList = [];
+    OrderList = await controller.Todaydata();
+    setState(() {
+      TodayList;
+      wait = false;
+    });
+  }
+
+  var last30dayList = [];
+  get_last3aydata() async {
+    TodayList = [];
+    OrderList = await controller.lastdaydata();
+    setState(() {
+      TodayList;
+      wait = false;
+    });
+  }
+
   Widget build(BuildContext context) {
     Get.put(OrdersController());
     return Scaffold(
@@ -65,7 +110,12 @@ class HomeScreen extends StatelessWidget {
                                           title: products,
                                           count: countData[0].toString(),
                                           icon: icProducts,
-                                        ),
+                                        )
+                                            .box
+                                            .shadowLg
+                                            .rounded
+                                            .color(purpleColor)
+                                            .make(),
                                       ),
                                     ),
                                     GestureDetector(
@@ -73,9 +123,15 @@ class HomeScreen extends StatelessWidget {
                                         Get.to(() => OrdersScreen());
                                       },
                                       child: dashboardButton(context,
-                                          title: orders,
-                                          count: countData[1].toString(),
-                                          icon: icOreders),
+                                              title: orders,
+                                              count: countData[1].toString(),
+                                              icon: icOreders)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(
+                                              Color.fromARGB(255, 70, 104, 255))
+                                          .make(),
                                     ),
                                   ],
                                 ),
@@ -85,20 +141,75 @@ class HomeScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     dashboardButton(context,
-                                        title: listUser,
-                                        count: countData[2].toString(),
-                                        icon: icProfile),
-                                    dashboardButton(context,
-                                        title: totalSales,
-                                        count: countData[3].toString(),
-                                        icon: icStar),
+                                            title: listUser,
+                                            count: countData[2].toString(),
+                                            icon: icProfile)
+                                        .box
+                                        .shadowLg
+                                        .rounded
+                                        .color(Color.fromARGB(255, 241, 86, 34))
+                                        .make(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => OrdersScreen());
+                                      },
+                                      child: dashboardButton(context,
+                                              title: "Total Deliverd",
+                                              count:
+                                                  '₹:-${controller.totalAmount} Q:-${countData[3].toString()}',
+                                              icon: icStar)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(
+                                              Color.fromARGB(255, 7, 132, 49))
+                                          .make(),
+                                    ),
+                                  ],
+                                ),
+                                10.heightBox,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => OrdersScreen());
+                                      },
+                                      child: dashboardButton(context,
+                                              title: 'Today Sales',
+                                              count:
+                                                  '₹:-${controller.totayAmount}',
+                                              icon: icOreders)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(
+                                              Color.fromARGB(255, 7, 143, 129))
+                                          .make(),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => OrdersScreen());
+                                      },
+                                      child: dashboardButton(context,
+                                              title: 'Last 30 Days Sales',
+                                              count:
+                                                  '₹:-${controller.lastayAmount}',
+                                              icon: icOreders)
+                                          .box
+                                          .shadowLg
+                                          .rounded
+                                          .color(Color.fromARGB(
+                                              255, 243, 100, 100))
+                                          .make(),
+                                    ),
                                   ],
                                 ),
                               ],
                             );
                           }
                         }),
-                    10.heightBox,
                     10.heightBox,
                     const Divider(),
                     10.heightBox,
@@ -141,6 +252,13 @@ class HomeScreen extends StatelessWidget {
                                           "${capitalize(data[index]['order_by_name'].toString())}",
                                           style: TextStyle(fontSize: 11.0),
                                         ),
+                                        Text(
+                                          "Order By:-${capitalize(data[index]['type'].toString())} ",
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 10.0,
+                                          ),
+                                        ).color(green),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

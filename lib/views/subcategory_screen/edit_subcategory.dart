@@ -29,6 +29,8 @@ class _EditSubCategoryState extends State<EditSubCategory> {
       controller.cDescController.text = widget.data['desc'];
       controller.statusvalue.value = widget.data['status'];
 
+      print("${widget.data['sub_category']}  +++++++ydfdfhdfdhdfdh+++++");
+
       // images
       controller.pImagesList = RxList();
       controller.pImagesLinks = [];
@@ -65,8 +67,7 @@ class _EditSubCategoryState extends State<EditSubCategory> {
                 controller.isloading(true);
                 await controller.uploadImage();
                 // ignore: use_build_context_synchronously
-                await controller.cat_uploadProduct(context,
-                    catId: widget.productId);
+
                 Get.back();
               },
               child: boldText(
@@ -84,9 +85,12 @@ class _EditSubCategoryState extends State<EditSubCategory> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     10.heightBox,
+                    //  subcatDropdown(
+                    // "Category", cate_list, controller.catsvalue, controller),
+                    10.heightBox,
                     customTextField(
-                        hint: "eg. Fast Food",
-                        lable: "Category name",
+                        hint: "eg. Food Name",
+                        lable: "Subcategory name",
                         controller: controller.cNameController),
                     10.heightBox,
                     customTextField(
@@ -107,17 +111,19 @@ class _EditSubCategoryState extends State<EditSubCategory> {
                                   ? Image.network(controller.pImagesList[index],
                                           width: 100)
                                       .onTap(() {
-                                      controller.cat_pickImage(index, context);
+                                      controller.sub_cat_pickImage(
+                                          index, context);
                                     })
                                   : Image.file(
                                       controller.pImagesList[index],
                                       width: 100,
                                     ).onTap(() {
-                                      controller.cat_pickImage(index, context);
+                                      controller.sub_cat_pickImage(
+                                          index, context);
                                     })
                               : subProductImages(lable: "${index + 1}")
                                   .onTap(() {
-                                  controller.cat_pickImage(index, context);
+                                  controller.sub_cat_pickImage(index, context);
                                 }),
                         ),
                       ),

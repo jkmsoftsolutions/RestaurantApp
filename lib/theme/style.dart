@@ -3,7 +3,9 @@
 
 // ignore_for_file: prefer_const_constructors, use_full_hex_values_for_flutter_colors, prefer_const_literals_to_create_immutables, unnecessary_null_comparison, avoid_unnecessary_containers, non_constant_identifier_names
 
+import 'package:emart_seller/const/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final Color themeBG = Color.fromARGB(255, 224, 93, 6);
 final Color themeBG2 = Color(0xff1a243f);
@@ -129,17 +131,83 @@ themeButton_sm(label, btnColor, icon, iconSize, w, h, fontsize) {
   return themeBtn;
 }
 
-themeAlert(context, msg, {type = 'success'}) {
-  return ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text("$msg"),
-      backgroundColor: (type == 'success')
-          ? Color.fromARGB(255, 72, 170, 137)
-          : Color.fromARGB(255, 214, 99, 12),
+// Button
+Widget themeButton3(BuildContext context, fn,
+    {label = 'Submit',
+    fontSize = 16.0,
+    arg = 0,
+    buttonColor = '',
+    radius = 32.0,
+    borderColor = '',
+    btnWidthSize = 100.0,
+    btnHeightSize = 40.0}) {
+  buttonColor = (buttonColor == '') ? themeBG : buttonColor;
+  return Container(
+    child: Center(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: buttonColor,
+          onPrimary: buttonColor,
+          shadowColor: Color.fromARGB(255, 165, 165, 165),
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(
+                  color: (borderColor == '') ? buttonColor : borderColor),
+              borderRadius: BorderRadius.circular(radius)),
+          minimumSize: Size(btnWidthSize, btnHeightSize), //////// HERE
+        ),
+        onPressed: () {
+          if (arg == 0) {
+            fn();
+          } else {
+            fn(arg);
+          }
+        },
+        child: Text(
+          '$label',
+          style: GoogleFonts.alike(
+              color: Colors.white,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
     ),
   );
 }
 
+themeAlert(context, msg, {type = 'success'}) {
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        content: Text("$msg"),
+        backgroundColor: (type == 'success')
+            ? Color.fromARGB(255, 72, 170, 137)
+            : Colors.red),
+  );
+}
+
+// text field style
+inputStyle(lable, icon) {
+  return InputDecoration(
+    labelText: '$lable',
+    fillColor: Colors.black,
+    labelStyle: textStyle1,
+    hintStyle: TextStyle(color: Colors.black),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide: BorderSide(
+        color: Color.fromARGB(255, 133, 133, 133),
+        width: 1.0,
+      ),
+    ),
+    prefixIcon: Icon(icon, color: themeBG, size: 25),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+      borderSide: BorderSide(
+        color: const Color.fromARGB(214, 33, 149, 243),
+      ),
+    ),
+  );
+}
 // get date
 
 class MyStyle {

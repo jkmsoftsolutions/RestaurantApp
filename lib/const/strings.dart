@@ -9,9 +9,12 @@ const appname = "Food Seller App",
     passwordHint = "* * * * * *",
     dashboard = "Dashboard",
     orders = "Orders",
+    neworders = "New Orders",
+    newuser = "New User",
     unpaid = "Unpaid",
     products = "Products",
     settings = "Settings",
+    more = "More",
     popular = "Popular Products",
     rating = "Rating",
     listUser = "Total Users",
@@ -23,12 +26,14 @@ const appname = "Food Seller App",
     editProfile = "Edit Profile",
     changeImage = "Change Image",
     featured = "Featured",
+    active = "Active",
     edit = "Edit",
     save = "Save",
     name = "Username",
     confirmdPass = "Confirm Password",
     remove = "Remove",
     credit = "@GudduSingh";
+
 //shope setting string
 
 const nameHint = "eg. Vender name",
@@ -40,4 +45,10 @@ const nameHint = "eg. Vender name",
     shopMobileHint = "eg. 7457456546",
     website = "Shope Website",
     shopname = "Shop Name",
+    searchanything = "Search anything...",
     address = "Shop Address";
+
+//razorpay api
+
+const RazorpayApiKey = "rzp_test_SdGBahWtlKWMwb";
+//const RazorpayApiiSecret = "4W36wWloKEj1CDAWlbCVjElN";

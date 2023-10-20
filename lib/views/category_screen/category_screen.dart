@@ -4,7 +4,6 @@ import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/views/category_screen/add_category.dart';
 import 'package:emart_seller/views/category_screen/edit_category.dart';
 
-import 'package:emart_seller/views/products_screen/product_details.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
@@ -25,7 +24,13 @@ class CategoryScreen extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
-      appBar: appbarWidget("Category"),
+      appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.black, // <-- SEE HERE
+        ),
+        automaticallyImplyLeading: true,
+        title: boldText(text: "Category", color: Colors.black, size: 16.0),
+      ),
       body: StreamBuilder(
           stream: StoreServices.getCategories(currentUser!.uid),
           builder:
@@ -91,6 +96,12 @@ class CategoryScreen extends StatelessWidget {
                                               Get.to(() => EditCategory(
                                                   data: data[index],
                                                   productId: data[index].id));
+                                              break;
+                                            case 1:
+                                              controller.removeCategory(
+                                                  data[index].id);
+                                              VxToast.show(context,
+                                                  msg: "Category removed");
                                               break;
                                             default:
                                           }

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/const/const.dart';
@@ -95,12 +97,12 @@ class CategoryController extends GetxController {
     var store = (catId == '')
         ? firestore.collection(categoryCollections).doc()
         : firestore.collection(categoryCollections).doc(catId);
-
     await store.set({
       'is_featured': false,
       'img': FieldValue.arrayUnion(pImagesLinks),
       'desc': cDescController.text,
       'name': cNameController.text,
+      "sub_category": [],
       'vender': Get.find<HomeController>().username,
       'vendor_id': currentUser!.uid,
       'p_rating': "5.0",
@@ -119,7 +121,7 @@ class CategoryController extends GetxController {
   }
 
   //Delete product method
-  removeProduct(docId) async {
+  removeCategory(docId) async {
     await firestore.collection(categoryCollections).doc(docId).delete();
   }
 }
