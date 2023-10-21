@@ -92,8 +92,7 @@ class _SelectableScreenState extends State<SelectableScreen> {
                                     height: 50.0,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        color: (controller.selectedtableIndex
-                                                        .value ==
+                                        color: (controller.selectedtableIndex ==
                                                     index &&
                                                 alltablesdata[index]
                                                     ['is_active'])

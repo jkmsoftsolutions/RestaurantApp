@@ -97,7 +97,9 @@ class _Invoice_pdf extends State<Invoice_pdf> {
     print("${orderList}");
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     List tt = orderList["orders"];
-    DateTime myDateTime = (orderList['order_date']).toDate();
+    DateTime myDateTime = (orderList['order_date'] == null)
+        ? ''
+        : (orderList['order_date']).toDate();
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,

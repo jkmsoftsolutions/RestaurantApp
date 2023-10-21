@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:emart_seller/controllers/orders_controller.dart';
-import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/views/orders_screen/order_details.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
+import 'package:emart_seller/views/widgets/theme_widgets.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
 import '../../controllers/orders_controller.dart';
@@ -41,6 +39,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
+
     return Scaffold(
         appBar: AppBar(
           leading: const BackButton(
@@ -177,80 +176,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             Column(
                               children:
                                   List.generate(OrderList.length, (index) {
-                                var time =
-                                    OrderList[index]['order_date'].toDate();
-                                return Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  margin: EdgeInsets.only(bottom: 10.0),
-                                  decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  child: ListTile(
-                                    onTap: () {
-                                      Get.to(() =>
-                                          OrderDetails(data: OrderList[index]));
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    leading: Image.network(
-                                        OrderList[index]['orders'][0]['img'],
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover),
-                                    title: boldText(
-                                        text:
-                                            "${capitalize(OrderList[index]['orders'][0]['title'])}",
-                                        color: fontGrey),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${capitalize(OrderList[index]['order_by_name'].toString())}",
-                                          style: TextStyle(fontSize: 11.0),
-                                        ),
-                                        Text(
-                                          "Order By:-${capitalize(OrderList[index]['type'].toString())} ",
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 10.0,
-                                          ),
-                                        ).color(green),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "₹ ${OrderList[index]['total_amount'].toString()}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(width: 20.0),
-                                            Text(
-                                              "${(OrderList[index]['order_delivered']) ? "Deliverd" : "Pending"}",
-                                              style: themeTextStyle(
-                                                  color: (OrderList[index]
-                                                          ['order_delivered'])
-                                                      ? Colors.green
-                                                      : Color.fromARGB(
-                                                          255, 96, 52, 179),
-                                                  size: 11.0),
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          intl.DateFormat('EEE, d MMM  ' 'yy')
-                                              .add_jm()
-                                              .format(OrderList[index]
-                                                      ['order_date']
-                                                  .toDate()),
-                                          style: TextStyle(fontSize: 10.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
+                                var time = (OrderList[index]['order_date'] ==
+                                        null)
+                                    ? ''
+                                    : OrderList[index]['order_date'].toDate();
+
+                                return themeOderListRowCon(
+                                    context, OrderList[index],
+                                    productId: OrderList[index]['id']);
                               }),
                             ),
                           ],

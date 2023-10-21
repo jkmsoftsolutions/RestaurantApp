@@ -6,17 +6,17 @@ import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/widgets/dashboard_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
+
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../models/category_model.dart';
 import '../theme/firebase_functions.dart';
 import '../views/Newuser_order/thankyouScreen.dart';
 
-class NewUserOrderController extends GetxController {
+class NewUserOrderController {
   String Date_at = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
-  var isloading = false.obs;
+  var isloading = false;
 //text field controller
   var searchController = TextEditingController();
   var pNameController = TextEditingController();
@@ -27,12 +27,18 @@ class NewUserOrderController extends GetxController {
   var ppriceController = TextEditingController();
   var pquantityController = TextEditingController();
   var payment_description = TextEditingController();
-  var quantity = 1.obs;
-  var totalPrice = 0.obs;
+  var quantity = 1;
+  var totalPrice = 0;
   var TempValue = {};
   var IDdata;
   Map<dynamic, dynamic> selectedProduct = {};
   Map<dynamic, dynamic> cartData = {};
+  Map<dynamic, dynamic> productAllList = {};
+  Map<dynamic, dynamic> productList = {};
+  String orderId = '';
+  var editData = {};
+
+  List orderData = [];
 
   int total = 0;
 
@@ -41,9 +47,65 @@ class NewUserOrderController extends GetxController {
   List SelectProList = [];
   List<Category> category = [];
   var pImagesLinks = [];
-  var selectedtableIndex = 0.obs;
+  var selectedtableIndex = 0;
   var db = FirebaseFirestore.instance;
   List allproductsdata = [];
+
+  initController({docId: ''}) async {
+    await getProductList();
+    if (docId != '') {
+      await getOrderDetails(docId);
+
+      var isloading = false;
+      //text field controller
+
+      orderId = IDdata = docId;
+
+      searchController = TextEditingController();
+      pNameController.text = editData['order_by_name'];
+      pEmailController.text = editData['order_by_email'];
+      pMobileController.text = editData['order_by_phone'];
+      pAddressController.text = editData['order_by_address'];
+
+      for (var tempOrder in editData['orders']) {
+        var productArr = productAllList[tempOrder['id']];
+
+        await calculateTotal(productArr, 'incr', editQnt: tempOrder['qty']);
+      }
+
+      // print(cartData);
+
+      TempValue["table_id"] = editData['order_table'];
+
+      // pdescController = TextEditingController();
+      // ppriceController = TextEditingController();
+      // pquantityController = TextEditingController();
+      // payment_description = TextEditingController();
+
+      // quantity = 1;
+      // totalPrice = 0;
+      // selectedProduct = {};
+      // orderData = [];
+
+      // int total = 0;
+
+      // selectProName = "";
+      // selectProPrice = "";
+      // SelectProList = [];
+      // category = [];
+      // pImagesLinks = [];
+      // selectedtableIndex = 0;
+      // allproductsdata = [];
+    }
+  }
+
+  // get oder details
+  getOrderDetails(docId) async {
+    editData = await dbFind({'table': 'orders', 'id': docId});
+    return editData;
+  }
+
+  // new user store
   storeUserData() async {
     DocumentReference store =
         await firestore.collection("user").doc(currentUser!.uid);
@@ -61,10 +123,64 @@ class NewUserOrderController extends GetxController {
     return "${currentUser!.uid}";
   }
 
+  // get active product list ============================
+  getProductList() async {
+    productList = {};
+    var dbData =
+        await dbFindDynamic(db, {'table': 'products', 'status': 'Active'});
+
+    dbData.forEach((k, v) {
+      productList[v['id']] = v;
+    });
+
+    productAllList = productList;
+  }
+
+  // ====================================================
+  SearchFn(query, {filter: ''}) {
+    List<String> searchField = ['p_name'];
+    if (filter != '') {
+      searchField = ['type'];
+      query = (query == 'All') ? '' : query;
+    }
+
+    productList = {};
+
+    productAllList.forEach((k, e) {
+      bool isFind = false;
+      searchField.forEach((key) {
+        var val = '${e['$key']}';
+        if (!isFind &&
+            e['$key'] != null &&
+            val.toLowerCase().contains(query.toLowerCase())) {
+          productList[k] = e;
+          isFind = true;
+        }
+      });
+    });
+
+    // productAllList.forEach((k, e) {
+    //   print("----$k");
+    //   bool isFind = false;
+    //   k.forEach((key) {
+    //     if (!isFind &&
+    //         k['$key'] != null &&
+    //         val.toLowerCase().contains(query.toLowerCase())) {
+    //       //OrderList.add(e);
+    //       //productList[k] = val;
+    //       print("sdfdf");
+
+    //       isFind = true;
+    //     }
+    //   });
+    // });
+  }
+
   // add attribute Funciton
-  List orderData = [];
+
   fnOrderAdd(context) async {
     // default value
+
     var dbArr = {
       'table': "orders",
       'order_code': generateRandomOrderNumber(),
@@ -75,29 +191,53 @@ class NewUserOrderController extends GetxController {
       "order_by_phone": TempValue["phone"],
       'order_table': TempValue["table_id"],
       "status": "1",
-      'order_date': FieldValue.serverTimestamp(),
       'shipping_method': "Resturant Delivery",
       'payment_method': "orderPaymentMethod",
       'payment_id': '',
-      'type': 'Shope',
+      'type': 'Shop',
       'order_placed': true,
       'order_delivered': false,
-      'order_confirmed': false,
+      'order_confirmed': true,
       'order_on_delivery': false,
       'total_amount': "${total}",
       'vendors': "${currentUser!.uid}",
       'orders': orderData,
       'date_at': DateTime.timestamp(),
+      'order_date': DateTime.timestamp(),
       'update_at': '',
     };
-    var data = await dbSave(db, dbArr);
-    // await themeAlert(context, "Succefully Submited !! ");
-    return "$data";
+
+    // print(dbArr);
+    // return false;
+
+    if (orderId == '') {
+      orderId = await dbSave(db, dbArr);
+    } else {
+      // update
+      dbArr.remove('payment_id');
+      dbArr.remove('date_at');
+      dbArr.remove('order_date');
+      dbArr.remove('type');
+      dbArr.remove('status');
+      dbArr.remove('payment_method');
+      dbArr.remove('order_placed');
+      dbArr.remove('order_delivered');
+      dbArr.remove('order_on_delivery');
+      dbArr['update_at'] = DateTime.timestamp();
+      dbArr['updated_by'] = "Admin";
+      dbArr['id'] = orderId;
+
+      //print(dbArr);
+      await dbUpdate(db, dbArr);
+    }
+
+    //themeAlert(context, "Succefully Submited !! ");
+    return "$orderId";
   }
 
   //table method
   changeTableIndex(index) {
-    selectedtableIndex.value = index;
+    selectedtableIndex = index;
   }
 
   // clear controllers data
@@ -116,22 +256,31 @@ class NewUserOrderController extends GetxController {
   }
 
   // calculate total ========================================
-  calculateTotal(data, type) {
-    cartData[data.id] =
-        (cartData[data.id] == null) ? data.data() : cartData[data.id];
-    var temp = cartData[data.id];
-    if (type == 'incr') {
+  calculateTotal(data, type, {editQnt: ''}) async {
+    cartData[data['id']] =
+        (cartData[data['id']] == null) ? data : cartData[data['id']];
+    var temp = cartData[data['id']];
+
+    if (editQnt == '') {
+      if (type == 'incr') {
+        temp['qnt'] =
+            (temp['qnt'] == null) ? 1 : int.parse(temp['qnt'].toString()) + 1;
+        cartData[data['id']] = temp;
+      } else {
+        if (temp['qnt'] != null && temp['qnt'] == 0 || temp['qnt'] == 1) {
+          cartData.remove(data['id']);
+        } else {
+          temp['qnt'] = (temp['qnt'] == null)
+              ? 0
+              : int.parse(temp['qnt'].toString())! - 1;
+          cartData[data['id']] = temp;
+        }
+      }
+    } else {
+      // set edit data
       temp['qnt'] =
           (temp['qnt'] == null) ? 1 : int.parse(temp['qnt'].toString()) + 1;
-      cartData[data.id] = temp;
-    } else {
-      if (temp['qnt'] != null && temp['qnt'] == 0 || temp['qnt'] == 1) {
-        cartData.remove(data.id);
-      } else {
-        temp['qnt'] =
-            (temp['qnt'] == null) ? 0 : int.parse(temp['qnt'].toString())! - 1;
-        cartData[data.id] = temp;
-      }
+      cartData[data['id']] = temp;
     }
 
     // total calculate
@@ -143,6 +292,9 @@ class NewUserOrderController extends GetxController {
       v['subTotal'] = subTotal;
       total = total + subTotal;
     });
+
+    TempValue["items_data"] = cartData;
+    return cartData;
   }
 
   generateRandomOrderNumber() {
@@ -157,7 +309,8 @@ class NewUserOrderController extends GetxController {
     var Ofield = {
       'table': "orders",
       'id': "$OrderId",
-      'payment_id': "paymentId",
+      'payment_id': "-",
+      "Notes": payment_description.text,
       'payment_method': '$paymentType',
       'update_at': DateTime.timestamp(),
     };
@@ -178,6 +331,31 @@ class NewUserOrderController extends GetxController {
 
   handleExternalWallet(ExternalWalletResponse response) {
     Fluttertoast.showToast(msg: "Payment Successfully");
+  }
+
+  // add new customer
+  addNewCustomer(context) async {
+    var alert = '';
+    if (pNameController.text.length < 3) {
+      alert = 'Customer Name Requred!!';
+    } else if (pMobileController.text.length < 10) {
+      alert = 'Valid Mobile Number Requred!!';
+    }
+
+    if (alert != '') {
+      themeAlert(context, alert, type: 'error');
+      return false;
+    }
+
+    var Cust_ID = await storeUserData();
+
+    TempValue["name"] = "${pNameController.text}";
+    TempValue["email"] = "${pEmailController.text}";
+    TempValue["phone"] = "${pMobileController.text}";
+    TempValue["Address"] = "${pAddressController.text}";
+    TempValue["customer_id"] = "$Cust_ID";
+
+    return Cust_ID;
   }
 
   // clear controllers

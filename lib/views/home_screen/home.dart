@@ -1,18 +1,19 @@
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/controllers/home_controller.dart';
+import 'package:emart_seller/theme/footer.dart';
 import 'package:emart_seller/views/home_screen/home_screen.dart';
 import 'package:emart_seller/views/orders_screen/orders_screen.dart';
 import 'package:emart_seller/views/products_screen/products_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/profile_screen.dart';
 import 'package:get/get.dart';
-import '../Newuser_order/add_neworder.dart';
+import '../Newuser_order/new_order_main_view_screen.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(HomeController());
+    /*var controller = Get.put(HomeController());
 
     var navScreen = [
       const HomeScreen(),
@@ -69,6 +70,13 @@ class Home extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+  */
+
+    // =========================================================
+    return Scaffold(
+      body: HomeScreen(),
     );
   }
 }
