@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: dashboardButton(context,
                                               title: "Total Sale",
                                               count: '₹${controller.totalSale}',
-                                              icon: icStar)
+                                              icon: trend)
                                           .box
                                           .shadowLg
                                           .rounded
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               title: 'Today Sales',
                                               count:
                                                   '₹${controller.totayAmount}',
-                                              icon: icOreders)
+                                              icon: sale_icon)
                                           .box
                                           .shadowLg
                                           .rounded
@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               title: 'Sales 30 Days',
                                               count:
                                                   '₹${controller.lastayAmount}',
-                                              icon: icOreders)
+                                              icon: sale_icon)
                                           .box
                                           .shadowLg
                                           .rounded
