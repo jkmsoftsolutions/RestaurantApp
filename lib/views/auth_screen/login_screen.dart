@@ -181,41 +181,47 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(
                                 height: 20,
                               ),
-                              MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(20.0))),
-                                elevation: 5.0,
-                                height: 40,
-                                onPressed: () {
-                                  setState(() {
-                                    visible = true;
-                                  });
-                                  // signIn(emailController.text,
-                                  //     passwordController.text);
-                                  signInWithEmailPassword(emailController.text,
-                                      passwordController.text);
-                                },
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
+                              (visible)
+                                  ? progress()
+                                  : MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0))),
+                                      elevation: 5.0,
+                                      height: 40,
+                                      onPressed: () async {
+                                        setState(() {
+                                          visible = true;
+                                        });
+                                        // signIn(emailController.text,
+                                        //     passwordController.text);
+                                        await signInWithEmailPassword(
+                                            emailController.text,
+                                            passwordController.text);
+                                        setState(() {
+                                          visible = false;
+                                        });
+                                      },
+                                      child: Text(
+                                        "Login",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      color: Colors.white,
+                                    ),
                               SizedBox(
                                 height: 10,
                               ),
-                              Visibility(
-                                  maintainSize: true,
-                                  maintainAnimation: true,
-                                  maintainState: true,
-                                  visible: visible,
-                                  child: Container(
-                                      child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ))),
+                              // Visibility(
+                              //     maintainSize: true,
+                              //     maintainAnimation: true,
+                              //     maintainState: true,
+                              //     visible: visible,
+                              //     child: Container(
+                              //         child: CircularProgressIndicator(
+                              //       color: Colors.white,
+                              //     ))),
                             ],
                           ),
                         ),
@@ -328,9 +334,10 @@ class _LoginPageState extends State<LoginPage> {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        themeAlert(context, 'Wrong Email Id !!', type: 'error');
+        //print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided.');
+        themeAlert(context, 'Wrong mistmatch !!', type: 'error');
       }
     }
 

@@ -8,34 +8,18 @@ import '../../controllers/table_controller.dart';
 // ignore: prefer_typing_uninitialized_variables
 
 // ignore: must_be_immutable
-class TableEdit extends StatefulWidget {
-  final dynamic data;
-  final dynamic tableId;
-  const TableEdit({super.key, this.data, this.tableId});
+class AddTable extends StatefulWidget {
+  const AddTable({super.key});
 
   @override
-  State<TableEdit> createState() => _TableEditState();
+  State<AddTable> createState() => _AddTableState();
 }
 
-class _TableEditState extends State<TableEdit> {
-  //final List<String> _listNotifier = <String>["Floor1", "Floor2", "Floor3"];
-  final List<String> _listSatus = <String>["Active", "InActive"];
-  var controller = Get.find<TablesController>();
-
-  @override
-  void initState() {
-    if (widget.data != null) {
-      controller.tnameController.text = widget.data['tab_no'];
-      controller.tdescController.text = widget.data['t_desc'];
-      controller.tadminController.text = widget.data['t_admin'];
-      controller.currentStatusValue = widget.data['status'];
-    }
-
-    super.initState();
-  }
-
+class _AddTableState extends State<AddTable> {
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<TablesController>();
+
     return Obx(
       () => Scaffold(
         backgroundColor: purpleColor,
@@ -57,7 +41,7 @@ class _TableEditState extends State<TableEdit> {
                       controller.isloading(true);
 
                       // ignore: use_build_context_synchronously
-                      await controller.uploadTable(context, id: widget.tableId);
+                      await controller.uploadTable(context);
 
                       Get.back();
                     },
@@ -73,6 +57,42 @@ class _TableEditState extends State<TableEdit> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // 10.heightBox,
+                // Container(
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(10),
+                //     color: Colors.white,
+                //   ),
+                //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                //   child: FormField<String>(
+                //     builder: (FormFieldState<String> state) {
+                //       return InputDecorator(
+                //         decoration:
+                //             const InputDecoration(border: InputBorder.none),
+                //         child: DropdownButtonHideUnderline(
+                //           child: DropdownButton<String>(
+                //             hint: const Text("Select Floor"),
+                //             value: controller.currentStatusValue,
+                //             isDense: true,
+                //             onChanged: (newValue) {
+                //               setState(() {
+                //                 controller.currentStatusValue = newValue;
+                //               });
+
+                //               // print(currentSelectedValue);
+                //             },
+                //             items: _listNotifier.map((String value) {
+                //               return DropdownMenuItem<String>(
+                //                 value: value,
+                //                 child: Text(value),
+                //               );
+                //             }).toList(),
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
                 10.heightBox,
                 customTextField(
                     hint: "eg. Table 101",
@@ -81,7 +101,7 @@ class _TableEditState extends State<TableEdit> {
                 10.heightBox,
                 customTextField(
                     hint: "eg. side corner view point",
-                    lable: "Descripttion",
+                    lable: "Label",
                     isDesc: true,
                     controller: controller.tdescController),
                 10.heightBox,

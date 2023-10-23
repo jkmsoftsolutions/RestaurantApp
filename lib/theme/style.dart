@@ -12,6 +12,9 @@ final Color themeBG2 = Color(0xff1a243f);
 final Color themeBG3 = Color.fromARGB(255, 44, 108, 161);
 final Color themeBG4 = Color(0xffff03a857);
 final Color themeBG5 = Color.fromARGB(255, 238, 240, 151);
+final Color themeBG6 = Color.fromARGB(255, 213, 169, 255);
+final Color themeBG7 = Color.fromRGBO(255, 141, 96, 1);
+final Color themeBG8 = Color.fromARGB(255, 227, 231, 233);
 
 final Color buttonBG = Color(0xffff9100);
 final Color themeBlue = Color.fromARGB(255, 6, 45, 123);

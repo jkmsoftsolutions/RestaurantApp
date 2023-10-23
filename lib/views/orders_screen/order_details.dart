@@ -28,6 +28,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     var dbData = await dbFind({'table': 'orders', 'id': widget.id});
     setState(() {
       productData = dbData;
+      productData['id'] = widget.id;
       controller.getOrders(productData);
       controller.confirmed.value = (productData['order_confirmed'] != null)
           ? productData['order_confirmed']
@@ -54,7 +55,8 @@ class _OrderDetailsState extends State<OrderDetails> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Get.back();
+              //Get.back();
+              Navigator.pop(context, 'updated');
             },
             icon: const Icon(
               Icons.arrow_back,
@@ -134,10 +136,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                               value: controller.ondelivery.value,
                               onChanged: (value) {
                                 controller.ondelivery.value = value;
-
                                 controller.changeStatus(
                                     title: "order_on_delivery",
-                                    status: value,
+                                    status: true,
                                     docID: productData['id']);
                               },
                               title: boldText(

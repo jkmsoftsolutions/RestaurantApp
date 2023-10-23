@@ -28,7 +28,7 @@ class TablesController extends GetxController {
         : firestore.collection(tablesCollections).doc(id);
 
     await store.set({
-      'is_active': false,
+      'is_active': (currentStatusValue == 'Free') ? true : false,
       't_desc': tdescController.text,
       //'t_floor': currentSelectedValue,
       't_admin': tadminController.text,
@@ -48,6 +48,7 @@ class TablesController extends GetxController {
     await firestore.collection(tablesCollections).doc(docId).set({
       'active_id': currentUser!.uid,
       'is_active': true,
+      'status': 'Free',
     }, SetOptions(merge: true));
   }
 
@@ -55,6 +56,7 @@ class TablesController extends GetxController {
     await firestore.collection(tablesCollections).doc(docId).set({
       'active_id': '',
       'is_active': false,
+      'status': 'Booked',
     }, SetOptions(merge: true));
   }
 

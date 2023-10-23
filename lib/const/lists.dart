@@ -7,7 +7,7 @@ const popupMenuIcons = [Icons.featured_play_list, Icons.edit, Icons.delete];
 
 const tablePopMenuTitles = [active, edit, remove];
 const tableMenuIcons = [Icons.featured_play_list, Icons.edit, Icons.delete];
-const tableStatusList = ['Active', 'InActive', 'Occupied'];
+const tableStatusList = ['Free', 'Booked'];
 
 const profileButtonsTitle = [
   'Product Managment',

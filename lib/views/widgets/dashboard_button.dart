@@ -20,7 +20,7 @@ Widget dashboardButton(context, {title, count, icon}) {
   )
       .box
       .rounded
-      .size(size.width * 0.4, 90)
+      .size(size.width * 0.45, 90)
       .padding(const EdgeInsets.all(8.0))
       .make();
 }

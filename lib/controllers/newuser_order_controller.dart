@@ -233,8 +233,20 @@ class NewUserOrderController {
       await dbUpdate(db, dbArr);
     }
 
+    // table update
+    updateTableStatus(TempValue["table_id"]);
+
     //themeAlert(context, "Succefully Submited !! ");
     return "$orderId";
+  }
+
+  // update table =========================================
+  updateTableStatus(docId) async {
+    await firestore.collection(tablesCollections).doc(docId).set({
+      'active_id': currentUser!.uid,
+      'is_active': false,
+      'status': 'Booked',
+    }, SetOptions(merge: true));
   }
 
   //table method
@@ -280,8 +292,9 @@ class NewUserOrderController {
       }
     } else {
       // set edit data
-      temp['qnt'] =
-          (temp['qnt'] == null) ? 1 : int.parse(temp['qnt'].toString()) + 1;
+      temp['qnt'] = (editQnt == null) ? 1 : int.parse(editQnt.toString());
+      // temp['qnt'] =
+      //     (temp['qnt'] == null) ? 1 : int.parse(temp['qnt'].toString()) + 1;
       cartData[data['id']] = temp;
     }
 

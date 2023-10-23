@@ -184,7 +184,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
                                 return themeOderListRowCon(
                                     context, OrderList[index],
-                                    productId: OrderList[index]['id']);
+                                    productId: OrderList[index]['id'],
+                                    reloadFun: get_Orderdata,
+                                    arg: 'all');
                               }),
                             ),
                           ],
