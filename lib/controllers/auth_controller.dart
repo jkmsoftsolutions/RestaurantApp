@@ -30,14 +30,6 @@ class AuthController extends GetxController {
     return userCredential;
   }
 
-  //signout method
-  // signoutMethod(context) async {
-  //   try {
-  //     await auth.signOut();
-  //   } catch (e) {
-  //     VxToast.show(context, msg: e.toString());
-  //   }
-  // }
   signoutMethod(context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();

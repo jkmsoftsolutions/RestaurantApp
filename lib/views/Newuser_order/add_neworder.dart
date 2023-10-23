@@ -5,7 +5,6 @@ import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/Newuser_order/NewUser_widget.dart';
-import 'package:emart_seller/views/Newuser_order/search_screen.dart';
 import 'package:emart_seller/views/Newuser_order/select_table.dart';
 import 'package:emart_seller/views/widgets/dashboard_button.dart';
 import 'package:get/get.dart';
@@ -224,14 +223,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                       controller: controller.searchController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        suffixIcon: const Icon(Icons.search).onTap(() {
-                          if (controller
-                              .searchController.text.isNotEmptyAndNotNull) {
-                            Get.to(() => SearchScreen(
-                                  title: controller.searchController.text,
-                                ));
-                          }
-                        }),
+                        suffixIcon: const Icon(Icons.search).onTap(() {}),
                         filled: true,
                         fillColor: whiteColor,
                         hintText: searchanything,
