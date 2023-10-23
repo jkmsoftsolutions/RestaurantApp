@@ -31,6 +31,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   get_Orderdata(Type) async {
     OrderList = [];
     OrderList = await controller.Ordersdata(Type);
+
     setState(() {
       OrderList;
       wait = false;

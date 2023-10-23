@@ -192,7 +192,8 @@ class NewUserOrderController {
       'order_table': TempValue["table_id"],
       "status": "1",
       'shipping_method': "Resturant Delivery",
-      'payment_method': "orderPaymentMethod",
+      'payment_method': "",
+      'payment_status': "",
       'payment_id': '',
       'type': 'Shop',
       'order_placed': true,
@@ -220,6 +221,7 @@ class NewUserOrderController {
       dbArr.remove('type');
       dbArr.remove('status');
       dbArr.remove('payment_method');
+      dbArr.remove('payment_status');
       dbArr.remove('order_placed');
       dbArr.remove('order_delivered');
       dbArr.remove('order_on_delivery');
@@ -310,7 +312,8 @@ class NewUserOrderController {
       'table': "orders",
       'id': "$OrderId",
       'payment_id': "-",
-      "Notes": payment_description.text,
+      "pay_notes": payment_description.text,
+      'payment_status': '1',
       'payment_method': '$paymentType',
       'update_at': DateTime.timestamp(),
     };

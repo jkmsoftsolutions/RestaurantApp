@@ -29,13 +29,28 @@ Widget themeOderListRowCon(context, data, {productId: ''}) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           4.heightBox,
-          Text(
-            "${(data['type'] != null) ? data['type'] : ''} ",
-            style: TextStyle(
-              color: white,
-              fontSize: 10.0,
-            ),
-          ).color(green),
+          Row(
+            children: [
+              Text(
+                "${(data['type'] != null) ? data['type'] : ''} ",
+                style: TextStyle(
+                  color: white,
+                  fontSize: 10.0,
+                ),
+              ).color(green),
+              5.widthBox,
+              Text(
+                "${(data['order_delivered'] != null && data['order_delivered']) ? "Delivered" : "Pending"} ",
+                style: TextStyle(
+                  color: white,
+                  fontSize: 10.0,
+                ),
+              ).color(
+                  (data['order_delivered'] != null && data['order_delivered'])
+                      ? green
+                      : red),
+            ],
+          ),
           4.heightBox,
           Container(
             height: 13.0,

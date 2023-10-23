@@ -188,7 +188,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             title2: "PAYMENT METHOD",
                           ),
                           orderPlaceDetails(
-                            d1: "Unpaid",
+                            d1: "${(productData['payment_status'] != null && productData['payment_status'] == '1') ? "Paid" : "Unpaid"}",
                             d2: "Order Placed",
                             title1: "PAYMENT STATUS",
                             title2: "DELIVERY STATUS",
@@ -246,6 +246,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                                               "₹${productData['total_amount']}",
                                           color: red,
                                           size: 16.0),
+                                      (productData['pay_notes'] != null &&
+                                              productData['pay_notes'] != '')
+                                          ? Text(
+                                              "Pay Note :\n(${(productData['pay_notes'] == null) ? '-' : productData['pay_notes']})",
+                                              style: themeTextStyle(size: 10.0))
+                                          : SizedBox(),
                                     ],
                                   ),
                                 ),

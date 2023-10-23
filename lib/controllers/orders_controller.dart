@@ -54,9 +54,12 @@ class OrdersController extends GetxController {
 
     // set data in map & calculate ==============================
     dbData.forEach((k, v) {
-      totalAmount += int.parse(v['total_amount'].toString());
-      orderbydate.add(v);
+      if (v['total_amount'] != null) {
+        totalAmount += int.parse(v['total_amount'].toString());
+        orderbydate.add(v);
+      }
     });
+
     return orderbydate;
   }
 
@@ -72,7 +75,8 @@ class OrdersController extends GetxController {
 
   //get mathed change orders status
   changeStatus({title, status, docID}) async {
-    var store = firestore.collection(ordersCollections).doc(docID);
-    await store.set({title: status}, SetOptions(merge: true));
+    //var store = firestore.collection(ordersCollections).doc(docID);
+    //await store.set({title: status}, SetOptions(merge: true));
+    await dbUpdate(db, {'table': 'orders', 'id': docID, '$title': status});
   }
 }
