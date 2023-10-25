@@ -187,14 +187,20 @@ class _LoginPageState extends State<LoginPage> {
                                         Radius.circular(20.0))),
                                 elevation: 5.0,
                                 height: 40,
-                                onPressed: () {
+                                onPressed: () async {
                                   setState(() {
                                     visible = true;
+                                    iswait = true;
                                   });
                                   // signIn(emailController.text,
                                   //     passwordController.text);
-                                  signInWithEmailPassword(emailController.text,
+                                  await signInWithEmailPassword(
+                                      emailController.text,
                                       passwordController.text);
+                                  setState(() {
+                                    iswait = false;
+                                    visible = false;
+                                  });
                                 },
                                 child: Text(
                                   "Login",

@@ -9,6 +9,7 @@ class DashboardController extends GetxController {
   var orders = [];
   var orderList = [];
   int totalAmount = 0;
+  int totalSale = 0;
   int totayAmount = 0;
   int lastayAmount = 0;
   var orderbydate = [];
@@ -17,25 +18,16 @@ class DashboardController extends GetxController {
 ///////////  Calling Order data +++++++++++++++++++++++++++
   Map<String, dynamic> orderdata = {};
 
-  Ordersdata() async {
-    totalAmount = 0;
-
-    orderbydate.clear();
-    orderdata = {};
-    var dbData;
-    // get details
-
+  totalSaleFn() async {
+    totalSale = 0;
     // Raw Query ==============================
-    if (dbData == null) {
-      var query = await FirebaseFirestore.instance
-          .collection('orders')
-          .where("order_delivered", isEqualTo: true);
-      dbData = await dbRawQuery(query);
-    }
+
+    var query = await FirebaseFirestore.instance.collection('orders');
+    var dbData = await dbRawQuery(query);
+
     // set data in map & calculate ==============================
     dbData.forEach((k, v) {
-      totalAmount += int.parse(v['total_amount'].toString());
-      orderbydate.add(v);
+      totalSale += int.parse(v['total_amount'].toString());
     });
     return orderbydate;
   }

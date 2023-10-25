@@ -1,3 +1,5 @@
+import 'package:emart_seller/theme/footer.dart';
+import 'package:emart_seller/views/widgets/theme_widgets.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/services/store_services.dart';
@@ -37,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var OrderList = [];
   get_Orderdata() async {
     OrderList = [];
-    OrderList = await controller.Ordersdata();
+    OrderList = await controller.totalSaleFn();
     setState(() {
       OrderList;
       wait = false;
@@ -46,20 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var TodayList = [];
   get_odaydata() async {
-    TodayList = [];
-    OrderList = await controller.Todaydata();
+    await controller.Todaydata();
     setState(() {
-      TodayList;
       wait = false;
     });
   }
 
   var last30dayList = [];
   get_last3aydata() async {
-    TodayList = [];
-    OrderList = await controller.lastdaydata();
+    await controller.lastdaydata();
     setState(() {
-      TodayList;
       wait = false;
     });
   }
@@ -68,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.put(OrdersController());
     return Scaffold(
       appBar: appbarWidget(dashboard),
+      bottomNavigationBar: themeFooter(context, selected: 0),
       body: StreamBuilder(
           stream: StoreServices.getOrdersRecent(currentUser!.uid),
           builder:
@@ -154,9 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Get.to(() => OrdersScreen());
                                       },
                                       child: dashboardButton(context,
-                                              title: "Total Deliverd",
-                                              count:
-                                                  '₹:-${controller.totalAmount} Q:-${countData[3].toString()}',
+                                              title: "Total Sale",
+                                              count: '₹${controller.totalSale}',
                                               icon: icStar)
                                           .box
                                           .shadowLg
@@ -179,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: dashboardButton(context,
                                               title: 'Today Sales',
                                               count:
-                                                  '₹:-${controller.totayAmount}',
+                                                  '₹${controller.totayAmount}',
                                               icon: icOreders)
                                           .box
                                           .shadowLg
@@ -193,9 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Get.to(() => OrdersScreen());
                                       },
                                       child: dashboardButton(context,
-                                              title: 'Last 30 Days Sales',
+                                              title: 'Sales 30 Days',
                                               count:
-                                                  '₹:-${controller.lastayAmount}',
+                                                  '₹${controller.lastayAmount}',
                                               icon: icOreders)
                                           .box
                                           .shadowLg
@@ -221,78 +219,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         children: List.generate(
-                          data.length,
-                          (index) => data[index]['order_code'].length == 0
-                              ? const SizedBox()
-                              : Container(
-                                  padding: EdgeInsets.symmetric(vertical: 0),
-                                  margin: EdgeInsets.only(bottom: 10.0),
-                                  decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 240, 240, 240),
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  child: ListTile(
-                                    onTap: () {
-                                      Get.to(() =>
-                                          OrderDetails(data: data[index]));
-                                    },
-                                    leading: Image.network(
-                                        data[index]['orders'][0]['img'],
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover),
-                                    title: boldText(
-                                        text:
-                                            "${capitalize(data[index]['orders'][0]['title'])}",
-                                        color: fontGrey),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${capitalize(data[index]['order_by_name'].toString())}",
-                                          style: TextStyle(fontSize: 11.0),
-                                        ),
-                                        Text(
-                                          "Order By:-${capitalize(data[index]['type'].toString())} ",
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 10.0,
-                                          ),
-                                        ).color(green),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "₹ ${data[index]['total_amount'].toString()}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(width: 20.0),
-                                            Text(
-                                              "${(data[index]['order_delivered']) ? "Deliverd" : "Pending"}",
-                                              style: themeTextStyle(
-                                                  color: (data[index]
-                                                          ['order_delivered'])
-                                                      ? Colors.green
-                                                      : Color.fromARGB(
-                                                          255, 96, 52, 179),
-                                                  size: 11.0),
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          intl.DateFormat('EEE, d MMM  ' 'yy')
-                                              .add_jm()
-                                              .format(data[index]['order_date']
-                                                  .toDate()),
-                                          style: TextStyle(fontSize: 10.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                        ),
+                            data.length,
+                            (index) => data[index]['order_code'].length == 0
+                                ? const SizedBox()
+                                : themeOderListRowCon(context, data[index],
+                                    productId: data[index].id)),
                       ),
                     ),
                   ],

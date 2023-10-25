@@ -31,40 +31,47 @@ Widget orderPlaceDetails({title1, title2, d1, d2}) {
 }
 
 Widget orderItems({data}) {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        width: 70.0,
-        child: Image.network(
-          data['img'],
-          //width: MediaQuery.of(context).size.width / 5,
-          //height: 60.0,
+  return Container(
+    margin: EdgeInsets.only(bottom: 10.0),
+    decoration: BoxDecoration(
+        boxShadow: themeBox,
+        color: Color.fromARGB(255, 255, 255, 255),
+        borderRadius: BorderRadius.circular(10.0)),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 50.0,
+          child: Image.network(
+            data['img'],
+            //width: MediaQuery.of(context).size.width / 5,
+            //height: 60.0,
+          ),
         ),
-      ),
-      SizedBox(width: 20.0),
-      Container(
-        padding: EdgeInsets.only(top: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${data['title']}",
-              style: themeTextStyle(size: 14.0, fw: FontWeight.bold),
-            ),
-            3.heightBox,
-            Text(
-              "Quntity : ${data['qty']}",
-              style: themeTextStyle(size: 12.0),
-            ),
-            20.heightBox,
-            Text(
-              "₹${data['tprice']}",
-              style: themeTextStyle(size: 20.0, fw: FontWeight.bold),
-            )
-          ],
+        SizedBox(width: 20.0),
+        Container(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${data['title']}",
+                style: themeTextStyle(size: 14.0, fw: FontWeight.bold),
+              ),
+              3.heightBox,
+              Text(
+                "Quntity : ${data['qty']}",
+                style: themeTextStyle(size: 12.0),
+              ),
+              3.heightBox,
+              Text(
+                "₹${data['tprice']}",
+                style: themeTextStyle(size: 16.0, fw: FontWeight.bold),
+              )
+            ],
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/controllers/auth_controller.dart';
 import 'package:emart_seller/controllers/profile_controller.dart';
 import 'package:emart_seller/services/store_services.dart';
+import 'package:emart_seller/theme/footer.dart';
 import 'package:emart_seller/views/auth_screen/login_screen.dart';
 import 'package:emart_seller/views/category_screen/category_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/edit_profilescreen.dart';
@@ -21,6 +22,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileController());
     return Scaffold(
+      bottomNavigationBar: themeFooter(context, selected: 2),
       backgroundColor: Color.fromARGB(255, 248, 246, 246),
       appBar: AppBar(
         automaticallyImplyLeading: false,
