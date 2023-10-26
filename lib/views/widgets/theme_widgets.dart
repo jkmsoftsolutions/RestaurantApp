@@ -5,7 +5,8 @@ import 'package:emart_seller/views/orders_screen/order_details.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:intl/intl.dart' as intl;
 
-Widget themeOderListRowCon(context, data, {productId: ''}) {
+Widget themeOderListRowCon(context, data,
+    {productId: '', reloadFun: '', arg: ''}) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 0),
     margin: EdgeInsets.only(bottom: 5.0, top: 5.0),
@@ -14,10 +15,23 @@ Widget themeOderListRowCon(context, data, {productId: ''}) {
         color: Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.circular(5.0)),
     child: ListTile(
-      onTap: () {
+      onTap: () async {
         if (productId != '') {
-          Navigator.push(context,
+          final temp = await Navigator.push(context,
               MaterialPageRoute(builder: (_) => OrderDetails(id: productId)));
+
+          if (temp == 'updated') {
+            // Now can refresh function call
+            if (reloadFun != '') {
+              if (arg != '') {
+                reloadFun(arg);
+              } else {
+                reloadFun();
+              }
+            }
+          }
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: (_) => OrderDetails(id: productId)));
         }
       },
       leading: Image.network(data['orders'][0]['img'],
@@ -65,7 +79,7 @@ Widget themeOderListRowCon(context, data, {productId: ''}) {
                     padding: EdgeInsets.symmetric(horizontal: 4.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
-                        color: Color.fromARGB(255, 209, 170, 255)),
+                        color: themeBG7),
                     child: Text(
                       "${capitalize(k['title'])}",
                       style: TextStyle(fontSize: 10.0, color: Colors.black),

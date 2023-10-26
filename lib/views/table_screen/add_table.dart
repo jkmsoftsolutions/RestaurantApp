@@ -101,7 +101,7 @@ class _AddTableState extends State<AddTable> {
                 10.heightBox,
                 customTextField(
                     hint: "eg. side corner view point",
-                    lable: "Descripttion",
+                    lable: "Label",
                     isDesc: true,
                     controller: controller.tdescController),
                 10.heightBox,

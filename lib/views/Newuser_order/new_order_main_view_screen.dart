@@ -149,8 +149,12 @@ class _NewUserScreenState extends State<NewUserScreen> {
                   (step == 2) ? BookTablePage(context) : SizedBox(),
                   (step == 3) ? ProductsScreen(context) : SizedBox(),
                   (step == 4)
-                      ? CartPreview(context, controller,
-                          controller.TempValue["items_data"],
+                      ? CartPreview(
+                          context,
+                          controller,
+                          (controller.TempValue["items_data"] == null)
+                              ? {}
+                              : controller.TempValue["items_data"],
                           laabel: 'Cart Preview',
                           backFn: _fnBack,
                           nextFn: RoutePayPage)

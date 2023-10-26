@@ -1,10 +1,15 @@
 import 'package:emart_seller/const/const.dart';
+import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/Newuser_order/new_order_main_view_screen.dart';
 import 'package:emart_seller/views/home_screen/home_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/profile_screen.dart';
 
 Widget themeFooter(context, {selected: 0, footerHide: false}) {
   return BottomNavigationBar(
+    selectedIconTheme: IconThemeData(color: themeBG),
+    selectedItemColor: themeBG,
+    selectedFontSize: 10.0,
+    unselectedFontSize: 10.0,
     items: const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(Icons.dashboard),

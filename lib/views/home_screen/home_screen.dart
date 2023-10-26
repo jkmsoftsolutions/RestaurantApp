@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Get.put(OrdersController());
     return Scaffold(
+      backgroundColor: themeBG8,
       appBar: appbarWidget(dashboard),
       bottomNavigationBar: themeFooter(context, selected: 0),
       body: StreamBuilder(
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .box
                                             .shadowLg
                                             .rounded
-                                            .color(purpleColor)
+                                            .color(themeBG)
                                             .make(),
                                       ),
                                     ),
@@ -128,8 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .box
                                           .shadowLg
                                           .rounded
-                                          .color(
-                                              Color.fromARGB(255, 70, 104, 255))
+                                          .color(themeBG)
                                           .make(),
                                     ),
                                   ],
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .box
                                         .shadowLg
                                         .rounded
-                                        .color(Color.fromARGB(255, 241, 86, 34))
+                                        .color(themeBG)
                                         .make(),
                                     GestureDetector(
                                       onTap: () {
@@ -155,12 +155,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: dashboardButton(context,
                                               title: "Total Sale",
                                               count: '₹${controller.totalSale}',
-                                              icon: icStar)
+                                              icon: trend)
                                           .box
                                           .shadowLg
                                           .rounded
-                                          .color(
-                                              Color.fromARGB(255, 7, 132, 49))
+                                          .color(themeBG)
                                           .make(),
                                     ),
                                   ],
@@ -178,12 +177,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               title: 'Today Sales',
                                               count:
                                                   '₹${controller.totayAmount}',
-                                              icon: icOreders)
+                                              icon: sale_icon)
                                           .box
                                           .shadowLg
                                           .rounded
-                                          .color(
-                                              Color.fromARGB(255, 7, 143, 129))
+                                          .color(themeBG)
                                           .make(),
                                     ),
                                     GestureDetector(
@@ -194,12 +192,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               title: 'Sales 30 Days',
                                               count:
                                                   '₹${controller.lastayAmount}',
-                                              icon: icOreders)
+                                              icon: sale_icon)
                                           .box
                                           .shadowLg
                                           .rounded
-                                          .color(Color.fromARGB(
-                                              255, 243, 100, 100))
+                                          .color(themeBG)
                                           .make(),
                                     ),
                                   ],
@@ -210,10 +207,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         }),
                     10.heightBox,
                     const Divider(),
-                    10.heightBox,
+                    5.heightBox,
                     boldText(
                         text: 'Recent Orders', color: darkGrey, size: 16.0),
-                    20.heightBox,
+                    4.heightBox,
                     Expanded(
                       child: ListView(
                         physics: const BouncingScrollPhysics(),
@@ -223,7 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             (index) => data[index]['order_code'].length == 0
                                 ? const SizedBox()
                                 : themeOderListRowCon(context, data[index],
-                                    productId: data[index].id)),
+                                    productId: data[index].id,
+                                    reloadFun: get_Orderdata)),
                       ),
                     ),
                   ],

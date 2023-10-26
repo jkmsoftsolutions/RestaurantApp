@@ -45,7 +45,16 @@ dbUpdate(db, where) {
 }
 
 dbSave(db, where) async {
-  print("$where  ++++++++++ fff=====");
+  // srno manage
+  var rData = await dbFindDynamic(db, {'table': 'sr_no'});
+  var sr_id = 0;
+  Map<String, dynamic> w = {};
+  if (rData.isNotEmpty) {
+    sr_id = w[where['table']] = (rData[0]['${where['table']}'] != null)
+        ? int.parse(rData[0]['${where['table']}'].toString()) + 1
+        : 1;
+  }
+
   var returnData = '';
   if (where == null || where == '') {
     return "Map data is empty";
@@ -56,11 +65,18 @@ dbSave(db, where) async {
   }
   var table = (where['table']);
   where.remove('table');
+  where['sr_no'] = sr_id;
 
   final data =
-      await db.collection(table).add(where).then((DocumentReference doc) {
+      await db.collection(table).add(where).then((DocumentReference doc) async {
+    // update sr No
+    if (w.isNotEmpty) {
+      await db.collection('sr_no').doc(rData[0]['id']).update(w);
+    }
+
     return doc.id;
   });
+
   return data;
 }
 

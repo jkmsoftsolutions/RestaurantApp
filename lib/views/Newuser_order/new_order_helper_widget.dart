@@ -69,6 +69,11 @@ Widget UserInfo(BuildContext context, controller, {nextFn: ''}) {
 }
 
 ///////  Booked Table Slot Widget  +++++++++++++++++++++
+/// ========================================================================
+/// ========================================================================
+/// ========================================================================
+/// ========================================================================
+/// ========================================================================
 Widget BookTable(BuildContext context, controller, List alltablesdata,
     {laabel: 'Select Table', backFn: '', nextFn: '', refreshFn: ''}) {
   return Column(
@@ -144,12 +149,22 @@ Widget BookTable(BuildContext context, controller, List alltablesdata,
                             border: Border.all(
                                 color: const Color.fromARGB(255, 45, 177, 115),
                                 width: 1.0)),
-                        child: GoogleText(
-                            text:
-                                ' ${alltablesdata[index]['is_active'] ? '${alltablesdata[index]['tab_no']}' : 'Booked'}',
-                            color: Colors.black,
-                            fsize: 14.0,
-                            fweight: FontWeight.w400)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GoogleText(
+                                // text:
+                                //     ' ${alltablesdata[index]['is_active'] ? '${alltablesdata[index]['tab_no']}' : 'Booked'}',
+                                text: '${alltablesdata[index]['tab_no']}',
+                                color: Colors.black,
+                                fsize: 14.0,
+                                fweight: FontWeight.w400),
+                            Text('${alltablesdata[index]['t_desc']}',
+                                style: themeTextStyle(
+                                    size: 9.0, color: Colors.black))
+                          ],
+                        )),
                   ),
                 ),
             ]),

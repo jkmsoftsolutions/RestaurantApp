@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/services/store_services.dart';
-import 'package:emart_seller/views/shop_screen/table_edit.dart';
+import 'package:emart_seller/views/table_screen/table_edit.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';

@@ -6,7 +6,7 @@ import 'package:emart_seller/theme/footer.dart';
 import 'package:emart_seller/views/auth_screen/login_screen.dart';
 import 'package:emart_seller/views/category_screen/category_screen.dart';
 import 'package:emart_seller/views/profile_screen.dart/edit_profilescreen.dart';
-import 'package:emart_seller/views/shop_screen/shop_settings_screen.dart';
+import 'package:emart_seller/views/table_screen/shop_settings_screen.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:get/get.dart';
