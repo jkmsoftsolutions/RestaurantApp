@@ -1,0 +1,82 @@
+{
+    "categories":[
+        {
+            "name":"Fast Food",
+            "subcategory":[
+                "French Fries",
+                "Chicken Sandwich",
+                "Butter Burger",
+                "Delicius Burger"
+            ]
+        },
+        {
+            "name":"Lunch Menu",
+            "subcategory":[
+                "Grilled Cheese",
+                "Chicken Nuggets",
+                "Omlet"
+            ]
+        },
+        {
+            "name":"Snack Bar",
+            "subcategory":[
+                "Pizzas",
+                "Burgers"
+               
+            ]
+        },
+        {
+            "name":"Extras",
+            "subcategory":[
+                "Mixed Fry",
+                "Fries"
+               
+            ]
+        },
+        {
+            "name":"Drinks",
+            "subcategory":[
+                "Beer",
+                "Orange Juice",
+                "Soft Drinks"
+               
+            ]
+        },
+        {
+            "name":"Dinner",
+            "subcategory":[
+                "Carrot Cake",
+                "Sandwich",
+                "Egg Creaps"
+               
+            ]
+        },
+        {
+            "name":"Chinese",
+            "subcategory":[
+                "Spicy Tuna",
+                "Hamburger",
+                "Noodles"
+               
+            ]
+        },
+        {
+            "name":"South Indian",
+            "subcategory":[
+                "Andhara Style Chilly",
+                "Veg Stew With Appams",
+                "Calicut Biryani With Kurma"
+               
+            ]
+        },
+        {
+            "name":"Special Meal",
+            "subcategory":[
+                "Kurma",
+                "Curd",
+                "Stream Rice"
+               
+            ]
+        }
+    ]
+}

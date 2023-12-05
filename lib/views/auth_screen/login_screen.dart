@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:emart_seller/kitchen_screen/views/auth_screen/regis_screen.dart';
+import 'package:emart_seller/kitchen_screen/views/home_screen/khome.dart';
 import 'package:emart_seller/theme/firebase_functions.dart';
 import 'package:emart_seller/theme/style.dart';
-
-import 'package:emart_seller/views/auth_screen/user_screen/user_dasboard.dart';
+import 'package:emart_seller/views/auth_screen/regis_screen.dart';
 import 'package:emart_seller/views/home_screen/home.dart';
-import 'package:emart_seller/views/orders_screen/orders_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -210,6 +210,20 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                       color: Colors.white,
                                     ),
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => Register()));
+                                  },
+                                  child: Container(
+                                      child: Text('Create a new account')),
+                                ),
+                              ),
+
                               SizedBox(
                                 height: 10,
                               ),
@@ -255,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const UserHome(),
+              builder: (context) => const Kitchen_Home(),
             ),
           );
         }
@@ -264,46 +278,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
   }
-
-  // void signIn(String email, String password) async {
-  //   if (_formkey.currentState!.validate()) {
-  //     try {
-  //       UserCredential userCredential =
-  //           await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //         email: email,
-  //         password: password,
-  //       );
-
-  //       print(userCredential);
-  //       print(userCredential.user?.uid);
-
-  //       // get user
-  //       Map<dynamic, dynamic> where = {
-  //         'table': "vendors",
-  //         'id': userCredential.user?.uid
-  //       };
-  //       var dbData = await dbFind(where);
-
-  //       if (dbData != null) {
-  //         // set session
-  //         SharedPreferences prefs = await SharedPreferences.getInstance();
-  //         await prefs.setString('user', jsonEncode(dbData));
-  //       }
-
-  //       route();
-  //     } on FirebaseAuthException catch (e) {
-  //       if (e.code == 'user-not-found') {
-  //         print('No user found for that email.');
-  //       } else if (e.code == 'wrong-password') {
-  //         print('Wrong password provided for that user.');
-  //       }
-
-  //       setState(() {
-  //         visible = false;
-  //       });
-  //     }
-  //   }
-  // }
 
   Future<User?> signInWithEmailPassword(String email, String password) async {
     await Firebase.initializeApp();

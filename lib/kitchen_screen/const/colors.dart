@@ -15,6 +15,5 @@ const Color whiteColor = Color.fromRGBO(255, 255, 255, 1);
 
 const Color redColor = Color.fromRGBO(230, 46, 4, 1);
 const Color black = Color.fromRGBO(0, 0, 0, 1);
-
 const pendingcolor = Color.fromRGBO(251, 209, 209, 1);
 const deliverdcolor = Color.fromRGBO(219, 248, 227, 1);

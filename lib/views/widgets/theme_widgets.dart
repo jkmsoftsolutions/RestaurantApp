@@ -6,7 +6,7 @@ import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:intl/intl.dart' as intl;
 
 Widget themeOderListRowCon(context, data,
-    {productId: '', reloadFun: '', arg: ''}) {
+    {productId: '', reloadFun: '', arg: '', table_No: ''}) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 0),
     margin: EdgeInsets.only(bottom: 5.0, top: 5.0),

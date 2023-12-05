@@ -3,14 +3,13 @@ import 'package:emart_seller/const/firebase_consts.dart';
 import 'package:emart_seller/theme/function.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../theme/firebase_functions.dart';
+import '../../theme/firebase_functions.dart';
 
-class OrdersController extends GetxController {
+class KOrdersController extends GetxController {
   var orders = [];
   var confirmed = false.obs;
   var ondelivery = false.obs;
   var delivered = false.obs;
-  var orderList = [];
   int totalAmount = 0;
   var orderbydate = [];
   var db = FirebaseFirestore.instance;
@@ -30,7 +29,28 @@ class OrdersController extends GetxController {
       dbData = await dbFindDynamic(db, w);
     } else if (Type == "last7") {
       // last 7 days
-      searchDate = TimeStamp_for_last7_query();
+
+      var p = {
+        'table': 'orders',
+        // 'order_by_phone': '4455443322',
+        'order_delivered': false,
+      };
+
+      dbData = await dbFindDynamic(db, {
+        'table': 'orders',
+        // 'order_by_phone': '4455443322',
+        'order_delivered': false,
+      });
+
+      // var hh = FirebaseFirestore.instance;
+      // dbData = hh
+      //     .collection("orders")
+      //     .where("order_delivered", isEqualTo: false)
+      //     .get()
+      //     .then((value) {
+      //   print("${value.docs.asMap()}   ====8888888");
+      // });
+      //searchDate = TimeStamp_for_last7_query();
     } else if (Type == "yearly") {
       searchDate = yearStamp_for_query();
     } else if (Type == "last30") {
@@ -65,9 +85,7 @@ class OrdersController extends GetxController {
   getOrders(data) {
     orders.clear();
     for (var item in data['orders']) {
-      //if (item['vendor_id'] == currentUser!.uid) {
       orders.add(item);
-      //}
     }
   }
 
