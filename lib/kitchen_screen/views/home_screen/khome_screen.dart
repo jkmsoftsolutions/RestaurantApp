@@ -449,6 +449,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                                 for (var k in controller.pendingProductList.keys)
                                   InkWell(
                                     onTap: (){
+                                      if(tablelist != null ||  controller.pendingProductList[k]['title'] != null)
                                       modal_pendingTable(context,title: "${controller.pendingProductList[k]['title']}",data:controller.pendingProductList[k],tablelist: tablelist);
                                     },
                                     child: Container(
@@ -629,7 +630,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                               }
                               var data = tableList[index];
                               var tablNo = tablelist[data['table']];
-                              return Container(
+                              return (tablNo == null)?SizedBox():Container(
                                 decoration: BoxDecoration(color: themeBG4, borderRadius: BorderRadius.circular(7)),
                                 child: Column(
                                   children: [
