@@ -26,9 +26,21 @@ class _KOrderDetailsState extends State<KOrderDetails> {
 
   Map<dynamic, dynamic> productData = new Map();
   var db = FirebaseFirestore.instance;
+  var productList;
 
   fnGetOrderDetails() async {
     var dbData = await dbFind({'table': 'orders', 'id': widget.id});
+
+    // update prepared
+    productList = dbData;
+    var i = 0;
+    dbData['orders'].forEach((v){
+      if(v['isPrepared']){
+        fn_update_status(index:i);
+      }
+      i++;
+    });
+    
     setState(() {
       productData = dbData;
       productData['id'] = widget.id;
@@ -43,6 +55,40 @@ class _KOrderDetailsState extends State<KOrderDetails> {
           ? productData['order_delivered']
           : false;
     });
+  }
+
+  // =================================================================
+  fn_update_status({index:0,updateDb:false})async {
+    if (tempArr.contains(index)) {
+        tempArr.remove(index);
+        if(updateDb){
+          await controller.fn_individually_status(productList,id:widget.id, isPrepared: false,index: index);
+        }
+       
+          if (tempArr.length !=
+              controller.orders.length) {
+            controller.ondelivery.value = false;
+          }
+    
+      } else {
+        tempArr.add(index);
+        if(updateDb){
+          await controller.fn_individually_status(productList,id:widget.id,isPrepared: true,index: index);
+        }
+       
+          if (tempArr.length ==
+              controller.orders.length) {
+            controller.ondelivery.value = true;
+          } else {
+            controller.ondelivery.value = false;
+          }
+   
+      }
+
+      await controller.fn_prepare_status(productList, id:widget.id);
+      setState(() {});
+
+      
   }
 
   //timer start function
@@ -72,6 +118,7 @@ class _KOrderDetailsState extends State<KOrderDetails> {
 
   var min;
   var sec;
+  var timeIs;
   List<int> tempArr = [];
   @override
   Widget build(BuildContext context) {
@@ -82,8 +129,14 @@ class _KOrderDetailsState extends State<KOrderDetails> {
       var diff = currentTime.difference(date).inSeconds;
       setState(() {
         sec = diff % 60;
-
         min = (diff / 60).floor();
+        if( int.parse(min.toString()) > 120){
+          timeIs ="+2 Hours";
+        }else{
+          timeIs = "$min:$sec";
+        }
+        
+        
       });
 
       print("$temp ++++++++++");
@@ -153,7 +206,8 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      '$min:$sec :min',
+                                      '$timeIs',
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: const Color.fromARGB(
@@ -217,8 +271,8 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                           docID: productData['id']);
                                     },
                                     child: Text(controller.ondelivery.value
-                                        ? 'preparing'
-                                        : 'preparing'),
+                                        ? 'Prepared'
+                                        : 'Preparing'),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: controller
                                               .ondelivery.value
@@ -288,26 +342,7 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    if (tempArr.contains(index)) {
-                                      tempArr.remove(index);
-                                      setState(() {
-                                        if (tempArr.length !=
-                                            controller.orders.length) {
-                                          controller.ondelivery.value = false;
-                                        }
-                                      });
-                                    } else {
-                                      tempArr.add(index);
-
-                                      setState(() {
-                                        if (tempArr.length ==
-                                            controller.orders.length) {
-                                          controller.ondelivery.value = true;
-                                        } else {
-                                          controller.ondelivery.value = false;
-                                        }
-                                      });
-                                    }
+                                    fn_update_status(index:index,updateDb:true);
                                   },
                                   child: Container(
                                       decoration: BoxDecoration(
@@ -316,18 +351,22 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                           border: Border.all(
                                             color: tempArr.contains(index)
                                                 ? green
-                                                : Colors.transparent,
-                                            width: 4,
+                                                : Color.fromARGB(255, 255, 118, 77),
+                                            width: 1,
                                           )),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Image.network(
-                                            controller.orders[index]['img'],
-                                            width: 200,
-                                            height: 100,
-                                            fit: BoxFit.cover,
+                                          Stack(
+                                            children:[ Image.network(
+                                              controller.orders[index]['img'],
+                                              width: 200,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            
+                                            ],
                                           ),
                                           //  const Spacer(),
                                           10.heightBox,
@@ -336,11 +375,18 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                               .color(darkFontGrey)
                                               .make(),
                                           10.heightBox,
-                                          "Quntity : ${controller.orders[index]['qty']}"
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              "Quntity : ${controller.orders[index]['qty']}"
                                               .text
                                               .color(redColor)
                                               .size(16)
                                               .make(),
+                                              Icon(tempArr.contains(index)?Icons.done_all_sharp:Icons.pending_actions_outlined,color: tempArr.contains(index)?Colors.green:Color.fromARGB(255, 255, 118, 77),size: 30.0)
+                                            ],
+                                          ),
+                                          
                                           5.heightBox,
                                         ],
                                       )

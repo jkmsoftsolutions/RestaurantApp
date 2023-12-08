@@ -82,15 +82,17 @@ class KDashboardController extends GetxController {
     rdata.forEach((k, v) {
       var tempProdcut = v['orders'];
       tempProdcut.forEach((vl) {
-        var newTotal = int.parse(vl['qty'].toString());
-        if (pendingProductList[vl['id']] != null) {
-          var temp = pendingProductList[vl['id']];
-          temp['tPending'] = int.parse(temp['tPending'].toString()) + newTotal;
-          pendingProductList[vl['id']] = temp;
-        } else {
-          var temp = vl;
-          temp['tPending'] = newTotal;
-          pendingProductList[vl['id']] = temp;
+        if(vl['isPrepared'] == false) {
+          var newTotal = int.parse(vl['qty'].toString());
+          if (pendingProductList[vl['id']] != null) {
+            var temp = pendingProductList[vl['id']];
+            temp['tPending'] = int.parse(temp['tPending'].toString()) + newTotal;
+            pendingProductList[vl['id']] = temp;
+          } else {
+            var temp = vl;
+            temp['tPending'] = newTotal;
+            pendingProductList[vl['id']] = temp;
+          }
         }
       });
     });

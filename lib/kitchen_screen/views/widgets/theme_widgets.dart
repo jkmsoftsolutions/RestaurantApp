@@ -8,25 +8,39 @@ import 'package:emart_seller/views/orders_screen/order_details.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 
-Widget kthemeOderListRowCon(context, data, {productId: '', table_No: ''}) {
+Widget kthemeOderListRowCon(context, data, {productId: '', table_No: '',controller:'',rloadPage:''}) {
   var temp = data["order_date"];
   DateTime date = temp.toDate();
   var formattedTime = DateFormat.jm().format(date);
 
   return Container(
     padding: EdgeInsets.symmetric(vertical: 0),
-    margin: EdgeInsets.only(bottom: 5.0, top: 5.0),
+    //margin: EdgeInsets.only(bottom: 5.0, top: 5.0),
     decoration: BoxDecoration(
         boxShadow: themeBox,
-        color: (data['order_delivered'] != null && data['order_delivered'])
-            ? deliverdcolor
-            : pendingcolor,
-        borderRadius: BorderRadius.circular(5.0)),
+        // color: (data['order_delivered'] != null && data['order_delivered'])
+        //     ? deliverdcolor
+        //     : pendingcolor,
+        //border: Border(left:BorderSide(color: Colors.red,width: 2.0)),
+        // border: Border(
+        //   left: BorderSide( //                   <--- left side
+        //     color: Colors.black,
+        //     width: 3.0,
+        //   ),
+        // ),
+        //borderRadius: BorderRadius.circular(5.0),
+        //borderRadius: BorderRadius.only(topRight: Radius.circular(5.0)),
+        
+        border: Border(left:BorderSide(color: (data['order_delivered'] != null && data['order_delivered'])?Colors.green:const Color.fromARGB(255, 244, 155, 54),width: 10.0)),
+        ),
     child: ListTile(
-      onTap: () {
+      onTap: () async{
         if (productId != '') {
-          Navigator.push(context,
+         var rNavigation =  await Navigator.push(context,
               MaterialPageRoute(builder: (_) => KOrderDetails(id: productId)));
+              if(rloadPage != ''){
+                rloadPage();
+              }
         }
       },
       leading: Image.network(data['orders'][0]['img'],
@@ -53,12 +67,12 @@ Widget kthemeOderListRowCon(context, data, {productId: '', table_No: ''}) {
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
-                        color: Color.fromARGB(255, 213, 180, 251)),
+                        color: (k['isPrepared'])?Colors.green: Color.fromARGB(255, 255, 145, 20)),
                     child: Text(
                       "${capitalize(k['title'])}",
                       style: TextStyle(
                         fontSize: 12.0,
-                        color: Colors.black,
+                        color: Color.fromARGB(255, 34, 12, 134),
                       ),
                     ),
                   ),
@@ -70,25 +84,52 @@ Widget kthemeOderListRowCon(context, data, {productId: '', table_No: ''}) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${(data['type'] != null) ? data['type'] : ''} ",
-                style: TextStyle(
-                  color: white,
-                  fontSize: 10.0,
+                "${(capitalize(data['order_by_name']))}",
+                //  "₹ ${data['total_amount'].toString()}",
+
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 20.0),
+            ],
+          ),
+          5.heightBox,
+          Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+             Container(
+              padding: EdgeInsets.symmetric(vertical: 1.0,horizontal: 2.0),
+                width: 35.0,
+                decoration:  BoxDecoration(color: Color.fromARGB(255, 37, 98, 148)),
+                child: Center(
+                  child: Text(
+                    "${(data['type'] != null) ? data['type'] : ''} ",
+                    style: TextStyle(
+                      color: white,
+                      fontSize: 10.0,
+                    ),
+                  ),
+                )
+              ),
+              SizedBox(width: 10.0),
+              Container(
+                width: 25.0,
+                //height: 25.0,
+                decoration:  BoxDecoration(color: Color.fromARGB(255, 255, 163, 59)),
+                child: Center(
+                  child: Text(
+                    "${(table_No == null)?'':table_No} ",
+                    style: TextStyle(
+                      color: white,
+                      fontSize: 13.0,
+                    ),
+                  ),
                 ),
-              ).color(green),
-              //SizedBox(width: 10.0),
-              Text(
-                "Table No : ${table_No} ",
-                style: TextStyle(
-                  color: white,
-                  fontSize: 13.0,
-                ),
-              ).color(red),
-              1.widthBox,
+              ),
+              10.0.widthBox,
 
               Text(formattedTime,
                   style:
-                      TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400)),
 
               // Text(
               //   intl.DateFormat('EEE, d MMM  ' 'yy')
@@ -98,19 +139,8 @@ Widget kthemeOderListRowCon(context, data, {productId: '', table_No: ''}) {
               // ),
             ],
           ),
-          4.heightBox,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "${(data['order_by_name'].toString())}",
-                //  "₹ ${data['total_amount'].toString()}",
-
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(width: 20.0),
-            ],
-          ),
+          
+          
         ],
       ),
     ),

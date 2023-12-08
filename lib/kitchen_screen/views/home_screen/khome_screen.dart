@@ -30,11 +30,19 @@ class _KHomeScreenState extends State<KHomeScreen> {
   var controller = Get.put(KDashboardController());
   @override
   void initState() {
-    get_odaydata();
-    Comman_Cate_Data();
-    get_pendding();
+    fn_comon_init();
     super.initState();
   }
+
+
+  // comon insit funciton 
+  fn_comon_init()async{
+    await get_odaydata();
+    await Comman_Cate_Data();
+    await get_pendding();
+    setState(() {});
+  }
+
 
   bool wait = true;
 
@@ -43,7 +51,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
   get_odaydata() async {
     Todayorder = await controller.Todaydata();
     setState(() {
-      print(TodayList);
+      
       wait = false;
     });
   }
@@ -52,7 +60,6 @@ class _KHomeScreenState extends State<KHomeScreen> {
   get_pendding() async {
     await controller.Penddingorder_Data();
     setState(() {
-      print(penndingdata);
       wait = false;
     });
   }
@@ -80,6 +87,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
     return Scaffold(
       appBar: appbarWidget(dashboard),
       bottomNavigationBar: kthemeFooter(context, selected: 0),
+      backgroundColor: const Color.fromARGB(255, 231, 231, 231),
       body: StreamBuilder(
           stream: StoreServices.getOrdersRecent(currentUser!.uid),
           builder:
@@ -422,52 +430,65 @@ class _KHomeScreenState extends State<KHomeScreen> {
                         }),
 
                     10.heightBox,
-                    const Divider(),
-                    boldText(
-                        text: 'All Pending Recipe',
-                        color: darkGrey,
-                        size: 16.0),
-                    10.heightBox,
-                    Container(
-                      height: 100.0,
-                      margin: EdgeInsets.only(bottom: 10.0),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        physics: ScrollPhysics(),
-                        children: [
-                          for (var k in controller.pendingProductList.keys)
-                            Container(
-                                margin: EdgeInsets.only(right: 8.0),
-                                decoration: BoxDecoration(
-                                    boxShadow: themeBox,
-                                    border: Border.all(
-                                        width: 1.0, color: Colors.red)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.network(
-                                      '${controller.pendingProductList[k]['img']}',
-                                      width: 100,
-                                      height: 40,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    10.heightBox,
-                                    "${controller.pendingProductList[k]['title']}"
-                                        .text
-                                        .size(14)
-                                        .color(darkFontGrey)
-                                        .make(),
-                                    10.heightBox,
-                                    "Qty : ${controller.pendingProductList[k]['tPending']}"
-                                        .text
-                                        .color(redColor)
-                                        .size(12)
-                                        .make(),
-                                  ],
-                                )),
-                        ],
-                      ),
-                    ),
+                    (controller.pendingProductList.isEmpty)?SizedBox():Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                          const Divider(),
+                          boldText(
+                              text: 'All Pending Recipes',
+                              color: darkGrey,
+                              size: 16.0),
+                          10.heightBox,
+                          Container(
+                            height: 100.0,
+                            margin: EdgeInsets.only(bottom: 10.0),
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              physics: ScrollPhysics(),
+                              children: [
+                                for (var k in controller.pendingProductList.keys)
+                                  Container(
+                                      margin: EdgeInsets.only(right: 8.0),
+                                      decoration: BoxDecoration(
+                                          boxShadow: themeBox,
+                                          border: Border.all(
+                                              width: 1.0, color: Colors.red)),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Stack(
+                                            children:[ Image.network(
+                                              '${controller.pendingProductList[k]['img']}',
+                                              width: 100,
+                                              height: 70,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            Positioned(
+                                              top: 3.0,
+                                              right: 3.0,
+                                              child: Container(padding: EdgeInsets.all(4.0), width: 30.0,height: 30.0, decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(20.0)), 
+                                              child: Center(child: Text("${controller.pendingProductList[k]['tPending']}",textAlign: TextAlign.center, style: themeTextStyle(color: Colors.white),))),
+                                            ),
+                                            ]
+                                          ),
+                                          10.heightBox,
+                                          "${controller.pendingProductList[k]['title']}"
+                                              .text
+                                              .size(10)
+                                              .color(darkFontGrey)
+                                              .make(),
+                                          //10.heightBox,
+                                          // "Qty : ${controller.pendingProductList[k]['tPending']}"
+                                          //     .text
+                                          //     .color(redColor)
+                                          //     .size(12)
+                                          //     .make(),
+                                        ],
+                                  )),
+                              ],
+                            ),
+                          ),
+                       ]),
                     //10.heightBox,
                     const Divider(),
                     10.heightBox,
@@ -492,6 +513,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                                             : kthemeOderListRowCon(
                                                 context, data[index],
                                                 productId: data[index].id,
+                                                rloadPage: fn_comon_init,
                                                 table_No: tablelist[data[index]
                                                     ['order_table']])),
                                   ),
@@ -519,6 +541,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                                           : kthemeOderListRowCon(
                                               context, data[index],
                                               productId: data[index].id,
+                                              rloadPage: fn_comon_init,
                                               table_No: tablelist[data[index]
                                                   ['order_table']])),
                             ),

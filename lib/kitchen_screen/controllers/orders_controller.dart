@@ -101,4 +101,68 @@ class KOrdersController extends GetxController {
     //await store.set({title: status}, SetOptions(merge: true));
     await dbUpdate(db, {'table': 'orders', 'id': docID, '$title': status});
   }
+
+
+  // update db order individually status
+  fn_individually_status(data,{id:'', index:0,isPrepared:false})async {
+   
+    //print(data);
+    var isChanged = false;
+    if(data != null && data['orders'] != null){
+      var temp_order = data['orders'];
+      var i = 0;
+      data['orders'].forEach((v){
+        if(i == index){
+          v['isPrepared'] = isPrepared;
+          temp_order[i] = v;
+          isChanged = true;
+        }
+        i++;
+      });
+
+      if(id != '' && isChanged){
+        data['orders'] = temp_order;
+        data['table'] = 'orders';
+        data['id'] = id;
+      
+
+      var rData =  await dbUpdate(db, data);
+      return true;
+      }else{
+        return false;
+      }
+    }
+  }
+
+  // =================================================================
+  // Update Main status 
+  fn_prepare_status(data,{id:'', index:0})async {
+    
+    var i = 0;
+    var t = 0;
+    data['orders'].forEach((v){
+      if(v['isPrepared']){
+        t++;
+      }
+      i++;
+    });
+
+    
+      // change prepared status 
+      var ondeliveryStatus = (i == t)?true:false;
+      // print("============>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+      // print(ondeliveryStatus);
+      if(data['order_on_delivery']  != ondeliveryStatus){
+        var w = {
+          'table' : 'orders',
+          'id' : id,
+          'order_on_delivery':ondeliveryStatus,
+        };
+        var rData =  await dbUpdate(db, w);
+        ondelivery.value = ondeliveryStatus;
+      }
+
+  }
+
 }
+

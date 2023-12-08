@@ -52,8 +52,7 @@ class ProfileScreen extends StatelessWidget {
           if (!snapshot.hasData) {
             return LoadingIndicator(circleColor: black);
           } else {
-            controller.snapshotData = snapshot.data!.docs[0];
-
+            //controller.snapshotData = snapshot.data!.docs[0];
             return Column(
               children: [
                 ListTile(
