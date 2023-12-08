@@ -84,17 +84,30 @@ class KDashboardController extends GetxController {
       tempProdcut.forEach((vl) {
         if(vl['isPrepared'] == false) {
           var newTotal = int.parse(vl['qty'].toString());
+          var withTableNo = {'table':v['order_table'],'qnt':newTotal};
           if (pendingProductList[vl['id']] != null) {
             var temp = pendingProductList[vl['id']];
             temp['tPending'] = int.parse(temp['tPending'].toString()) + newTotal;
+            // total with table
+            var tList = (temp['table_list'] == null)?[]:temp['table_list'];
+            tList.add(withTableNo);
+            temp['table_list'] = tList;
             pendingProductList[vl['id']] = temp;
           } else {
             var temp = vl;
             temp['tPending'] = newTotal;
+            // total with table
+            var tList = (temp['table_list'] == null)?[]:temp['table_list'];
+            tList.add(withTableNo);
+            temp['table_list'] = tList;
             pendingProductList[vl['id']] = temp;
           }
         }
       });
     });
+
+
+    print("================================================");
+    print(pendingProductList);
   }
 }

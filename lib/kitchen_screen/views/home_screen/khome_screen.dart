@@ -447,44 +447,49 @@ class _KHomeScreenState extends State<KHomeScreen> {
                               physics: ScrollPhysics(),
                               children: [
                                 for (var k in controller.pendingProductList.keys)
-                                  Container(
-                                      margin: EdgeInsets.only(right: 8.0),
-                                      decoration: BoxDecoration(
-                                          boxShadow: themeBox,
-                                          border: Border.all(
-                                              width: 1.0, color: Colors.red)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Stack(
-                                            children:[ Image.network(
-                                              '${controller.pendingProductList[k]['img']}',
-                                              width: 100,
-                                              height: 70,
-                                              fit: BoxFit.cover,
+                                  InkWell(
+                                    onTap: (){
+                                      modal_pendingTable(context,title: "${controller.pendingProductList[k]['title']}",data:controller.pendingProductList[k],tablelist: tablelist);
+                                    },
+                                    child: Container(
+                                        margin: EdgeInsets.only(right: 8.0),
+                                        decoration: BoxDecoration(
+                                            boxShadow: themeBox,
+                                            border: Border.all(
+                                                width: 1.0, color: Colors.red)),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Stack(
+                                              children:[ Image.network(
+                                                '${controller.pendingProductList[k]['img']}',
+                                                width: 100,
+                                                height: 70,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              Positioned(
+                                                top: 3.0,
+                                                right: 3.0,
+                                                child: Container(padding: EdgeInsets.all(4.0), width: 30.0,height: 30.0, decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(20.0)), 
+                                                child: Center(child: Text("${controller.pendingProductList[k]['tPending']}",textAlign: TextAlign.center, style: themeTextStyle(color: Colors.white),))),
+                                              ),
+                                              ]
                                             ),
-                                            Positioned(
-                                              top: 3.0,
-                                              right: 3.0,
-                                              child: Container(padding: EdgeInsets.all(4.0), width: 30.0,height: 30.0, decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(20.0)), 
-                                              child: Center(child: Text("${controller.pendingProductList[k]['tPending']}",textAlign: TextAlign.center, style: themeTextStyle(color: Colors.white),))),
-                                            ),
-                                            ]
-                                          ),
-                                          10.heightBox,
-                                          "${controller.pendingProductList[k]['title']}"
-                                              .text
-                                              .size(10)
-                                              .color(darkFontGrey)
-                                              .make(),
-                                          //10.heightBox,
-                                          // "Qty : ${controller.pendingProductList[k]['tPending']}"
-                                          //     .text
-                                          //     .color(redColor)
-                                          //     .size(12)
-                                          //     .make(),
-                                        ],
-                                  )),
+                                            10.heightBox,
+                                            "${controller.pendingProductList[k]['title']}"
+                                                .text
+                                                .size(10)
+                                                .color(darkFontGrey)
+                                                .make(),
+                                            //10.heightBox,
+                                            // "Qty : ${controller.pendingProductList[k]['tPending']}"
+                                            //     .text
+                                            //     .color(redColor)
+                                            //     .size(12)
+                                            //     .make(),
+                                          ],
+                                    )),
+                                  ),
                               ],
                             ),
                           ),
@@ -553,4 +558,102 @@ class _KHomeScreenState extends State<KHomeScreen> {
           }),
     );
   }
+
+  // Modal =================================================================
+  
+  modal_pendingTable(context,{title:'Title',data:'',tablelist:''})async {
+    var tableList = data['table_list'];
+    //var tableNo = tablelist
+    print(tableList);
+      {
+        showModalBottomSheet(
+        //isScrollControlled: true, // for full screen
+            context: context,
+            backgroundColor: Color.fromARGB(0, 232, 232, 232),
+            builder: (BuildContext context) {
+              return ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0)),
+                  child: Container(
+                      //height: MediaQuery.of(context).size.height - 200,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0))),
+                      child: Column(children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 238, 248, 255),
+                          ),
+                          child: ListTile(
+                              leading: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                    ) // the arrow back icon
+                                    ),
+                              ),
+                              title: Center(
+                                  child: Text(
+                                "$title",
+                                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+                              ) // Your desired title
+                                  )),
+                        ),
+
+                        // Price Field
+                        SizedBox(height: 10.0),
+
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 20.0),
+                          child: GridView.builder(
+                            //controller: _hScrollController,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: ScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 100,
+                                //childAspectRatio: 3,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15),
+                            itemBuilder: (BuildContext context, index) {
+                              if (index == tableList.length) {
+                                //return CupertinoActivityIndicator();
+                              }
+                              var data = tableList[index];
+                              var tablNo = tablelist[data['table']];
+                              return Container(
+                                decoration: BoxDecoration(color: themeBG4, borderRadius: BorderRadius.circular(7)),
+                                child: Column(
+                                  children: [
+                                    Text("${tablNo}",style: themeTextStyle(size: 50.0,fw: FontWeight.bold,color: Colors.white)),
+                                    SizedBox(height: 6.0),
+                                    Row(
+                                      children: [
+                                        Expanded(child: Container( margin: EdgeInsets.only(bottom: 0), decoration: BoxDecoration(color: Colors.yellow,borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0),bottomRight: Radius.circular(7.0))), child: Center(child: Text("Qnt: ${data['qnt']}")))),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            itemCount: tableList.length,
+                          ),
+                        )
+
+
+
+
+
+                      ])));
+            });
+      }
+    }
 }
