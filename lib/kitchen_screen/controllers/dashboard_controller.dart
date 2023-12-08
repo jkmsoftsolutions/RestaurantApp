@@ -68,7 +68,16 @@ class KDashboardController extends GetxController {
     Map<dynamic, dynamic> w = {
       'table': "orders",
     };
+
     var rdata = await dbFindDynamic(db, w);
+
+    // Raw Query ==============================
+
+    var query = await FirebaseFirestore.instance
+        .collection('orders')
+        .where("order_delivered", isEqualTo: false);
+    rdata = await dbRawQuery(query);
+    
 
     rdata.forEach((k, v) {
       var tempProdcut = v['orders'];

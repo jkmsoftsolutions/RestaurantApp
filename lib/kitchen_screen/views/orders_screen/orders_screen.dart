@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/kitchen_screen/theme/footer.dart';
 import 'package:emart_seller/kitchen_screen/views/widgets/theme_widgets.dart';
+import 'package:emart_seller/theme/firebase_functions.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/theme_widgets.dart';
 import 'package:get/get.dart';
@@ -21,6 +23,7 @@ class _KOrdersScreenState extends State<KOrdersScreen> {
 
   @override
   void initState() {
+    Comman_Cate_Data();
     get_Orderdata("all");
     super.initState();
   }
@@ -34,6 +37,24 @@ class _KOrdersScreenState extends State<KOrdersScreen> {
     setState(() {
       OrderList;
       wait = false;
+    });
+  }
+
+/////////////  table data fetch From Firebase   +++++++++++++++++++++++++++++++++++++++++++++
+
+  var tablelist = {};
+  var db = FirebaseFirestore.instance;
+  Comman_Cate_Data() async {
+    tablelist = {};
+    Map<dynamic, dynamic> w = {
+      'table': "tables",
+    };
+    var temp = await dbFindDynamic(db, w);
+
+    setState(() {
+      temp.forEach((k, v) {
+        tablelist[v['id']] = v['tab_no'];
+      });
     });
   }
 
@@ -181,7 +202,9 @@ class _KOrdersScreenState extends State<KOrdersScreen> {
 
                                 return kthemeOderListRowCon(
                                     context, OrderList[index],
-                                    productId: OrderList[index]['id']);
+                                    productId: OrderList[index]['id'],
+                                    table_No: tablelist[OrderList[index]
+                                        ['order_table']]);
                               }),
                             ),
                           ],

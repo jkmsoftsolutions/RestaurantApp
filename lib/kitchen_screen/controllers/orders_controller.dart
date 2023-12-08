@@ -89,6 +89,12 @@ class KOrdersController extends GetxController {
     }
   }
 
+  var orderIndex = 0.obs;
+  // ordre method chanege fun
+  changeOrderIndex(index) {
+    orderIndex.value = index;
+  }
+
   //get mathed change orders status
   changeStatus({title, status, docID}) async {
     //var store = firestore.collection(ordersCollections).doc(docID);

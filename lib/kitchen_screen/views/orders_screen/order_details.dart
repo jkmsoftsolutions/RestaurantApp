@@ -1,5 +1,4 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
-
 import 'dart:async';
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/kitchen_screen/controllers/dashboard_controller.dart';
@@ -25,7 +24,6 @@ class _KOrderDetailsState extends State<KOrderDetails> {
   var controller = Get.put(KOrdersController());
   var kcontroller = Get.put(KDashboardController());
 
-  bool _hasBeenPressed = false;
   Map<dynamic, dynamic> productData = new Map();
   var db = FirebaseFirestore.instance;
 
@@ -74,7 +72,7 @@ class _KOrderDetailsState extends State<KOrderDetails> {
 
   var min;
   var sec;
-
+  List<int> tempArr = [];
   @override
   Widget build(BuildContext context) {
     if (productData.isNotEmpty && productData != null) {
@@ -290,51 +288,68 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    setState(() {
-                                      _hasBeenPressed = !_hasBeenPressed;
-                                    });
+                                    if (tempArr.contains(index)) {
+                                      tempArr.remove(index);
+                                      setState(() {
+                                        if (tempArr.length !=
+                                            controller.orders.length) {
+                                          controller.ondelivery.value = false;
+                                        }
+                                      });
+                                    } else {
+                                      tempArr.add(index);
+
+                                      setState(() {
+                                        if (tempArr.length ==
+                                            controller.orders.length) {
+                                          controller.ondelivery.value = true;
+                                        } else {
+                                          controller.ondelivery.value = false;
+                                        }
+                                      });
+                                    }
                                   },
                                   child: Container(
-                                    color: _hasBeenPressed
-                                        ? Color.fromARGB(255, 16, 176, 72)
-                                        : const Color.fromARGB(
-                                            255, 238, 234, 234),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Image.network(
-                                          controller.orders[index]['img'],
-                                          width: 200,
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                        ),
-                                        //  const Spacer(),
-                                        10.heightBox,
-                                        "${controller.orders[index]['title']}"
-                                            .text
-                                            .color(darkFontGrey)
-                                            .make(),
-                                        10.heightBox,
-                                        "Quntity : ${controller.orders[index]['qty']}"
-                                            .text
-                                            .color(redColor)
-                                            .size(16)
-                                            .make(),
-                                      ],
-                                    )
-                                        .box
-                                        .margin(const EdgeInsets.symmetric(
-                                            horizontal: 4))
-                                        .roundedSM
-                                        .padding(const EdgeInsets.all(12))
-                                        .make()
-                                        .onTap(() {
-                                      setState(() {
-                                        _hasBeenPressed = !_hasBeenPressed;
-                                      });
-                                    }),
-                                  ),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: tempArr.contains(index)
+                                                ? green
+                                                : Colors.transparent,
+                                            width: 4,
+                                          )),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Image.network(
+                                            controller.orders[index]['img'],
+                                            width: 200,
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          //  const Spacer(),
+                                          10.heightBox,
+                                          "${controller.orders[index]['title']}"
+                                              .text
+                                              .color(darkFontGrey)
+                                              .make(),
+                                          10.heightBox,
+                                          "Quntity : ${controller.orders[index]['qty']}"
+                                              .text
+                                              .color(redColor)
+                                              .size(16)
+                                              .make(),
+                                          5.heightBox,
+                                        ],
+                                      )
+                                          .box
+                                          .margin(const EdgeInsets.symmetric(
+                                              horizontal: 4))
+                                          .roundedSM
+                                          .padding(const EdgeInsets.all(12))
+                                          .make()),
                                 );
                               }),
                         ],

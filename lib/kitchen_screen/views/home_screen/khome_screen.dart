@@ -437,29 +437,34 @@ class _KHomeScreenState extends State<KHomeScreen> {
                         children: [
                           for (var k in controller.pendingProductList.keys)
                             Container(
-                              margin: EdgeInsets.only(right: 8.0),
-                              decoration: BoxDecoration(
-                                  boxShadow: themeBox,
-                                  border: Border.all(
-                                      width: 1.0, color: Colors.red)),
-                              child: Row(
-                                children: [
-                                  Image.network(
-                                      '${controller.pendingProductList[k]['img']}'),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: Text(
-                                      '${controller.pendingProductList[k]['tPending']}',
-                                      style: themeTextStyle(
-                                          size: 20.0,
-                                          color: Colors.red,
-                                          fw: FontWeight.bold),
+                                margin: EdgeInsets.only(right: 8.0),
+                                decoration: BoxDecoration(
+                                    boxShadow: themeBox,
+                                    border: Border.all(
+                                        width: 1.0, color: Colors.red)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.network(
+                                      '${controller.pendingProductList[k]['img']}',
+                                      width: 100,
+                                      height: 40,
+                                      fit: BoxFit.cover,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                    10.heightBox,
+                                    "${controller.pendingProductList[k]['title']}"
+                                        .text
+                                        .size(14)
+                                        .color(darkFontGrey)
+                                        .make(),
+                                    10.heightBox,
+                                    "Qty : ${controller.pendingProductList[k]['tPending']}"
+                                        .text
+                                        .color(redColor)
+                                        .size(12)
+                                        .make(),
+                                  ],
+                                )),
                         ],
                       ),
                     ),
