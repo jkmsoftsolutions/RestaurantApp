@@ -74,11 +74,9 @@ class AddProduct extends StatelessWidget {
                           lable: "Quntitiy",
                           controller: controller.pquantityController))
                 ]),
-
                 10.heightBox,
                 productDropdown("Status", controller.statusList,
                     controller.statusvalue, controller),
-
                 10.heightBox,
                 productDropdown("Category", controller.categoryList,
                     controller.categoryvalue, controller),
@@ -114,36 +112,6 @@ class AddProduct extends StatelessWidget {
                 const Divider(
                   color: white,
                 ),
-                //10.heightBox,
-                // boldText(text: "Choose product Color"),
-                // 10.heightBox,
-                // Obx(
-                //   () => Wrap(
-                //     spacing: 8.0,
-                //     runSpacing: 8.0,
-                //     children: List.generate(
-                //         9,
-                //         (index) => Stack(
-                //               alignment: Alignment.center,
-                //               children: [
-                //                 VxBox()
-                //                     .color(Vx.randomPrimaryColor)
-                //                     .roundedFull
-                //                     .size(30, 30)
-                //                     .make()
-                //                     .onTap(() {
-                //                   controller.selectColoIndex.value = index;
-                //                 }),
-                //                 controller.selectColoIndex.value == index
-                //                     ? const Icon(
-                //                         Icons.done,
-                //                         color: white,
-                //                       )
-                //                     : const SizedBox(),
-                //               ],
-                //             )),
-                //   ),
-                // )
               ],
             ),
           ),

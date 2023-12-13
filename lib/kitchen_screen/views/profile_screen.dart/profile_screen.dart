@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/controllers/auth_controller.dart';
 import 'package:emart_seller/controllers/profile_controller.dart';
+import 'package:emart_seller/kitchen_screen/controllers/profile_controller.dart';
 import 'package:emart_seller/kitchen_screen/theme/footer.dart';
 import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/theme/footer.dart';
@@ -17,7 +18,7 @@ class KProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(ProfileController());
+    var controller = Get.put(KProfileController());
     return Scaffold(
       bottomNavigationBar: kthemeFooter(context, selected: 2),
       backgroundColor: Color.fromARGB(255, 248, 246, 246),

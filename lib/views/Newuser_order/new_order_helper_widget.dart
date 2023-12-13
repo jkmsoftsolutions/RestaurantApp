@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/views/Newuser_order/qrcode.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,55 +16,58 @@ import '../widgets/normal_text.dart';
 import 'commponents/customeinput.dart';
 
 Widget UserInfo(BuildContext context, controller, {nextFn: ''}) {
-  return Container(
-    margin: EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [
-        Container(
-          child: Row(
-            children: [
-              (controller.editData.isNotEmpty)
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: Icon(Icons.arrow_back))
-                  : Icon(
-                      Icons.person,
-                      color: Colors.blue,
-                      size: 30,
-                    ),
-              SizedBox(width: 10),
-              GoogleText(
-                  text: "Add Customer ${controller.IDdata} ",
-                  color: Colors.black,
-                  fsize: 16.0,
-                  fweight: FontWeight.bold),
-            ],
+  return SizedBox(
+    child: Container(
+      margin: EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        children: [
+          Container(
+            child: Row(
+              children: [
+                (controller.editData.isNotEmpty)
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(Icons.arrow_back))
+                    : Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                        size: 30,
+                      ),
+                SizedBox(width: 10),
+                GoogleText(
+                    text: "Add Customer ${controller.IDdata} ",
+                    color: Colors.black,
+                    fsize: 16.0,
+                    fweight: FontWeight.bold),
+              ],
+            ),
           ),
-        ),
-        Divider(
-          color: Colors.black,
-        ),
-        20.heightBox,
-        formInput(context, "name *", controller.pNameController, Icons.person),
-        const SizedBox(height: 20.0),
-        formInput(context, "mobile *", controller.pMobileController,
-            Icons.phone_android_rounded,
-            isNumber: true),
-        const SizedBox(height: 20.0),
-        formInput(
-            context, "email", controller.pEmailController, Icons.email_rounded),
-        const SizedBox(height: 20.0),
-        formInput(context, "Address", controller.pAddressController,
-            Icons.location_on),
-        20.heightBox,
-        themeButton3(context, nextFn,
-            label: 'Next',
-            buttonColor: themeBG4,
-            radius: 2.0,
-            btnHeightSize: 35.0)
-      ],
+          Divider(
+            color: Colors.black,
+          ),
+          20.heightBox,
+          formInput(
+              context, "name *", controller.pNameController, Icons.person),
+          const SizedBox(height: 20.0),
+          formInput(context, "mobile *", controller.pMobileController,
+              Icons.phone_android_rounded,
+              isNumber: true),
+          const SizedBox(height: 20.0),
+          formInput(context, "email", controller.pEmailController,
+              Icons.email_rounded),
+          const SizedBox(height: 20.0),
+          formInput(context, "Address", controller.pAddressController,
+              Icons.location_on),
+          20.heightBox,
+          themeButton3(context, nextFn,
+              label: 'Next',
+              buttonColor: themeBG4,
+              radius: 2.0,
+              btnHeightSize: 35.0)
+        ],
+      ),
     ),
   );
 }
@@ -169,51 +173,6 @@ Widget BookTable(BuildContext context, controller, List alltablesdata,
                 ),
             ]),
       ),
-
-      // Obx(
-      //   () => Wrap(
-      //     spacing: 10.0,
-      //     runSpacing: 20.0,
-      //     children: List.generate(alltablesdata.length, (index) {
-      //       return GestureDetector(
-      //         onTap: () async {
-      //           if (alltablesdata[index]['is_active']) {
-      //             await controller.changeTableIndex(index);
-      //             SharedPreferences prefs =
-      //                 await SharedPreferences.getInstance();
-      //             prefs.setString('tableid', alltablesdata[index].id);
-      //             controller.TempValue["table_id"] = alltablesdata[index].id;
-      //           } else {
-      //             VxToast.show(context, msg: "Already Booked");
-      //           }
-      //         },
-      //         child: Container(
-      //             padding: EdgeInsets.all(4),
-      //             alignment: Alignment.center,
-      //             width: MediaQuery.of(context).size.width / 3.5,
-      //             height: 50.0,
-      //             decoration: BoxDecoration(
-      //                 boxShadow: themeBox,
-      //                 borderRadius: BorderRadius.circular(15),
-      //                 color: (controller.TempValue["table_id"] ==
-      //                         alltablesdata[index].id)
-      //                     ? Color.fromARGB(255, 132, 195, 134)
-      //                     : (alltablesdata[index]['is_active'])
-      //                         ? Color.fromARGB(135, 255, 255, 255)
-      //                         : Color.fromARGB(255, 227, 116, 100),
-      //                 border: Border.all(
-      //                     color: const Color.fromARGB(255, 45, 177, 115),
-      //                     width: 1.0)),
-      //             child: GoogleText(
-      //                 text:
-      //                     ' ${alltablesdata[index]['is_active'] ? '${alltablesdata[index]['tab_no']}' : 'Booked'}',
-      //                 color: Colors.black,
-      //                 fsize: 14.0,
-      //                 fweight: FontWeight.w400)),
-      //       );
-      //     }),
-      //   ),
-      // ),
       20.heightBox,
       themeButton3(context, nextFn,
           label: 'Next',
@@ -228,7 +187,7 @@ Widget BookTable(BuildContext context, controller, List alltablesdata,
 
 ///  Cart Screen Widget ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Widget CartPreview(BuildContext context, controller, Map Pdata,
-    {laabel: 'Cart', backFn: '', nextFn: ''}) {
+    {laabel: 'Cart', backFn: '', nextFn: '', orderId: '', refreshPage: ''}) {
   return Column(
     children: [
       Container(
@@ -260,7 +219,9 @@ Widget CartPreview(BuildContext context, controller, Map Pdata,
         height: MediaQuery.of(context).size.height - 300,
         child: ListView(
           children: [
-            for (var key in Pdata.keys) productListCon(context, Pdata[key])
+            for (var key in Pdata.keys)
+              productListCon(context, controller.TempValue, Pdata[key], orderId,
+                  key: key, refreshPage: refreshPage)
           ],
         ),
       ),
@@ -344,46 +305,85 @@ Widget CartPreview(BuildContext context, controller, Map Pdata,
   );
 }
 
-Widget productListCon(context, Pdata) {
+Widget productListCon(context, data, Pdata, orderId, {key, refreshPage: ''}) {
+  var controller = Get.put(NewUserOrderController());
+
   var img = (Pdata['p_imgs'][0] != null)
       ? Pdata['p_imgs'][0]
       : "https://img.lovepik.com/original_origin_pic/19/01/15/69dc6961ffbd70039d9220fa60547a0a.png_wh860.png";
   return Container(
-      padding: EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-          color: Color.fromRGBO(0, 0, 0, 0.076),
-          borderRadius: BorderRadius.circular(12.5)),
-      margin: EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            width: 90,
-            height: 90,
-            decoration: BoxDecoration(
-                color: Color.fromRGBO(0, 0, 0, 0.076),
-                image: DecorationImage(
-                    image: NetworkImage("$img"),
-                    // NetworkImage("${Pdata[i]["p_imgs"][0]}"),
+    padding: EdgeInsets.only(right: 10),
+    decoration: BoxDecoration(
+        color: Color.fromRGBO(0, 0, 0, 0.076),
+        borderRadius: BorderRadius.circular(12.5)),
+    margin: EdgeInsets.symmetric(vertical: 5.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          width: 90,
+          height: 90,
+          decoration: BoxDecoration(
+              color: Color.fromRGBO(0, 0, 0, 0.076),
+              image: DecorationImage(
+                  image: NetworkImage("$img"),
+                  // NetworkImage("${Pdata[i]["p_imgs"][0]}"),
 
-                    fit: BoxFit.cover),
-                borderRadius: BorderRadius.circular(12.5)),
+                  fit: BoxFit.cover),
+              borderRadius: BorderRadius.circular(12.5)),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RowTextWd(context, "Name", "${Pdata["p_name"]}"),
+              RowTextWd(context, "Price", "${Pdata["p_price"]} Rs"),
+              RowTextWd(context, "Quantity", "x${Pdata["qnt"]}"),
+              RowTextWd(context, "Total", "${Pdata["subTotal"]} Rs/-"),
+            ],
           ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RowTextWd(context, "Name", "${Pdata["p_name"]}"),
-                RowTextWd(context, "Price", "${Pdata["p_price"]} Rs"),
-                RowTextWd(context, "Quantity", "x${Pdata["qnt"]}"),
-                RowTextWd(context, "Total", "${Pdata["subTotal"]} Rs/-"),
-              ],
+        ),
+        Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: Container(
+                child: IconButton(
+                  icon: new Icon(
+                    Icons.shopping_bag,
+                    size: 30,
+                    color: (Pdata['isPack'] == true)
+                        ? Color.fromARGB(255, 12, 177, 45)
+                        : const Color.fromARGB(255, 163, 162, 162),
+                  ),
+                  onPressed: () async {
+                    // print(orderId);
+                    Pdata['isPack'] =
+                        (Pdata['isPack'] == null || Pdata['isPack'] == false)
+                            ? true
+                            : false;
+                    // print(key);
+                    //return false;
+
+                    var rData = await controller.changepakStatus(
+                        isPack: Pdata['isPack'],
+                        orderId: orderId,
+                        productId: key);
+
+                    if (refreshPage != '') {
+                      refreshPage();
+                    }
+                  },
+                ),
+              ),
             ),
-          ),
-        ],
-      ));
+          ],
+        ),
+      ],
+    ),
+  );
 }
 
 Widget RowTextWd(BuildContext context, lable, Val) {
@@ -533,6 +533,8 @@ Widget myFormField(BuildContext context, controller, label,
     ),
   );
 }
+
+
 
 //////demo
 /// ============================================================================

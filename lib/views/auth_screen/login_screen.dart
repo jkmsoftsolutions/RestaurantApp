@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:emart_seller/const/strings.dart';
 import 'package:emart_seller/kitchen_screen/views/auth_screen/regis_screen.dart';
 import 'package:emart_seller/kitchen_screen/views/home_screen/khome.dart';
+import 'package:emart_seller/responsive/responsive.dart';
 import 'package:emart_seller/theme/firebase_functions.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/auth_screen/regis_screen.dart';
@@ -65,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: (iswait)
                     ? progress()
                     : Container(
+                        width: 500,
                         margin: EdgeInsets.all(12),
                         child: Form(
                           key: _formkey,

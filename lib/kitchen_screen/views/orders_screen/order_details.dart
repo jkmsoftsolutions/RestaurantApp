@@ -13,9 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class KOrderDetails extends StatefulWidget {
   final dynamic id;
-
   const KOrderDetails({super.key, this.id});
-
   @override
   State<KOrderDetails> createState() => _KOrderDetailsState();
 }
@@ -34,13 +32,13 @@ class _KOrderDetailsState extends State<KOrderDetails> {
     // update prepared
     productList = dbData;
     var i = 0;
-    dbData['orders'].forEach((v){
-      if(v['isPrepared']){
-        fn_update_status(index:i);
+    dbData['orders'].forEach((v) {
+      if (v['isPrepared'] == null) {
+        fn_update_status(index: i);
       }
       i++;
     });
-    
+
     setState(() {
       productData = dbData;
       productData['id'] = widget.id;
@@ -58,37 +56,33 @@ class _KOrderDetailsState extends State<KOrderDetails> {
   }
 
   // =================================================================
-  fn_update_status({index:0,updateDb:false})async {
+  fn_update_status({index: 0, updateDb: false}) async {
     if (tempArr.contains(index)) {
-        tempArr.remove(index);
-        if(updateDb){
-          await controller.fn_individually_status(productList,id:widget.id, isPrepared: false,index: index);
-        }
-       
-          if (tempArr.length !=
-              controller.orders.length) {
-            controller.ondelivery.value = false;
-          }
-    
-      } else {
-        tempArr.add(index);
-        if(updateDb){
-          await controller.fn_individually_status(productList,id:widget.id,isPrepared: true,index: index);
-        }
-       
-          if (tempArr.length ==
-              controller.orders.length) {
-            controller.ondelivery.value = true;
-          } else {
-            controller.ondelivery.value = false;
-          }
-   
+      tempArr.remove(index);
+      if (updateDb) {
+        await controller.fn_individually_status(productList,
+            id: widget.id, isPrepared: false, index: index);
       }
 
-      await controller.fn_prepare_status(productList, id:widget.id);
-      setState(() {});
+      if (tempArr.length != controller.orders.length) {
+        controller.ondelivery.value = false;
+      }
+    } else {
+      tempArr.add(index);
+      if (updateDb) {
+        await controller.fn_individually_status(productList,
+            id: widget.id, isPrepared: true, index: index);
+      }
 
-      
+      if (tempArr.length == controller.orders.length) {
+        controller.ondelivery.value = true;
+      } else {
+        controller.ondelivery.value = false;
+      }
+    }
+
+    await controller.fn_prepare_status(productList, id: widget.id);
+    setState(() {});
   }
 
   //timer start function
@@ -130,13 +124,11 @@ class _KOrderDetailsState extends State<KOrderDetails> {
       setState(() {
         sec = diff % 60;
         min = (diff / 60).floor();
-        if( int.parse(min.toString()) > 120){
-          timeIs ="+2 Hours";
-        }else{
+        if (int.parse(min.toString()) > 120) {
+          timeIs = "+2 Hours";
+        } else {
           timeIs = "$min:$sec";
         }
-        
-        
       });
 
       print("$temp ++++++++++");
@@ -342,7 +334,8 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    fn_update_status(index:index,updateDb:true);
+                                    fn_update_status(
+                                        index: index, updateDb: true);
                                   },
                                   child: Container(
                                       decoration: BoxDecoration(
@@ -351,7 +344,8 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                           border: Border.all(
                                             color: tempArr.contains(index)
                                                 ? green
-                                                : Color.fromARGB(255, 255, 118, 77),
+                                                : Color.fromARGB(
+                                                    255, 255, 118, 77),
                                             width: 1,
                                           )),
                                       child: Column(
@@ -359,34 +353,60 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Stack(
-                                            children:[ Image.network(
-                                              controller.orders[index]['img'],
-                                              width: 200,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                            ),
-                                            
+                                            children: [
+                                              Image.network(
+                                                controller.orders[index]['img'],
+                                                width: 200,
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ],
                                           ),
                                           //  const Spacer(),
                                           10.heightBox,
-                                          "${controller.orders[index]['title']}"
-                                              .text
-                                              .color(darkFontGrey)
-                                              .make(),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  '${controller.orders[index]['title']}',
+                                                ),
+                                                Icon(
+                                                  Icons.shopping_bag,
+                                                  size: 12,
+                                                  color:
+                                                      (controller.orders[index]
+                                                                  ['isPack'] ==
+                                                              true)
+                                                          ? Colors.green
+                                                          : Colors.transparent,
+                                                ),
+                                              ]),
+
                                           10.heightBox,
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               "Quntity : ${controller.orders[index]['qty']}"
-                                              .text
-                                              .color(redColor)
-                                              .size(16)
-                                              .make(),
-                                              Icon(tempArr.contains(index)?Icons.done_all_sharp:Icons.pending_actions_outlined,color: tempArr.contains(index)?Colors.green:Color.fromARGB(255, 255, 118, 77),size: 30.0)
+                                                  .text
+                                                  .color(redColor)
+                                                  .size(16)
+                                                  .make(),
+                                              Icon(
+                                                  tempArr.contains(index)
+                                                      ? Icons.done_all_sharp
+                                                      : Icons
+                                                          .pending_actions_outlined,
+                                                  color: tempArr.contains(index)
+                                                      ? Colors.green
+                                                      : Color.fromARGB(
+                                                          255, 255, 118, 77),
+                                                  size: 30.0)
                                             ],
                                           ),
-                                          
+
                                           5.heightBox,
                                         ],
                                       )

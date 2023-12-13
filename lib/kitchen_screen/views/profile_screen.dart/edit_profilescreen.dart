@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/controllers/profile_controller.dart';
+import 'package:emart_seller/kitchen_screen/controllers/profile_controller.dart';
 import 'package:emart_seller/views/widgets/custom_textfield.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  var controller = Get.find<ProfileController>();
+  var controller = Get.find<KProfileController>();
   @override
   void initState() {
     controller.nameController.text = widget.username!;
