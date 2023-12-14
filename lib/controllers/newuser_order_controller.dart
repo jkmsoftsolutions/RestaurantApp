@@ -8,7 +8,6 @@ import 'package:emart_seller/views/widgets/dashboard_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../models/category_model.dart';
@@ -337,12 +336,10 @@ class NewUserOrderController {
     TempValue["phone"] = "${pMobileController.text}";
     TempValue["Address"] = "${pAddressController.text}";
     TempValue["customer_id"] = "$Cust_ID";
-
     return Cust_ID;
   }
 
   // clear controllers
-
   //get mathed to  change pakking orders status
   changepakStatus({isPack, orderId, productId}) async {
     Map<dynamic, dynamic> w = {'table': "orders", 'id': orderId};

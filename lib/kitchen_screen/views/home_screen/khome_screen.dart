@@ -61,7 +61,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
     });
   }
 
-  /////////////  table data fetch From Firebase   +++++++++++++++++++++++++++++++++++++++++++++
+  /////////////  table data fetch From Firebase  +++++++++++++++++++++++++++++++++++++++++++++
 
   var tablelist = {};
   var db = FirebaseFirestore.instance;
@@ -71,7 +71,6 @@ class _KHomeScreenState extends State<KHomeScreen> {
       'table': "tables",
     };
     var temp = await dbFindDynamic(db, w);
-
     setState(() {
       temp.forEach((k, v) {
         tablelist[v['id']] = v['tab_no'];
