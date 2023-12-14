@@ -410,18 +410,41 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                                           Text(
                                                             '${controller.orders[index]['title']}',
                                                           ),
-                                                          Icon(
-                                                            Icons.shopping_bag,
-                                                            size: 12,
-                                                            color: (controller.orders[
+
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              "${(controller.orders[index]['isPack'] != null && controller.orders[index]['isPack']) ? "pakking" : "Dinning"} ",
+                                                              style: TextStyle(
+                                                                color: white,
+                                                                fontSize: 10.0,
+                                                              ),
+                                                            ).color((controller.orders[index]
+                                                                            [
+                                                                            'isPack'] !=
+                                                                        null &&
+                                                                    controller.orders[
                                                                             index]
                                                                         [
-                                                                        'isPack'] ==
-                                                                    true)
-                                                                ? Colors.green
-                                                                : Colors
-                                                                    .transparent,
+                                                                        'isPack'])
+                                                                ? green
+                                                                : red),
                                                           ),
+
+                                                          // Icon(
+                                                          //   Icons.shopping_bag,
+                                                          //   size: 12,
+                                                          //   color: (controller.orders[
+                                                          //                   index]
+                                                          //               [
+                                                          //               'isPack'] ==
+                                                          //           true)
+                                                          //       ? Colors.green
+                                                          //       : Colors
+                                                          //           .transparent,
+                                                          // ),
                                                         ]),
 
                                                     10.heightBox,
@@ -698,17 +721,33 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                                                       Text(
                                                         '${controller.orders[index]['title']}',
                                                       ),
-                                                      Icon(
-                                                        Icons.shopping_bag,
-                                                        size: 12,
-                                                        color: (controller.orders[
-                                                                        index][
-                                                                    'isPack'] ==
-                                                                true)
-                                                            ? Colors.green
-                                                            : Colors
-                                                                .transparent,
-                                                      ),
+                                                      Text(
+                                                        "${(controller.orders[index]['isPack'] != null && controller.orders[index]['isPack']) ? "pakking" : "Dinning"} ",
+                                                        style: TextStyle(
+                                                          color: white,
+                                                          fontSize: 10.0,
+                                                        ),
+                                                      ).color((controller.orders[
+                                                                          index]
+                                                                      [
+                                                                      'isPack'] !=
+                                                                  null &&
+                                                              controller.orders[
+                                                                      index]
+                                                                  ['isPack'])
+                                                          ? green
+                                                          : red),
+                                                      // Icon(
+                                                      //   Icons.shopping_bag,
+                                                      //   size: 12,
+                                                      //   color: (controller.orders[
+                                                      //                   index][
+                                                      //               'isPack'] ==
+                                                      //           true)
+                                                      //       ? Colors.green
+                                                      //       : Colors
+                                                      //           .transparent,
+                                                      // ),
                                                     ]),
 
                                                 10.heightBox,
