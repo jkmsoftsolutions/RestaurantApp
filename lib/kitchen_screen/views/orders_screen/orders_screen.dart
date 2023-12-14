@@ -4,6 +4,7 @@ import 'package:emart_seller/kitchen_screen/views/widgets/theme_widgets.dart';
 import 'package:emart_seller/theme/firebase_functions.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/theme_widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
 import '../../controllers/orders_controller.dart';
@@ -154,61 +155,135 @@ class _KOrdersScreenState extends State<KOrdersScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: SingleChildScrollView(
                         physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          children: [
-                            // order info ===================================
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 10.0),
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 237, 237)),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                        child: (kIsWeb)
+                            ? Center(
+                                child: Container(
+                                  width: 800,
+                                  child: Column(
                                     children: [
-                                      Text('Total Order :',
-                                          style: themeTextStyle(size: 13.0)),
-                                      Text('${OrderList.length}',
-                                          style: themeTextStyle(
-                                              size: 17.0, fw: FontWeight.bold)),
+                                      // order info ===================================
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5.0, horizontal: 10.0),
+                                        decoration: BoxDecoration(
+                                            color: Color.fromARGB(
+                                                255, 255, 237, 237)),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('Total Order :',
+                                                    style: themeTextStyle(
+                                                        size: 13.0)),
+                                                Text('${OrderList.length}',
+                                                    style: themeTextStyle(
+                                                        size: 17.0,
+                                                        fw: FontWeight.bold)),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10.0),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                // Text('Total Amount :',
+                                                //     style: themeTextStyle(size: 13.0)),
+                                                // Text('${controller.totalAmount}',
+                                                //     style: themeTextStyle(
+                                                //         size: 17.0, fw: FontWeight.bold)),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      // product list start ===========================
+                                      Column(
+                                        children: List.generate(
+                                            OrderList.length, (index) {
+                                          var time = (OrderList[index]
+                                                      ['order_date'] ==
+                                                  null)
+                                              ? ''
+                                              : OrderList[index]['order_date']
+                                                  .toDate();
+
+                                          return kthemeOderListRowCon(
+                                              context, OrderList[index],
+                                              productId: OrderList[index]['id'],
+                                              table_No: tablelist[
+                                                  OrderList[index]
+                                                      ['order_table']]);
+                                        }),
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(height: 10.0),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // Text('Total Amount :',
-                                      //     style: themeTextStyle(size: 13.0)),
-                                      // Text('${controller.totalAmount}',
-                                      //     style: themeTextStyle(
-                                      //         size: 17.0, fw: FontWeight.bold)),
-                                    ],
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  // order info ===================================
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5.0, horizontal: 10.0),
+                                    decoration: BoxDecoration(
+                                        color:
+                                            Color.fromARGB(255, 255, 237, 237)),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Total Order :',
+                                                style:
+                                                    themeTextStyle(size: 13.0)),
+                                            Text('${OrderList.length}',
+                                                style: themeTextStyle(
+                                                    size: 17.0,
+                                                    fw: FontWeight.bold)),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10.0),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            // Text('Total Amount :',
+                                            //     style: themeTextStyle(size: 13.0)),
+                                            // Text('${controller.totalAmount}',
+                                            //     style: themeTextStyle(
+                                            //         size: 17.0, fw: FontWeight.bold)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // product list start ===========================
+                                  Column(
+                                    children: List.generate(OrderList.length,
+                                        (index) {
+                                      var time = (OrderList[index]
+                                                  ['order_date'] ==
+                                              null)
+                                          ? ''
+                                          : OrderList[index]['order_date']
+                                              .toDate();
+
+                                      return kthemeOderListRowCon(
+                                          context, OrderList[index],
+                                          productId: OrderList[index]['id'],
+                                          table_No: tablelist[OrderList[index]
+                                              ['order_table']]);
+                                    }),
                                   ),
                                 ],
-                              ),
-                            ),
-
-                            // product list start ===========================
-                            Column(
-                              children:
-                                  List.generate(OrderList.length, (index) {
-                                var time = (OrderList[index]['order_date'] ==
-                                        null)
-                                    ? ''
-                                    : OrderList[index]['order_date'].toDate();
-
-                                return kthemeOderListRowCon(
-                                    context, OrderList[index],
-                                    productId: OrderList[index]['id'],
-                                    table_No: tablelist[OrderList[index]
-                                        ['order_table']]);
-                              }),
-                            ),
-                          ],
-                        )),
+                              )),
                   )
             : LoadingIndicator());
   }

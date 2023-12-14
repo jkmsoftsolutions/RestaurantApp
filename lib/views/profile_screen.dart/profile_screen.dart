@@ -53,22 +53,23 @@ class ProfileScreen extends StatelessWidget {
           if (!snapshot.hasData) {
             return LoadingIndicator(circleColor: black);
           } else {
-            //controller.snapshotData = snapshot.data!.docs[0];
+            // controller.snapshotData = snapshot.data!.docs[0];
+
             return Column(
               children: [
-                ListTile(
-                  leading: Image.asset(imgProduct)
-                      .box
-                      .roundedFull
-                      .clip(Clip.antiAlias)
-                      .make(),
-                  title: boldText(
-                      text: "${controller.snapshotData["vendor_name"]}",
-                      color: black),
-                  subtitle: normalText(
-                      text: "${controller.snapshotData["email"]}",
-                      color: black),
-                ),
+                // ListTile(
+                //   leading: Image.asset(imgProduct)
+                //       .box
+                //       .roundedFull
+                //       .clip(Clip.antiAlias)
+                //       .make(),
+                //   title: boldText(
+                //       text: "${controller.snapshotData["vendor_name"]}",
+                //       color: black),
+                //   subtitle: normalText(
+                //       text: "${controller.snapshotData["email"]}",
+                //       color: black),
+                // ),
                 const Divider(),
                 10.heightBox,
                 Padding(
