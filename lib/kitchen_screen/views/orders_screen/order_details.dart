@@ -6,6 +6,7 @@ import 'package:emart_seller/theme/firebase_functions.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
 import 'package:emart_seller/views/widgets/our_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import '../../controllers/orders_controller.dart';
@@ -173,257 +174,630 @@ class _KOrderDetailsState extends State<KOrderDetails> {
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      //order delvery status section
-                      Visibility(
-                        visible: controller.confirmed.value,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: (kIsWeb)
+                      ? Center(
+                          child: Container(
+                            width: 800,
+                            child: Column(
                               children: [
-                                boldText(
-                                    text: "ORDER STATUS:",
-                                    color: purpleColor,
-                                    size: 16.0),
-                                Container(
-                                  height: 35,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: black,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '$timeIs',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: const Color.fromARGB(
-                                            255, 252, 251, 251),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            20.heightBox,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                GestureDetector(
-                                  child: Container(
-                                      child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text('Placed'),
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 12, 177, 45)
-                                        // This is what you need!
-                                        ),
-                                  )),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.changeStatus(
-                                        title: "Confirmed",
-                                        status: controller.confirmed.value,
-                                        docID: productData['id']);
-                                  },
-                                  child: Container(
-                                      child: ElevatedButton(
-                                    onPressed: () => setState(() => controller
-                                        .confirmed
-                                        .value = !controller.confirmed.value),
-                                    child: Text(controller.confirmed.value
-                                        ? 'Confirmed'
-                                        : 'Confirmed'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: controller
-                                              .confirmed.value
-                                          ? Color.fromARGB(255, 12, 177, 45)
-                                          : const Color.fromARGB(255, 163, 162,
-                                              162), // This is what you need!
-                                    ),
-                                  )),
-                                ),
-                                Container(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        controller.ondelivery.value =
-                                            !controller.ondelivery.value;
-                                      });
-                                      controller.changeStatus(
-                                          title: "order_on_delivery",
-                                          status: controller.ondelivery.value,
-                                          docID: productData['id']);
-                                    },
-                                    child: Text(controller.ondelivery.value
-                                        ? 'Prepared'
-                                        : 'Preparing'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: controller
-                                              .ondelivery.value
-                                          ? Color.fromARGB(255, 12, 177, 45)
-                                          : const Color.fromARGB(255, 163, 162,
-                                              162), // This is what you need!
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        controller.delivered.value =
-                                            !controller.delivered.value;
-                                      });
-                                      controller.changeStatus(
-                                          title: "order_delivered",
-                                          status: controller.delivered.value,
-                                          docID: productData['id']);
-                                    },
-                                    child: Text(controller.delivered.value
-                                        ? 'Deliverd'
-                                        : 'Deliverd'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: controller
-                                              .delivered.value
-                                          ? Color.fromARGB(255, 12, 177, 45)
-                                          : const Color.fromARGB(255, 163, 162,
-                                              162), // This is what you need!
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                            .box
-                            .padding(const EdgeInsets.all(8.0))
-                            .margin(const EdgeInsets.only(bottom: 10.0))
-                            .outerShadowMd
-                            .white
-                            .border(color: lightGrey)
-                            .roundedSM
-                            .make(),
-                      ),
-
-                      //order details section
-                      10.heightBox,
-                      boldText(
-                          text: "ORDERED PRODUCTS",
-                          color: fontGrey,
-                          size: 16.0),
-                      10.heightBox,
-                      Column(
-                        children: [
-                          GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.orders.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 8,
-                                      crossAxisSpacing: 8,
-                                      mainAxisExtent: 200),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    fn_update_status(
-                                        index: index, updateDb: true);
-                                  },
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                            color: tempArr.contains(index)
-                                                ? green
-                                                : Color.fromARGB(
-                                                    255, 255, 118, 77),
-                                            width: 1,
-                                          )),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                //order delvery status section
+                                Visibility(
+                                  visible: controller.confirmed.value,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Stack(
-                                            children: [
-                                              Image.network(
-                                                controller.orders[index]['img'],
-                                                width: 200,
-                                                height: 100,
-                                                fit: BoxFit.cover,
+                                          boldText(
+                                              text: "ORDER STATUS:",
+                                              color: purpleColor,
+                                              size: 16.0),
+                                          Container(
+                                            height: 35,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: black,
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                '$timeIs',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: const Color.fromARGB(
+                                                      255, 252, 251, 251),
+                                                ),
                                               ),
-                                            ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      20.heightBox,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            child: Container(
+                                                child: ElevatedButton(
+                                              onPressed: () {},
+                                              child: Text('Placed'),
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 12, 177, 45)
+                                                  // This is what you need!
+                                                  ),
+                                            )),
                                           ),
-                                          //  const Spacer(),
-                                          10.heightBox,
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  '${controller.orders[index]['title']}',
-                                                ),
-                                                Icon(
-                                                  Icons.shopping_bag,
-                                                  size: 12,
-                                                  color:
-                                                      (controller.orders[index]
-                                                                  ['isPack'] ==
-                                                              true)
-                                                          ? Colors.green
-                                                          : Colors.transparent,
-                                                ),
-                                              ]),
+                                          GestureDetector(
+                                            onTap: () {
+                                              controller.changeStatus(
+                                                  title: "Confirmed",
+                                                  status: controller
+                                                      .confirmed.value,
+                                                  docID: productData['id']);
+                                            },
+                                            child: Container(
+                                                child: ElevatedButton(
+                                              onPressed: () => setState(() =>
+                                                  controller.confirmed.value =
+                                                      !controller
+                                                          .confirmed.value),
+                                              child: Text(
+                                                  controller.confirmed.value
+                                                      ? 'Confirmed'
+                                                      : 'Confirmed'),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: controller
+                                                        .confirmed.value
+                                                    ? Color.fromARGB(
+                                                        255, 12, 177, 45)
+                                                    : const Color.fromARGB(
+                                                        255,
+                                                        163,
+                                                        162,
+                                                        162), // This is what you need!
+                                              ),
+                                            )),
+                                          ),
+                                          Container(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  controller.ondelivery.value =
+                                                      !controller
+                                                          .ondelivery.value;
+                                                });
+                                                controller.changeStatus(
+                                                    title: "order_on_delivery",
+                                                    status: controller
+                                                        .ondelivery.value,
+                                                    docID: productData['id']);
+                                              },
+                                              child: Text(
+                                                  controller.ondelivery.value
+                                                      ? 'Prepared'
+                                                      : 'Preparing'),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: controller
+                                                        .ondelivery.value
+                                                    ? Color.fromARGB(
+                                                        255, 12, 177, 45)
+                                                    : const Color.fromARGB(
+                                                        255,
+                                                        163,
+                                                        162,
+                                                        162), // This is what you need!
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  controller.delivered.value =
+                                                      !controller
+                                                          .delivered.value;
+                                                });
+                                                controller.changeStatus(
+                                                    title: "order_delivered",
+                                                    status: controller
+                                                        .delivered.value,
+                                                    docID: productData['id']);
+                                              },
+                                              child: Text(
+                                                  controller.delivered.value
+                                                      ? 'Deliverd'
+                                                      : 'Deliverd'),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: controller
+                                                        .delivered.value
+                                                    ? Color.fromARGB(
+                                                        255, 12, 177, 45)
+                                                    : const Color.fromARGB(
+                                                        255,
+                                                        163,
+                                                        162,
+                                                        162), // This is what you need!
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                      .box
+                                      .padding(const EdgeInsets.all(8.0))
+                                      .margin(
+                                          const EdgeInsets.only(bottom: 10.0))
+                                      .outerShadowMd
+                                      .white
+                                      .border(color: lightGrey)
+                                      .roundedSM
+                                      .make(),
+                                ),
 
-                                          10.heightBox,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              "Quntity : ${controller.orders[index]['qty']}"
-                                                  .text
-                                                  .color(redColor)
-                                                  .size(16)
-                                                  .make(),
-                                              Icon(
-                                                  tempArr.contains(index)
-                                                      ? Icons.done_all_sharp
-                                                      : Icons
-                                                          .pending_actions_outlined,
+                                //order details section
+                                10.heightBox,
+                                boldText(
+                                    text: "ORDERED PRODUCTS",
+                                    color: fontGrey,
+                                    size: 16.0),
+                                10.heightBox,
+                                Column(
+                                  children: [
+                                    GridView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: controller.orders.length,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2,
+                                                mainAxisSpacing: 8,
+                                                crossAxisSpacing: 8,
+                                                mainAxisExtent: 200),
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              fn_update_status(
+                                                  index: index, updateDb: true);
+                                            },
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    border: Border.all(
+                                                      color: tempArr
+                                                              .contains(index)
+                                                          ? green
+                                                          : Color.fromARGB(255,
+                                                              255, 118, 77),
+                                                      width: 1,
+                                                    )),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Stack(
+                                                      children: [
+                                                        Image.network(
+                                                          controller
+                                                                  .orders[index]
+                                                              ['img'],
+                                                          width: 200,
+                                                          height: 100,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    //  const Spacer(),
+                                                    10.heightBox,
+                                                    Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            '${controller.orders[index]['title']}',
+                                                          ),
+
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              "${(controller.orders[index]['isPack'] != null && controller.orders[index]['isPack']) ? "pakking" : "Dinning"} ",
+                                                              style: TextStyle(
+                                                                color: white,
+                                                                fontSize: 10.0,
+                                                              ),
+                                                            ).color((controller.orders[index]
+                                                                            [
+                                                                            'isPack'] !=
+                                                                        null &&
+                                                                    controller.orders[
+                                                                            index]
+                                                                        [
+                                                                        'isPack'])
+                                                                ? green
+                                                                : red),
+                                                          ),
+
+                                                          // Icon(
+                                                          //   Icons.shopping_bag,
+                                                          //   size: 12,
+                                                          //   color: (controller.orders[
+                                                          //                   index]
+                                                          //               [
+                                                          //               'isPack'] ==
+                                                          //           true)
+                                                          //       ? Colors.green
+                                                          //       : Colors
+                                                          //           .transparent,
+                                                          // ),
+                                                        ]),
+
+                                                    10.heightBox,
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        "Quntity : ${controller.orders[index]['qty']}"
+                                                            .text
+                                                            .color(redColor)
+                                                            .size(16)
+                                                            .make(),
+                                                        Icon(
+                                                            tempArr.contains(
+                                                                    index)
+                                                                ? Icons
+                                                                    .done_all_sharp
+                                                                : Icons
+                                                                    .pending_actions_outlined,
+                                                            color: tempArr
+                                                                    .contains(
+                                                                        index)
+                                                                ? Colors.green
+                                                                : Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        255,
+                                                                        118,
+                                                                        77),
+                                                            size: 30.0)
+                                                      ],
+                                                    ),
+
+                                                    5.heightBox,
+                                                  ],
+                                                )
+                                                    .box
+                                                    .margin(const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 4))
+                                                    .roundedSM
+                                                    .padding(
+                                                        const EdgeInsets.all(
+                                                            12))
+                                                    .make()),
+                                          );
+                                        }),
+                                  ],
+                                ),
+                                10.heightBox,
+                                //order details section
+                              ],
+                            ),
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            //order delvery status section
+                            Visibility(
+                              visible: controller.confirmed.value,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      boldText(
+                                          text: "ORDER STATUS:",
+                                          color: purpleColor,
+                                          size: 16.0),
+                                      Container(
+                                        height: 35,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: black,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            '$timeIs',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: const Color.fromARGB(
+                                                  255, 252, 251, 251),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  20.heightBox,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                            child: ElevatedButton(
+                                          onPressed: () {},
+                                          child: Text('Placed'),
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 12, 177, 45)
+                                              // This is what you need!
+                                              ),
+                                        )),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.changeStatus(
+                                              title: "Confirmed",
+                                              status:
+                                                  controller.confirmed.value,
+                                              docID: productData['id']);
+                                        },
+                                        child: Container(
+                                            child: ElevatedButton(
+                                          onPressed: () => setState(() =>
+                                              controller.confirmed.value =
+                                                  !controller.confirmed.value),
+                                          child: Text(controller.confirmed.value
+                                              ? 'Confirmed'
+                                              : 'Confirmed'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: controller
+                                                    .confirmed.value
+                                                ? Color.fromARGB(
+                                                    255, 12, 177, 45)
+                                                : const Color.fromARGB(
+                                                    255,
+                                                    163,
+                                                    162,
+                                                    162), // This is what you need!
+                                          ),
+                                        )),
+                                      ),
+                                      Container(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              controller.ondelivery.value =
+                                                  !controller.ondelivery.value;
+                                            });
+                                            controller.changeStatus(
+                                                title: "order_on_delivery",
+                                                status:
+                                                    controller.ondelivery.value,
+                                                docID: productData['id']);
+                                          },
+                                          child: Text(
+                                              controller.ondelivery.value
+                                                  ? 'Prepared'
+                                                  : 'Preparing'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: controller
+                                                    .ondelivery.value
+                                                ? Color.fromARGB(
+                                                    255, 12, 177, 45)
+                                                : const Color.fromARGB(
+                                                    255,
+                                                    163,
+                                                    162,
+                                                    162), // This is what you need!
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              controller.delivered.value =
+                                                  !controller.delivered.value;
+                                            });
+                                            controller.changeStatus(
+                                                title: "order_delivered",
+                                                status:
+                                                    controller.delivered.value,
+                                                docID: productData['id']);
+                                          },
+                                          child: Text(controller.delivered.value
+                                              ? 'Deliverd'
+                                              : 'Deliverd'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: controller
+                                                    .delivered.value
+                                                ? Color.fromARGB(
+                                                    255, 12, 177, 45)
+                                                : const Color.fromARGB(
+                                                    255,
+                                                    163,
+                                                    162,
+                                                    162), // This is what you need!
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                                  .box
+                                  .padding(const EdgeInsets.all(8.0))
+                                  .margin(const EdgeInsets.only(bottom: 10.0))
+                                  .outerShadowMd
+                                  .white
+                                  .border(color: lightGrey)
+                                  .roundedSM
+                                  .make(),
+                            ),
+
+                            //order details section
+                            10.heightBox,
+                            boldText(
+                                text: "ORDERED PRODUCTS",
+                                color: fontGrey,
+                                size: 16.0),
+                            10.heightBox,
+                            Column(
+                              children: [
+                                GridView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: controller.orders.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            mainAxisSpacing: 8,
+                                            crossAxisSpacing: 8,
+                                            mainAxisExtent: 200),
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          fn_update_status(
+                                              index: index, updateDb: true);
+                                        },
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
                                                   color: tempArr.contains(index)
-                                                      ? Colors.green
+                                                      ? green
                                                       : Color.fromARGB(
                                                           255, 255, 118, 77),
-                                                  size: 30.0)
-                                            ],
-                                          ),
+                                                  width: 1,
+                                                )),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Stack(
+                                                  children: [
+                                                    Image.network(
+                                                      controller.orders[index]
+                                                          ['img'],
+                                                      width: 200,
+                                                      height: 100,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ],
+                                                ),
+                                                //  const Spacer(),
+                                                10.heightBox,
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        '${controller.orders[index]['title']}',
+                                                      ),
+                                                      Text(
+                                                        "${(controller.orders[index]['isPack'] != null && controller.orders[index]['isPack']) ? "pakking" : "Dinning"} ",
+                                                        style: TextStyle(
+                                                          color: white,
+                                                          fontSize: 10.0,
+                                                        ),
+                                                      ).color((controller.orders[
+                                                                          index]
+                                                                      [
+                                                                      'isPack'] !=
+                                                                  null &&
+                                                              controller.orders[
+                                                                      index]
+                                                                  ['isPack'])
+                                                          ? green
+                                                          : red),
+                                                      // Icon(
+                                                      //   Icons.shopping_bag,
+                                                      //   size: 12,
+                                                      //   color: (controller.orders[
+                                                      //                   index][
+                                                      //               'isPack'] ==
+                                                      //           true)
+                                                      //       ? Colors.green
+                                                      //       : Colors
+                                                      //           .transparent,
+                                                      // ),
+                                                    ]),
 
-                                          5.heightBox,
-                                        ],
-                                      )
-                                          .box
-                                          .margin(const EdgeInsets.symmetric(
-                                              horizontal: 4))
-                                          .roundedSM
-                                          .padding(const EdgeInsets.all(12))
-                                          .make()),
-                                );
-                              }),
-                        ],
-                      ),
-                      10.heightBox,
-                      //order details section
-                    ],
-                  ),
+                                                10.heightBox,
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    "Quntity : ${controller.orders[index]['qty']}"
+                                                        .text
+                                                        .color(redColor)
+                                                        .size(16)
+                                                        .make(),
+                                                    Icon(
+                                                        tempArr.contains(index)
+                                                            ? Icons
+                                                                .done_all_sharp
+                                                            : Icons
+                                                                .pending_actions_outlined,
+                                                        color: tempArr
+                                                                .contains(index)
+                                                            ? Colors.green
+                                                            : Color.fromARGB(
+                                                                255,
+                                                                255,
+                                                                118,
+                                                                77),
+                                                        size: 30.0)
+                                                  ],
+                                                ),
+
+                                                5.heightBox,
+                                              ],
+                                            )
+                                                .box
+                                                .margin(
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4))
+                                                .roundedSM
+                                                .padding(
+                                                    const EdgeInsets.all(12))
+                                                .make()),
+                                      );
+                                    }),
+                              ],
+                            ),
+                            10.heightBox,
+                            //order details section
+                          ],
+                        ),
                 ),
               ),
       ),

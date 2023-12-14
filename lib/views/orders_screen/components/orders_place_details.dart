@@ -71,6 +71,28 @@ Widget orderItems({data}) {
             ],
           ),
         ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "${(data['isPack'] != null && data['isPack']) ? "pakking" : "Dinning"} ",
+              style: TextStyle(
+                color: white,
+                fontSize: 10.0,
+              ),
+            ).color((data['isPack'] != null && data['isPack']) ? green : red),
+          ),
+
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Icon(
+          //     Icons.shopping_bag,
+          //     size: 15,
+          //     color:
+          //         (data['isPack'] == true) ? Colors.green : Colors.transparent,
+          //   ),
+          // ),a
+        )
       ],
     ),
   );

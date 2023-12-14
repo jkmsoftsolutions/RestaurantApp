@@ -6,6 +6,7 @@ import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/Newuser_order/qrcode.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../controllers/newuser_order_controller.dart';
 import '../widgets/normal_text.dart';
@@ -101,264 +102,559 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
       body: (controller == null)
           ? progress()
-          : ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                themeHeaderHome(context, title: "Payment"),
-                25.heightBox,
-                Container(
-                  child: Row(children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            PayType = "online";
-                          });
+          : (kIsWeb)
+              ? Center(
+                  child: Container(
+                    width: 800,
+                    child: ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        themeHeaderHome(context, title: "Payment"),
+                        25.heightBox,
+                        Container(
+                          child: Row(children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    PayType = "online";
+                                  });
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(10),
+                                    height: 85,
+                                    decoration: BoxDecoration(
+                                        color: (PayType == "online")
+                                            ? Color.fromARGB(160, 241, 227, 159)
+                                            : Colors.black12,
+                                        boxShadow: themeBox,
+                                        borderRadius: BorderRadius.circular(15),
+                                        border:
+                                            Border.all(color: Colors.black12)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GoogleText(
+                                                text: "QR Code",
+                                                fsize: 15.0,
+                                                color: Colors.black,
+                                                fweight: FontWeight.bold),
+                                            10.heightBox,
+                                            GoogleText(
+                                                text:
+                                                    "${controller.total} Rs/-",
+                                                fsize: 13.0,
+                                                color: Colors.green,
+                                                fstyle: FontStyle.italic,
+                                                fweight: FontWeight.bold),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.qr_code,
+                                          size: 10,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    PayType = "offline";
+                                  });
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(10),
+                                    height: 85,
+                                    decoration: BoxDecoration(
+                                        boxShadow: themeBox,
+                                        color: (PayType == "offline")
+                                            ? Color.fromARGB(160, 241, 227, 159)
+                                            : Colors.black12,
+                                        borderRadius: BorderRadius.circular(15),
+                                        border:
+                                            Border.all(color: Colors.black12)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GoogleText(
+                                                text: "Cash Pay",
+                                                fsize: 15.0,
+                                                color: Colors.black,
+                                                fweight: FontWeight.bold),
+                                            10.heightBox,
+                                            GoogleText(
+                                                text:
+                                                    "${controller.total} Rs/-",
+                                                fsize: 13.0,
+                                                color: Colors.green,
+                                                fstyle: FontStyle.italic,
+                                                fweight: FontWeight.bold),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.money,
+                                          size: 10,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    PayType = "Razorpay";
+                                  });
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(10),
+                                    height: 85,
+                                    decoration: BoxDecoration(
+                                        boxShadow: themeBox,
+                                        color: (PayType == "Razorpay")
+                                            ? Color.fromARGB(160, 241, 227, 159)
+                                            : Colors.black12,
+                                        borderRadius: BorderRadius.circular(15),
+                                        border:
+                                            Border.all(color: Colors.black12)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GoogleText(
+                                                text: "Razorpay",
+                                                fsize: 15.0,
+                                                color: Colors.black,
+                                                fweight: FontWeight.bold),
+                                            10.heightBox,
+                                            GoogleText(
+                                                text:
+                                                    "${controller.total} Rs/-",
+                                                fsize: 10.0,
+                                                color: Colors.green,
+                                                fstyle: FontStyle.italic,
+                                                fweight: FontWeight.bold),
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.money,
+                                          size: 10,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                          ]),
+                        ),
+                        10.heightBox,
+                        if (PayType == "online")
+                          Container(
+                              height: 250,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 10),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                  boxShadow: themeBox,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GoogleText(
+                                      text: "Scan QR Code",
+                                      fsize: 16.0,
+                                      color: Colors.black,
+                                      fweight: FontWeight.bold),
+                                  10.heightBox,
+                                  SizedBox(
+                                    height: 200,
+                                    child: QRCode(
+                                      qrData: "Saurabh",
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        if (PayType == "Razorpay")
+                          Container(
+                              height: 250,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 10),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                  boxShadow: themeBox,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  20.heightBox,
+                                  Container(
+                                    width: 200,
+                                    child: (_clicked)
+                                        ? progress()
+                                        : ElevatedButton.icon(
+                                            onPressed: _clicked
+                                                ? null
+                                                : () {
+                                                    createOrder();
+                                                    setState(
+                                                      () => _clicked = true,
+                                                    );
+                                                  },
+                                            icon: const Icon(
+                                                Icons.arrow_forward_sharp),
+                                            label: const Center(
+                                                child:
+                                                    Text("PROCEED TO  PAY"))),
+                                  ),
+                                ],
+                              )),
+                        if (PayType == "offline")
+                          Container(
+                              height: 250,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 10),
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                  boxShadow: themeBox,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GoogleText(
+                                      text: 'Fill Total Amount',
+                                      fsize: 18.0,
+                                      color: Colors.black,
+                                      fweight: FontWeight.bold),
+                                  20.heightBox,
+                                  Container(
+                                    width: 200,
+                                    child: TextFormField(
+                                      decoration: InputDecoration(
+                                          prefixIcon: Icon(Icons.money,
+                                              color: Colors.blue, size: 25),
+                                          fillColor: Colors.grey,
+                                          labelText: 'Total Amount',
+                                          focusColor: Colors.grey),
+                                      initialValue: "${controller.total}",
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        Divider(color: Colors.black12),
+                        myFormField(
+                            context, controller.payment_description, 'Comment',
+                            maxLine: 4),
+                        themeButton3(context, () {
+                          controller.handlePaymentSuccess(
+                            context,
+                            PayType,
+                            widget.OrderID,
+                          );
                         },
-                        child: Container(
-                            margin: EdgeInsets.all(8.0),
-                            padding: EdgeInsets.all(10),
-                            height: 85,
-                            decoration: BoxDecoration(
-                                color: (PayType == "online")
-                                    ? Color.fromARGB(160, 241, 227, 159)
-                                    : Colors.black12,
-                                boxShadow: themeBox,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Colors.black12)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GoogleText(
-                                        text: "QR Code",
-                                        fsize: 15.0,
-                                        color: Colors.black,
-                                        fweight: FontWeight.bold),
-                                    10.heightBox,
-                                    GoogleText(
-                                        text: "${controller.total} Rs/-",
-                                        fsize: 13.0,
-                                        color: Colors.green,
-                                        fstyle: FontStyle.italic,
-                                        fweight: FontWeight.bold),
-                                  ],
-                                ),
-                                Icon(
-                                  Icons.qr_code,
-                                  size: 10,
-                                  color: Colors.black,
-                                ),
-                              ],
-                            )),
-                      ),
+                            buttonColor: Colors.green,
+                            label: "Proceed to  Invoice")
+                      ],
                     ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            PayType = "offline";
-                          });
-                        },
-                        child: Container(
-                            margin: EdgeInsets.all(8.0),
-                            padding: EdgeInsets.all(10),
-                            height: 85,
-                            decoration: BoxDecoration(
-                                boxShadow: themeBox,
-                                color: (PayType == "offline")
-                                    ? Color.fromARGB(160, 241, 227, 159)
-                                    : Colors.black12,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Colors.black12)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                )
+              : ListView(
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    themeHeaderHome(context, title: "Payment"),
+                    25.heightBox,
+                    Container(
+                      child: Row(children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                PayType = "online";
+                              });
+                            },
+                            child: Container(
+                                margin: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(10),
+                                height: 85,
+                                decoration: BoxDecoration(
+                                    color: (PayType == "online")
+                                        ? Color.fromARGB(160, 241, 227, 159)
+                                        : Colors.black12,
+                                    boxShadow: themeBox,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(color: Colors.black12)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    GoogleText(
-                                        text: "Cash Pay",
-                                        fsize: 15.0,
-                                        color: Colors.black,
-                                        fweight: FontWeight.bold),
-                                    10.heightBox,
-                                    GoogleText(
-                                        text: "${controller.total} Rs/-",
-                                        fsize: 13.0,
-                                        color: Colors.green,
-                                        fstyle: FontStyle.italic,
-                                        fweight: FontWeight.bold),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        GoogleText(
+                                            text: "QR Code",
+                                            fsize: 15.0,
+                                            color: Colors.black,
+                                            fweight: FontWeight.bold),
+                                        10.heightBox,
+                                        GoogleText(
+                                            text: "${controller.total} Rs/-",
+                                            fsize: 13.0,
+                                            color: Colors.green,
+                                            fstyle: FontStyle.italic,
+                                            fweight: FontWeight.bold),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.qr_code,
+                                      size: 10,
+                                      color: Colors.black,
+                                    ),
                                   ],
-                                ),
-                                Icon(
-                                  Icons.money,
-                                  size: 10,
-                                  color: Colors.black,
-                                ),
-                              ],
-                            )),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            PayType = "Razorpay";
-                          });
-                        },
-                        child: Container(
-                            margin: EdgeInsets.all(8.0),
-                            padding: EdgeInsets.all(10),
-                            height: 85,
-                            decoration: BoxDecoration(
-                                boxShadow: themeBox,
-                                color: (PayType == "Razorpay")
-                                    ? Color.fromARGB(160, 241, 227, 159)
-                                    : Colors.black12,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Colors.black12)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                )),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                PayType = "offline";
+                              });
+                            },
+                            child: Container(
+                                margin: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(10),
+                                height: 85,
+                                decoration: BoxDecoration(
+                                    boxShadow: themeBox,
+                                    color: (PayType == "offline")
+                                        ? Color.fromARGB(160, 241, 227, 159)
+                                        : Colors.black12,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(color: Colors.black12)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    GoogleText(
-                                        text: "Razorpay",
-                                        fsize: 15.0,
-                                        color: Colors.black,
-                                        fweight: FontWeight.bold),
-                                    10.heightBox,
-                                    GoogleText(
-                                        text: "${controller.total} Rs/-",
-                                        fsize: 10.0,
-                                        color: Colors.green,
-                                        fstyle: FontStyle.italic,
-                                        fweight: FontWeight.bold),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        GoogleText(
+                                            text: "Cash Pay",
+                                            fsize: 15.0,
+                                            color: Colors.black,
+                                            fweight: FontWeight.bold),
+                                        10.heightBox,
+                                        GoogleText(
+                                            text: "${controller.total} Rs/-",
+                                            fsize: 13.0,
+                                            color: Colors.green,
+                                            fstyle: FontStyle.italic,
+                                            fweight: FontWeight.bold),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.money,
+                                      size: 10,
+                                      color: Colors.black,
+                                    ),
                                   ],
-                                ),
-                                Icon(
-                                  Icons.money,
-                                  size: 10,
-                                  color: Colors.black,
-                                ),
-                              ],
-                            )),
-                      ),
+                                )),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                PayType = "Razorpay";
+                              });
+                            },
+                            child: Container(
+                                margin: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(10),
+                                height: 85,
+                                decoration: BoxDecoration(
+                                    boxShadow: themeBox,
+                                    color: (PayType == "Razorpay")
+                                        ? Color.fromARGB(160, 241, 227, 159)
+                                        : Colors.black12,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(color: Colors.black12)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        GoogleText(
+                                            text: "Razorpay",
+                                            fsize: 15.0,
+                                            color: Colors.black,
+                                            fweight: FontWeight.bold),
+                                        10.heightBox,
+                                        GoogleText(
+                                            text: "${controller.total} Rs/-",
+                                            fsize: 10.0,
+                                            color: Colors.green,
+                                            fstyle: FontStyle.italic,
+                                            fweight: FontWeight.bold),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.money,
+                                      size: 10,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ),
+                      ]),
                     ),
-                  ]),
+                    10.heightBox,
+                    if (PayType == "online")
+                      Container(
+                          height: 250,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              boxShadow: themeBox,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GoogleText(
+                                  text: "Scan QR Code",
+                                  fsize: 16.0,
+                                  color: Colors.black,
+                                  fweight: FontWeight.bold),
+                              10.heightBox,
+                              SizedBox(
+                                height: 200,
+                                child: QRCode(
+                                  qrData: "Saurabh",
+                                ),
+                              ),
+                            ],
+                          )),
+                    if (PayType == "Razorpay")
+                      Container(
+                          height: 250,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              boxShadow: themeBox,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              20.heightBox,
+                              Container(
+                                width: 200,
+                                child: (_clicked)
+                                    ? progress()
+                                    : ElevatedButton.icon(
+                                        onPressed: _clicked
+                                            ? null
+                                            : () {
+                                                createOrder();
+                                                setState(
+                                                  () => _clicked = true,
+                                                );
+                                              },
+                                        icon: const Icon(
+                                            Icons.arrow_forward_sharp),
+                                        label: const Center(
+                                            child: Text("PROCEED TO  PAY"))),
+                              ),
+                            ],
+                          )),
+                    if (PayType == "offline")
+                      Container(
+                          height: 250,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              boxShadow: themeBox,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GoogleText(
+                                  text: 'Fill Total Amount',
+                                  fsize: 18.0,
+                                  color: Colors.black,
+                                  fweight: FontWeight.bold),
+                              20.heightBox,
+                              Container(
+                                width: 200,
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(Icons.money,
+                                          color: Colors.blue, size: 25),
+                                      fillColor: Colors.grey,
+                                      labelText: 'Total Amount',
+                                      focusColor: Colors.grey),
+                                  initialValue: "${controller.total}",
+                                ),
+                              ),
+                            ],
+                          )),
+                    Divider(color: Colors.black12),
+                    myFormField(
+                        context, controller.payment_description, 'Comment',
+                        maxLine: 4),
+                    themeButton3(context, () {
+                      controller.handlePaymentSuccess(
+                        context,
+                        PayType,
+                        widget.OrderID,
+                      );
+                    }, buttonColor: Colors.green, label: "Proceed to  Invoice")
+                  ],
                 ),
-                10.heightBox,
-                if (PayType == "online")
-                  Container(
-                      height: 250,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                          boxShadow: themeBox,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GoogleText(
-                              text: "Scan QR Code",
-                              fsize: 16.0,
-                              color: Colors.black,
-                              fweight: FontWeight.bold),
-                          10.heightBox,
-                          SizedBox(
-                            height: 200,
-                            child: QRCode(
-                              qrData: "Saurabh",
-                            ),
-                          ),
-                        ],
-                      )),
-                if (PayType == "Razorpay")
-                  Container(
-                      height: 250,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                          boxShadow: themeBox,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          20.heightBox,
-                          Container(
-                            width: 200,
-                            child: (_clicked)
-                                ? progress()
-                                : ElevatedButton.icon(
-                                    onPressed: _clicked
-                                        ? null
-                                        : () {
-                                            createOrder();
-                                            setState(
-                                              () => _clicked = true,
-                                            );
-                                          },
-                                    icon: const Icon(Icons.arrow_forward_sharp),
-                                    label: const Center(
-                                        child: Text("PROCEED TO  PAY"))),
-                          ),
-                        ],
-                      )),
-                if (PayType == "offline")
-                  Container(
-                      height: 250,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                          boxShadow: themeBox,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GoogleText(
-                              text: 'Fill Total Amount',
-                              fsize: 18.0,
-                              color: Colors.black,
-                              fweight: FontWeight.bold),
-                          20.heightBox,
-                          Container(
-                            width: 200,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.money,
-                                      color: Colors.blue, size: 25),
-                                  fillColor: Colors.grey,
-                                  labelText: 'Total Amount',
-                                  focusColor: Colors.grey),
-                              initialValue: "${controller.total}",
-                            ),
-                          ),
-                        ],
-                      )),
-                Divider(color: Colors.black12),
-                myFormField(context, controller.payment_description, 'Comment',
-                    maxLine: 4),
-                themeButton3(context, () {
-                  controller.handlePaymentSuccess(
-                    context,
-                    PayType,
-                    widget.OrderID,
-                  );
-                }, buttonColor: Colors.green, label: "Proceed to  Invoice")
-              ],
-            ),
     );
   }
 }
