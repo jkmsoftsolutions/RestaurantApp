@@ -34,15 +34,13 @@ class _KHomeScreenState extends State<KHomeScreen> {
     super.initState();
   }
 
-
-  // comon insit funciton 
-  fn_comon_init()async{
+  // comon insit funciton
+  fn_comon_init() async {
     await get_odaydata();
     await Comman_Cate_Data();
     await get_pendding();
     setState(() {});
   }
-
 
   bool wait = true;
 
@@ -51,7 +49,6 @@ class _KHomeScreenState extends State<KHomeScreen> {
   get_odaydata() async {
     Todayorder = await controller.Todaydata();
     setState(() {
-      
       wait = false;
     });
   }
@@ -64,7 +61,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
     });
   }
 
-  /////////////  table data fetch From Firebase   +++++++++++++++++++++++++++++++++++++++++++++
+  /////////////  table data fetch From Firebase  +++++++++++++++++++++++++++++++++++++++++++++
 
   var tablelist = {};
   var db = FirebaseFirestore.instance;
@@ -74,7 +71,6 @@ class _KHomeScreenState extends State<KHomeScreen> {
       'table': "tables",
     };
     var temp = await dbFindDynamic(db, w);
-
     setState(() {
       temp.forEach((k, v) {
         tablelist[v['id']] = v['tab_no'];
@@ -170,8 +166,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                                                                 .spaceBetween,
                                                         children: [
                                                           Text(
-                                                            countData[0]
-                                                                .toString(),
+                                                            '$Todayorder',
                                                             style: TextStyle(
                                                                 fontSize: 15.5,
                                                                 fontFamily:
@@ -430,71 +425,98 @@ class _KHomeScreenState extends State<KHomeScreen> {
                         }),
 
                     10.heightBox,
-                    (controller.pendingProductList.isEmpty)?SizedBox():Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                          const Divider(),
-                          boldText(
-                              text: 'All Pending Recipes',
-                              color: darkGrey,
-                              size: 16.0),
-                          10.heightBox,
-                          Container(
-                            height: 100.0,
-                            margin: EdgeInsets.only(bottom: 10.0),
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              physics: ScrollPhysics(),
-                              children: [
-                                for (var k in controller.pendingProductList.keys)
-                                  InkWell(
-                                    onTap: (){
-                                      if(tablelist != null ||  controller.pendingProductList[k]['title'] != null)
-                                      modal_pendingTable(context,title: "${controller.pendingProductList[k]['title']}",data:controller.pendingProductList[k],tablelist: tablelist);
-                                    },
-                                    child: Container(
-                                        margin: EdgeInsets.only(right: 8.0),
-                                        decoration: BoxDecoration(
-                                            boxShadow: themeBox,
-                                            border: Border.all(
-                                                width: 1.0, color: Colors.red)),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Stack(
-                                              children:[ Image.network(
-                                                '${controller.pendingProductList[k]['img']}',
-                                                width: 100,
-                                                height: 70,
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Positioned(
-                                                top: 3.0,
-                                                right: 3.0,
-                                                child: Container(padding: EdgeInsets.all(4.0), width: 30.0,height: 30.0, decoration: BoxDecoration(color: Colors.red,borderRadius: BorderRadius.circular(20.0)), 
-                                                child: Center(child: Text("${controller.pendingProductList[k]['tPending']}",textAlign: TextAlign.center, style: themeTextStyle(color: Colors.white),))),
-                                              ),
-                                              ]
-                                            ),
-                                            10.heightBox,
-                                            "${controller.pendingProductList[k]['title']}"
-                                                .text
-                                                .size(10)
-                                                .color(darkFontGrey)
-                                                .make(),
-                                            //10.heightBox,
-                                            // "Qty : ${controller.pendingProductList[k]['tPending']}"
-                                            //     .text
-                                            //     .color(redColor)
-                                            //     .size(12)
-                                            //     .make(),
-                                          ],
-                                    )),
+                    (controller.pendingProductList.isEmpty)
+                        ? SizedBox()
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                                const Divider(),
+                                boldText(
+                                    text: 'All Pending Recipes',
+                                    color: darkGrey,
+                                    size: 16.0),
+                                10.heightBox,
+                                Container(
+                                  height: 100.0,
+                                  margin: EdgeInsets.only(bottom: 10.0),
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: ScrollPhysics(),
+                                    children: [
+                                      for (var k
+                                          in controller.pendingProductList.keys)
+                                        InkWell(
+                                          onTap: () {
+                                            if (tablelist != null ||
+                                                controller.pendingProductList[k]
+                                                        ['title'] !=
+                                                    null)
+                                              modal_pendingTable(context,
+                                                  title:
+                                                      "${controller.pendingProductList[k]['title']}",
+                                                  data: controller
+                                                      .pendingProductList[k],
+                                                  tablelist: tablelist);
+                                          },
+                                          child: Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 8.0),
+                                              decoration: BoxDecoration(
+                                                  boxShadow: themeBox,
+                                                  border: Border.all(
+                                                      width: 1.0,
+                                                      color: Colors.red)),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Stack(children: [
+                                                    Image.network(
+                                                      '${controller.pendingProductList[k]['img']}',
+                                                      width: 100,
+                                                      height: 70,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                    Positioned(
+                                                      top: 3.0,
+                                                      right: 3.0,
+                                                      child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  4.0),
+                                                          width: 30.0,
+                                                          height: 30.0,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.red,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0)),
+                                                          child: Center(
+                                                              child: Text(
+                                                            "${controller.pendingProductList[k]['tPending']}",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style:
+                                                                themeTextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ))),
+                                                    ),
+                                                  ]),
+                                                  10.heightBox,
+                                                  "${controller.pendingProductList[k]['title']}"
+                                                      .text
+                                                      .size(10)
+                                                      .color(darkFontGrey)
+                                                      .make(),
+                                                ],
+                                              )),
+                                        ),
+                                    ],
                                   ),
-                              ],
-                            ),
-                          ),
-                       ]),
+                                ),
+                              ]),
                     //10.heightBox,
                     const Divider(),
                     10.heightBox,
@@ -524,16 +546,6 @@ class _KHomeScreenState extends State<KHomeScreen> {
                                                     ['order_table']])),
                                   ),
                                 ),
-                                50.widthBox,
-                                Container(
-                                    margin: EdgeInsets.all(5),
-                                    width: 600,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Image.network(
-                                        'https://img.freepik.com/free-vector/hand-drawn-india-lifestyle-illustration_23-2149642053.jpg?t=st=1700474412~exp=1700475012~hmac=bac151701243f1f9a7682e75e9245b3edb5131e1aa3b3855f1629417fbdc2304',
-                                        fit: BoxFit.fill)),
                               ],
                             )
                           : ListView(
@@ -542,7 +554,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                               children: List.generate(
                                   data.length,
                                   (index) =>
-                                      data[index]['order_code'].length == 0
+                                      data[index]['order_code'].length == null
                                           ? const SizedBox()
                                           : kthemeOderListRowCon(
                                               context, data[index],
@@ -561,100 +573,122 @@ class _KHomeScreenState extends State<KHomeScreen> {
   }
 
   // Modal =================================================================
-  
-  modal_pendingTable(context,{title:'Title',data:'',tablelist:''})async {
+
+  modal_pendingTable(context, {title: 'Title', data: '', tablelist: ''}) async {
     var tableList = data['table_list'];
     //var tableNo = tablelist
     print(tableList);
-      {
-        showModalBottomSheet(
-        //isScrollControlled: true, // for full screen
-            context: context,
-            backgroundColor: Color.fromARGB(0, 232, 232, 232),
-            builder: (BuildContext context) {
-              return ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0)),
-                  child: Container(
-                      //height: MediaQuery.of(context).size.height - 200,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30.0),
-                              topRight: Radius.circular(30.0))),
-                      child: Column(children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 238, 248, 255),
-                          ),
-                          child: ListTile(
-                              leading: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Icon(
-                                      Icons.arrow_back,
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                    ) // the arrow back icon
-                                    ),
-                              ),
-                              title: Center(
-                                  child: Text(
-                                "$title",
-                                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-                              ) // Your desired title
-                                  )),
+    {
+      showModalBottomSheet(
+          //isScrollControlled: true, // for full screen
+          context: context,
+          backgroundColor: Color.fromARGB(0, 232, 232, 232),
+          builder: (BuildContext context) {
+            return ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0)),
+                child: Container(
+                    //height: MediaQuery.of(context).size.height - 200,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0))),
+                    child: Column(children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 238, 248, 255),
                         ),
+                        child: ListTile(
+                            leading: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_back,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                  ) // the arrow back icon
+                                  ),
+                            ),
+                            title: Center(
+                                child: Text(
+                              "$title",
+                              style: TextStyle(
+                                  color: const Color.fromARGB(255, 0, 0, 0)),
+                            ) // Your desired title
+                                )),
+                      ),
 
-                        // Price Field
-                        SizedBox(height: 10.0),
+                      // Price Field
+                      SizedBox(height: 10.0),
 
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 20.0),
-                          child: GridView.builder(
-                            //controller: _hScrollController,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            physics: ScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 100,
-                                //childAspectRatio: 3,
-                                crossAxisSpacing: 15,
-                                mainAxisSpacing: 15),
-                            itemBuilder: (BuildContext context, index) {
-                              if (index == tableList.length) {
-                                //return CupertinoActivityIndicator();
-                              }
-                              var data = tableList[index];
-                              var tablNo = tablelist[data['table']];
-                              return (tablNo == null)?SizedBox():Container(
-                                decoration: BoxDecoration(color: themeBG4, borderRadius: BorderRadius.circular(7)),
-                                child: Column(
-                                  children: [
-                                    Text("${tablNo}",style: themeTextStyle(size: 50.0,fw: FontWeight.bold,color: Colors.white)),
-                                    SizedBox(height: 6.0),
-                                    Row(
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 20.0),
+                        child: GridView.builder(
+                          //controller: _hScrollController,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: ScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 100,
+                                  //childAspectRatio: 3,
+                                  crossAxisSpacing: 15,
+                                  mainAxisSpacing: 15),
+                          itemBuilder: (BuildContext context, index) {
+                            if (index == tableList.length) {
+                              //return CupertinoActivityIndicator();
+                            }
+                            var data = tableList[index];
+                            var tablNo = tablelist[data['table']];
+                            return (tablNo == null)
+                                ? SizedBox()
+                                : Container(
+                                    decoration: BoxDecoration(
+                                        color: themeBG4,
+                                        borderRadius: BorderRadius.circular(7)),
+                                    child: Column(
                                       children: [
-                                        Expanded(child: Container( margin: EdgeInsets.only(bottom: 0), decoration: BoxDecoration(color: Colors.yellow,borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0),bottomRight: Radius.circular(7.0))), child: Center(child: Text("Qnt: ${data['qnt']}")))),
+                                        Text("${tablNo}",
+                                            style: themeTextStyle(
+                                                size: 50.0,
+                                                fw: FontWeight.bold,
+                                                color: Colors.white)),
+                                        SizedBox(height: 6.0),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 0),
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.yellow,
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                        20.0),
+                                                                bottomRight: Radius
+                                                                    .circular(
+                                                                        7.0))),
+                                                    child: Center(
+                                                        child: Text(
+                                                            "Qnt: ${data['qnt']}")))),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                            itemCount: tableList.length,
-                          ),
-                        )
-
-
-
-
-
-                      ])));
-            });
-      }
+                                  );
+                          },
+                          itemCount: tableList.length,
+                        ),
+                      )
+                    ])));
+          });
     }
+  }
 }

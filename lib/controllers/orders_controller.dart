@@ -65,9 +65,9 @@ class OrdersController extends GetxController {
   getOrders(data) {
     orders.clear();
     for (var item in data['orders']) {
-      //if (item['vendor_id'] == currentUser!.uid) {
-      orders.add(item);
-      //}
+      if (item['vendor_id'] == currentUser!.uid) {
+        orders.add(item);
+      }
     }
   }
 

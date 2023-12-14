@@ -52,3 +52,5 @@ const nameHint = "eg. Vender name",
 
 const RazorpayApiKey = "rzp_test_SdGBahWtlKWMwb";
 //const RazorpayApiiSecret = "4W36wWloKEj1CDAWlbCVjElN";
+
+const defaultPadding = 16.0;

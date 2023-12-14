@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import '../const/const.dart';
 
-class ProfileController extends GetxController {
+class KProfileController extends GetxController {
   late QueryDocumentSnapshot snapshotData;
 
   var profileImgPath = ''.obs;
@@ -27,7 +27,6 @@ class ProfileController extends GetxController {
 
   // It is mandatory initialize with one value from listType
   final selected = "some book type".obs;
-
   void setSelected(String value) {
     selected.value = value;
   }

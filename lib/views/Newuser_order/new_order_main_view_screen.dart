@@ -10,6 +10,7 @@ import 'package:emart_seller/views/Newuser_order/commponents/new_order_widgets.d
 
 import 'package:emart_seller/views/Newuser_order/select_table.dart';
 import 'package:emart_seller/views/widgets/dashboard_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../const/style.dart';
 import '../../controllers/newuser_order_controller.dart';
@@ -40,6 +41,13 @@ class _NewUserScreenState extends State<NewUserScreen> {
     setState(() {
       wait = false;
     });
+  }
+
+  // set tate =========================================
+  fn_setState() {
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -127,83 +135,119 @@ class _NewUserScreenState extends State<NewUserScreen> {
           (controller.editData != null && controller.editData.isNotEmpty)
               ? SizedBox()
               : themeFooter(context, selected: 1),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.black12,
-      //   title: GoogleText(
-      //       text: "New User Info",
-      //       color: Colors.black,
-      //       fsize: 18.0,
-      //       fweight: FontWeight.bold),
-      // ),
       body: (wait)
           ? progress()
           : Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  3.heightBox,
-                  (step == 1)
-                      ? UserInfo(context, controller, nextFn: _fnNext)
-                      : SizedBox(),
-                  (step == 2) ? BookTablePage(context) : SizedBox(),
-                  (step == 3) ? ProductsScreen(context) : SizedBox(),
-                  (step == 4)
-                      ? CartPreview(
-                          context,
-                          controller,
-                          (controller.TempValue["items_data"] == null)
-                              ? {}
-                              : controller.TempValue["items_data"],
-                          laabel: 'Cart Preview',
-                          backFn: _fnBack,
-                          nextFn: RoutePayPage)
-                      : SizedBox(),
-                  20.heightBox,
-                  const Divider(
-                    color: Colors.black,
-                  ),
-                  (step == 1 || step == 2 || step == 3 || step == 4)
-                      ? SizedBox()
-                      : Container(
-                          margin: EdgeInsets.only(top: 10),
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                (step == 1)
-                                    ? SizedBox()
-                                    : themeButton3(context, () {
-                                        _fnBack();
-                                      },
-                                        btnHeightSize: 40.0,
-                                        btnWidthSize: 100.0,
-                                        fontSize: 15.0,
-                                        label: "<< Previous",
-                                        buttonColor: Colors.black),
-                                SizedBox(width: 20.0),
-                                // (step == 4)
-                                //     ? themeButton3(context, () {
-                                //         Get.to(PaymentScreen(
-                                //             OrderID: "${controller.IDdata}"));
-                                //       },
-                                //         label: " Pay ${controller.total} Rs/-  ",
-                                //         radius: 5.0,
-                                //         buttonColor: Colors.green)
-                                //     : themeButton3(context, () {
-                                //         _fnNext();
-                                //         // Get.to(() => const SelectableScreen());
-                                //       },
-                                //         btnWidthSize: 100.0,
-                                //         buttonColor: themeBG4,
-                                //         btnHeightSize: 40.0,
-                                //         fontSize: 15.0,
-                                //         label: "Next >>"),
-                              ]),
+              child: (kIsWeb)
+                  ? Center(
+                      child: Container(
+                        width: 800,
+                        child: ListView(
+                          physics: BouncingScrollPhysics(),
+                          children: [
+                            3.heightBox,
+                            (step == 1)
+                                ? UserInfo(context, controller, nextFn: _fnNext)
+                                : SizedBox(),
+                            (step == 2) ? BookTablePage(context) : SizedBox(),
+                            (step == 3) ? ProductsScreen(context) : SizedBox(),
+                            (step == 4)
+                                ? CartPreview(
+                                    context,
+                                    controller,
+                                    (controller.TempValue["items_data"] == null)
+                                        ? {}
+                                        : controller.TempValue["items_data"],
+                                    laabel: 'Cart Preview',
+                                    backFn: _fnBack,
+                                    nextFn: RoutePayPage,
+                                    orderId: controller.IDdata,
+                                    refreshPage: fn_setState)
+                                : SizedBox(),
+                            20.heightBox,
+                            const Divider(
+                              color: Colors.black,
+                            ),
+                            (step == 1 || step == 2 || step == 3 || step == 4)
+                                ? SizedBox()
+                                : Container(
+                                    margin: EdgeInsets.only(top: 10),
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.06,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          (step == 1)
+                                              ? SizedBox()
+                                              : themeButton3(context, () {
+                                                  _fnBack();
+                                                },
+                                                  btnHeightSize: 40.0,
+                                                  btnWidthSize: 100.0,
+                                                  fontSize: 15.0,
+                                                  label: "<< Previous",
+                                                  buttonColor: Colors.black),
+                                          SizedBox(width: 20.0),
+                                        ]),
+                                  ),
+                          ],
                         ),
-                ],
-              ),
+                      ),
+                    )
+                  : ListView(
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        3.heightBox,
+                        (step == 1)
+                            ? UserInfo(context, controller, nextFn: _fnNext)
+                            : SizedBox(),
+                        (step == 2) ? BookTablePage(context) : SizedBox(),
+                        (step == 3) ? ProductsScreen(context) : SizedBox(),
+                        (step == 4)
+                            ? CartPreview(
+                                context,
+                                controller,
+                                (controller.TempValue["items_data"] == null)
+                                    ? {}
+                                    : controller.TempValue["items_data"],
+                                laabel: 'Cart Preview',
+                                backFn: _fnBack,
+                                nextFn: RoutePayPage,
+                                orderId: controller.IDdata,
+                                refreshPage: fn_setState)
+                            : SizedBox(),
+                        20.heightBox,
+                        const Divider(
+                          color: Colors.black,
+                        ),
+                        (step == 1 || step == 2 || step == 3 || step == 4)
+                            ? SizedBox()
+                            : Container(
+                                margin: EdgeInsets.only(top: 10),
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.06,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      (step == 1)
+                                          ? SizedBox()
+                                          : themeButton3(context, () {
+                                              _fnBack();
+                                            },
+                                              btnHeightSize: 40.0,
+                                              btnWidthSize: 100.0,
+                                              fontSize: 15.0,
+                                              label: "<< Previous",
+                                              buttonColor: Colors.black),
+                                      SizedBox(width: 20.0),
+                                    ]),
+                              ),
+                      ],
+                    ),
             ),
     );
   }
@@ -228,14 +272,6 @@ class _NewUserScreenState extends State<NewUserScreen> {
 
 /////////  Widget for Product select ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   Widget ProductsScreen(BuildContext context) {
-    // return StreamBuilder(
-    //     stream: StoreServices.allproducts(),
-    //     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-    //       if (!snapshot.hasData) {
-    //         return LoadingIndicator();
-    //       } else {
-    //         var allproductsdatavv = snapshot.data!.docs;
-
     return (controller.productList.isEmpty)
         ? progress()
         : Container(
@@ -452,7 +488,6 @@ class _NewUserScreenState extends State<NewUserScreen> {
   // add product in cart
   fnAddProductInCart(data, type) async {
     await controller.calculateTotal(data, type);
-
     setState(() {});
   }
 }

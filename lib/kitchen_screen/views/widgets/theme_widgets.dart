@@ -8,39 +8,33 @@ import 'package:emart_seller/views/orders_screen/order_details.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 
-Widget kthemeOderListRowCon(context, data, {productId: '', table_No: '',controller:'',rloadPage:''}) {
+Widget kthemeOderListRowCon(context, data,
+    {productId: '', table_No: '', controller: '', rloadPage: ''}) {
   var temp = data["order_date"];
   DateTime date = temp.toDate();
   var formattedTime = DateFormat.jm().format(date);
 
   return Container(
     padding: EdgeInsets.symmetric(vertical: 0),
-    //margin: EdgeInsets.only(bottom: 5.0, top: 5.0),
+    margin: EdgeInsets.only(bottom: 5.0, top: 5.0),
     decoration: BoxDecoration(
-        boxShadow: themeBox,
-        // color: (data['order_delivered'] != null && data['order_delivered'])
-        //     ? deliverdcolor
-        //     : pendingcolor,
-        //border: Border(left:BorderSide(color: Colors.red,width: 2.0)),
-        // border: Border(
-        //   left: BorderSide( //                   <--- left side
-        //     color: Colors.black,
-        //     width: 3.0,
-        //   ),
-        // ),
-        //borderRadius: BorderRadius.circular(5.0),
-        //borderRadius: BorderRadius.only(topRight: Radius.circular(5.0)),
-        
-        border: Border(left:BorderSide(color: (data['order_delivered'] != null && data['order_delivered'])?Colors.green:const Color.fromARGB(255, 244, 155, 54),width: 10.0)),
-        ),
+      boxShadow: themeBox,
+      border: Border(
+          left: BorderSide(
+              color:
+                  (data['order_delivered'] != null && data['order_delivered'])
+                      ? Colors.green
+                      : const Color.fromARGB(255, 244, 155, 54),
+              width: 10.0)),
+    ),
     child: ListTile(
-      onTap: () async{
+      onTap: () async {
         if (productId != '') {
-         var rNavigation =  await Navigator.push(context,
+          var rNavigation = await Navigator.push(context,
               MaterialPageRoute(builder: (_) => KOrderDetails(id: productId)));
-              if(rloadPage != ''){
-                rloadPage();
-              }
+          if (rloadPage != '') {
+            rloadPage();
+          }
         }
       },
       leading: Image.network(data['orders'][0]['img'],
@@ -67,7 +61,7 @@ Widget kthemeOderListRowCon(context, data, {productId: '', table_No: '',controll
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
-                        color: (k['isPrepared'] != null && k['isPrepared'])?Color.fromARGB(255, 117, 224, 214): Color.fromARGB(255, 255, 189, 113)),
+                        color: (k['isPrepared'])?Color.fromARGB(255, 117, 224, 214): Color.fromARGB(255, 255, 189, 113)),
                     child: Text(
                       "${capitalize(k['title'].toLowerCase())}",
                       style: TextStyle(
@@ -96,28 +90,29 @@ Widget kthemeOderListRowCon(context, data, {productId: '', table_No: '',controll
           Row(
             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-             Container(
-              padding: EdgeInsets.symmetric(vertical: 1.0,horizontal: 2.0),
-                width: 35.0,
-                decoration:  BoxDecoration(color: Color.fromARGB(255, 37, 98, 148)),
-                child: Center(
-                  child: Text(
-                    "${(data['type'] != null) ? data['type'] : ''} ",
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 10.0,
+              Container(
+                  padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 2.0),
+                  width: 35.0,
+                  decoration:
+                      BoxDecoration(color: Color.fromARGB(255, 37, 98, 148)),
+                  child: Center(
+                    child: Text(
+                      "${(data['type'] != null) ? data['type'] : ''} ",
+                      style: TextStyle(
+                        color: white,
+                        fontSize: 10.0,
+                      ),
                     ),
-                  ),
-                )
-              ),
+                  )),
               SizedBox(width: 10.0),
               Container(
                 width: 25.0,
                 //height: 25.0,
-                decoration:  BoxDecoration(color: Color.fromARGB(255, 255, 163, 59)),
+                decoration:
+                    BoxDecoration(color: Color.fromARGB(255, 255, 163, 59)),
                 child: Center(
                   child: Text(
-                    "${(table_No == null)?'':table_No} ",
+                    "${(table_No == null) ? '' : table_No} ",
                     style: TextStyle(
                       color: white,
                       fontSize: 13.0,
@@ -126,21 +121,11 @@ Widget kthemeOderListRowCon(context, data, {productId: '', table_No: '',controll
                 ),
               ),
               10.0.widthBox,
-
               Text(formattedTime,
                   style:
                       TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400)),
-
-              // Text(
-              //   intl.DateFormat('EEE, d MMM  ' 'yy')
-              //       .add_jm()
-              //       .format(data['order_date'].toDate()),
-              //   style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-              // ),
             ],
           ),
-          
-          
         ],
       ),
     ),

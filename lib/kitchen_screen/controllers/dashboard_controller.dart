@@ -71,25 +71,27 @@ class KDashboardController extends GetxController {
 
     var rdata = await dbFindDynamic(db, w);
 
+    // print('${rdata}---==++');
+
     // Raw Query ==============================
 
     var query = await FirebaseFirestore.instance
         .collection('orders')
         .where("order_delivered", isEqualTo: false);
     rdata = await dbRawQuery(query);
-    
 
     rdata.forEach((k, v) {
       var tempProdcut = v['orders'];
       tempProdcut.forEach((vl) {
-        if(vl['isPrepared'] == false) {
+        if (vl['isPrepared'] == false) {
           var newTotal = int.parse(vl['qty'].toString());
-          var withTableNo = {'table':v['order_table'],'qnt':newTotal};
+          var withTableNo = {'table': v['order_table'], 'qnt': newTotal};
           if (pendingProductList[vl['id']] != null) {
             var temp = pendingProductList[vl['id']];
-            temp['tPending'] = int.parse(temp['tPending'].toString()) + newTotal;
+            temp['tPending'] =
+                int.parse(temp['tPending'].toString()) + newTotal;
             // total with table
-            var tList = (temp['table_list'] == null)?[]:temp['table_list'];
+            var tList = (temp['table_list'] == null) ? [] : temp['table_list'];
             tList.add(withTableNo);
             temp['table_list'] = tList;
             pendingProductList[vl['id']] = temp;
@@ -97,15 +99,16 @@ class KDashboardController extends GetxController {
             var temp = vl;
             temp['tPending'] = newTotal;
             // total with table
-            var tList = (temp['table_list'] == null)?[]:temp['table_list'];
+            var tList = (temp['table_list'] == null) ? [] : temp['table_list'];
             tList.add(withTableNo);
             temp['table_list'] = tList;
             pendingProductList[vl['id']] = temp;
+
+            print('${temp}---====');
           }
         }
       });
     });
-
 
     print("================================================");
     print(pendingProductList);

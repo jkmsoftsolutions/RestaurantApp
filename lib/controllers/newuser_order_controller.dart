@@ -5,8 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/widgets/dashboard_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../models/category_model.dart';
@@ -17,7 +18,8 @@ class NewUserOrderController {
   String Date_at = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
   var isloading = false;
-//text field controller
+  //text field controller
+  var Pakking = false.obs;
   var searchController = TextEditingController();
   var pNameController = TextEditingController();
   var pMobileController = TextEditingController();
@@ -76,26 +78,6 @@ class NewUserOrderController {
       // print(cartData);
 
       TempValue["table_id"] = editData['order_table'];
-
-      // pdescController = TextEditingController();
-      // ppriceController = TextEditingController();
-      // pquantityController = TextEditingController();
-      // payment_description = TextEditingController();
-
-      // quantity = 1;
-      // totalPrice = 0;
-      // selectedProduct = {};
-      // orderData = [];
-
-      // int total = 0;
-
-      // selectProName = "";
-      // selectProPrice = "";
-      // SelectProList = [];
-      // category = [];
-      // pImagesLinks = [];
-      // selectedtableIndex = 0;
-      // allproductsdata = [];
     }
   }
 
@@ -158,22 +140,6 @@ class NewUserOrderController {
         }
       });
     });
-
-    // productAllList.forEach((k, e) {
-    //   print("----$k");
-    //   bool isFind = false;
-    //   k.forEach((key) {
-    //     if (!isFind &&
-    //         k['$key'] != null &&
-    //         val.toLowerCase().contains(query.toLowerCase())) {
-    //       //OrderList.add(e);
-    //       //productList[k] = val;
-    //       print("sdfdf");
-
-    //       isFind = true;
-    //     }
-    //   });
-    // });
   }
 
   // add attribute Funciton
@@ -370,9 +336,23 @@ class NewUserOrderController {
     TempValue["phone"] = "${pMobileController.text}";
     TempValue["Address"] = "${pAddressController.text}";
     TempValue["customer_id"] = "$Cust_ID";
-
     return Cust_ID;
   }
 
   // clear controllers
+  //get mathed to  change pakking orders status
+  changepakStatus({isPack, orderId, productId}) async {
+    Map<dynamic, dynamic> w = {'table': "orders", 'id': orderId};
+    var rdata = await dbFind(w);
+    rdata['orders'].forEach((v) {
+      if (v['id'] == productId) {
+        v['isPack'] = isPack;
+      }
+    });
+
+    rdata['table'] = 'orders';
+    rdata['id'] = orderId;
+    var dbData = await dbUpdate(db, rdata);
+    return true;
+  }
 }

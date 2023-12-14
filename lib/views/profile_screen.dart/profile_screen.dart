@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emart_seller/controllers/auth_controller.dart';
 import 'package:emart_seller/controllers/profile_controller.dart';
+import 'package:emart_seller/kitchen_screen/controllers/profile_controller.dart';
 import 'package:emart_seller/services/store_services.dart';
 import 'package:emart_seller/theme/footer.dart';
 import 'package:emart_seller/views/auth_screen/login_screen.dart';
