@@ -6,6 +6,7 @@ import 'package:emart_seller/theme/style.dart';
 import 'package:emart_seller/views/widgets/custom_textfield.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/subsategory_controller.dart';
@@ -94,103 +95,218 @@ class _AddSubcategoryState extends State<AddSubcategory> {
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                10.heightBox,
-                // subcatDropdown(
-                //     "Category", cate_list, controller.catsvalue, controller),
-                Container(
-                  height: 40,
-                  margin: EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: DropdownButton(
-                    dropdownColor: Colors.white,
-                    value: _selected_cate_name,
-                    underline: Container(),
-                    isExpanded: true,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
+            child: (kIsWeb)
+                ? Center(
+                    child: Container(
+                      width: 800,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          10.heightBox,
+                          // subcatDropdown(
+                          //     "Category", cate_list, controller.catsvalue, controller),
+                          Container(
+                            height: 40,
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: DropdownButton(
+                              dropdownColor: Colors.white,
+                              value: _selected_cate_name,
+                              underline: Container(),
+                              isExpanded: true,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.black,
+                              ),
+                              iconSize: 35,
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 5, 8, 10)),
+                              items: [
+                                for (MapEntry<String, String> e
+                                    in Cate_Name_list.entries)
+                                  DropdownMenuItem(
+                                    value: e.value,
+                                    child: Text(e.key),
+                                  ),
+                              ],
+                              onChanged: (val) {
+                                setState(() {
+                                  _selected_cate_name = val as String;
+                                  selected_cate_id = val;
+                                });
+                                setState(() async {
+                                  Map<dynamic, dynamic> w = {
+                                    'table': "categories",
+                                    'id': selected_cate_id
+                                  };
+                                  var dbData = await dbFind(w);
+                                  if (dbData != null) {
+                                    selected_subCate = dbData['sub_category'];
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. Food Name",
+                              lable: "Subcategory name",
+                              controller: controller.cNameController),
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. nice product is very usefull",
+                              lable: "Descripttion",
+                              isDesc: true,
+                              controller: controller.cDescController),
+                          10.heightBox,
+                          10.heightBox,
+                          const Divider(
+                            color: white,
+                          ),
+                          boldText(text: "Choose SubCategory images"),
+                          10.heightBox,
+                          Obx(
+                            () => Row(
+                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: List.generate(
+                                1,
+                                (index) => controller.pImagesList[index] != null
+                                    ? Image.file(
+                                        controller.pImagesList[index],
+                                        width: 100,
+                                      ).onTap(() {
+                                        controller.sub_cat_pickImage(
+                                            index, context);
+                                      })
+                                    : subProductImages(lable: "${index + 1}")
+                                        .onTap(() {
+                                        controller.sub_cat_pickImage(
+                                            index, context);
+                                      }),
+                              ),
+                            ),
+                          ),
+                          5.heightBox,
+                          normalText(
+                              text: "First image will be your display image"),
+                          const Divider(
+                            color: white,
+                          ),
+                          10.heightBox,
+                          subcatDropdown("Status", controller.statusList,
+                              controller.statusvalue, controller),
+                        ],
+                      ),
                     ),
-                    iconSize: 35,
-                    style: TextStyle(color: Color.fromARGB(255, 5, 8, 10)),
-                    items: [
-                      for (MapEntry<String, String> e in Cate_Name_list.entries)
-                        DropdownMenuItem(
-                          value: e.value,
-                          child: Text(e.key),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      10.heightBox,
+                      // subcatDropdown(
+                      //     "Category", cate_list, controller.catsvalue, controller),
+                      Container(
+                        height: 40,
+                        margin: EdgeInsets.only(top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: DropdownButton(
+                          dropdownColor: Colors.white,
+                          value: _selected_cate_name,
+                          underline: Container(),
+                          isExpanded: true,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black,
+                          ),
+                          iconSize: 35,
+                          style:
+                              TextStyle(color: Color.fromARGB(255, 5, 8, 10)),
+                          items: [
+                            for (MapEntry<String, String> e
+                                in Cate_Name_list.entries)
+                              DropdownMenuItem(
+                                value: e.value,
+                                child: Text(e.key),
+                              ),
+                          ],
+                          onChanged: (val) {
+                            setState(() {
+                              _selected_cate_name = val as String;
+                              selected_cate_id = val;
+                            });
+                            setState(() async {
+                              Map<dynamic, dynamic> w = {
+                                'table': "categories",
+                                'id': selected_cate_id
+                              };
+                              var dbData = await dbFind(w);
+                              if (dbData != null) {
+                                selected_subCate = dbData['sub_category'];
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                      10.heightBox,
+                      customTextField(
+                          hint: "eg. Food Name",
+                          lable: "Subcategory name",
+                          controller: controller.cNameController),
+                      10.heightBox,
+                      customTextField(
+                          hint: "eg. nice product is very usefull",
+                          lable: "Descripttion",
+                          isDesc: true,
+                          controller: controller.cDescController),
+                      10.heightBox,
+                      10.heightBox,
+                      const Divider(
+                        color: white,
+                      ),
+                      boldText(text: "Choose SubCategory images"),
+                      10.heightBox,
+                      Obx(
+                        () => Row(
+                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: List.generate(
+                            1,
+                            (index) => controller.pImagesList[index] != null
+                                ? Image.file(
+                                    controller.pImagesList[index],
+                                    width: 100,
+                                  ).onTap(() {
+                                    controller.sub_cat_pickImage(
+                                        index, context);
+                                  })
+                                : subProductImages(lable: "${index + 1}")
+                                    .onTap(() {
+                                    controller.sub_cat_pickImage(
+                                        index, context);
+                                  }),
+                          ),
+                        ),
+                      ),
+                      5.heightBox,
+                      normalText(
+                          text: "First image will be your display image"),
+                      const Divider(
+                        color: white,
+                      ),
+                      10.heightBox,
+                      subcatDropdown("Status", controller.statusList,
+                          controller.statusvalue, controller),
                     ],
-                    onChanged: (val) {
-                      setState(() {
-                        _selected_cate_name = val as String;
-                        selected_cate_id = val;
-                      });
-                      setState(() async {
-                        Map<dynamic, dynamic> w = {
-                          'table': "categories",
-                          'id': selected_cate_id
-                        };
-                        var dbData = await dbFind(w);
-                        if (dbData != null) {
-                          selected_subCate = dbData['sub_category'];
-                        }
-                      });
-                    },
                   ),
-                ),
-                10.heightBox,
-                customTextField(
-                    hint: "eg. Food Name",
-                    lable: "Subcategory name",
-                    controller: controller.cNameController),
-                10.heightBox,
-                customTextField(
-                    hint: "eg. nice product is very usefull",
-                    lable: "Descripttion",
-                    isDesc: true,
-                    controller: controller.cDescController),
-                10.heightBox,
-                10.heightBox,
-                const Divider(
-                  color: white,
-                ),
-                boldText(text: "Choose SubCategory images"),
-                10.heightBox,
-                Obx(
-                  () => Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: List.generate(
-                      1,
-                      (index) => controller.pImagesList[index] != null
-                          ? Image.file(
-                              controller.pImagesList[index],
-                              width: 100,
-                            ).onTap(() {
-                              controller.sub_cat_pickImage(index, context);
-                            })
-                          : subProductImages(lable: "${index + 1}").onTap(() {
-                              controller.sub_cat_pickImage(index, context);
-                            }),
-                    ),
-                  ),
-                ),
-                5.heightBox,
-                normalText(text: "First image will be your display image"),
-                const Divider(
-                  color: white,
-                ),
-                10.heightBox,
-                subcatDropdown("Status", controller.statusList,
-                    controller.statusvalue, controller),
-              ],
-            ),
           ),
         ),
       ),

@@ -349,7 +349,6 @@ class NewUserOrderController {
         v['isPack'] = isPack;
       }
     });
-
     rdata['table'] = 'orders';
     rdata['id'] = orderId;
     var dbData = await dbUpdate(db, rdata);

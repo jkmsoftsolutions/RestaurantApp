@@ -2,6 +2,7 @@ import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/views/widgets/custom_textfield.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../controllers/table_controller.dart';
 
@@ -54,102 +55,134 @@ class _AddTableState extends State<AddTable> {
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 10.heightBox,
-                // Container(
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(10),
-                //     color: Colors.white,
-                //   ),
-                //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                //   child: FormField<String>(
-                //     builder: (FormFieldState<String> state) {
-                //       return InputDecorator(
-                //         decoration:
-                //             const InputDecoration(border: InputBorder.none),
-                //         child: DropdownButtonHideUnderline(
-                //           child: DropdownButton<String>(
-                //             hint: const Text("Select Floor"),
-                //             value: controller.currentStatusValue,
-                //             isDense: true,
-                //             onChanged: (newValue) {
-                //               setState(() {
-                //                 controller.currentStatusValue = newValue;
-                //               });
+            child: (kIsWeb)
+                ? Center(
+                    child: Container(
+                      width: 800,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. Table 101",
+                              lable: "Table name",
+                              controller: controller.tnameController),
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. side corner view point",
+                              lable: "Label",
+                              isDesc: true,
+                              controller: controller.tdescController),
+                          10.heightBox,
+                          // Status =================
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: FormField<String>(
+                              builder: (FormFieldState<String> state) {
+                                return InputDecorator(
+                                  decoration: const InputDecoration(
+                                      border: InputBorder.none),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      hint: const Text("Status"),
+                                      value: controller.currentStatusValue,
+                                      isDense: true,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          controller.currentStatusValue =
+                                              newValue;
+                                        });
 
-                //               // print(currentSelectedValue);
-                //             },
-                //             items: _listNotifier.map((String value) {
-                //               return DropdownMenuItem<String>(
-                //                 value: value,
-                //                 child: Text(value),
-                //               );
-                //             }).toList(),
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
-                10.heightBox,
-                customTextField(
-                    hint: "eg. Table 101",
-                    lable: "Table name",
-                    controller: controller.tnameController),
-                10.heightBox,
-                customTextField(
-                    hint: "eg. side corner view point",
-                    lable: "Label",
-                    isDesc: true,
-                    controller: controller.tdescController),
-                10.heightBox,
-                // Status =================
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: FormField<String>(
-                    builder: (FormFieldState<String> state) {
-                      return InputDecorator(
-                        decoration:
-                            const InputDecoration(border: InputBorder.none),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            hint: const Text("Status"),
-                            value: controller.currentStatusValue,
-                            isDense: true,
-                            onChanged: (newValue) {
-                              setState(() {
-                                controller.currentStatusValue = newValue;
-                              });
-
-                              // print(currentSelectedValue);
-                            },
-                            items: tableStatusList.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
+                                        // print(currentSelectedValue);
+                                      },
+                                      items:
+                                          tableStatusList.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. 21",
+                              lable: "Admin Notes",
+                              isDesc: true,
+                              controller: controller.tadminController),
+                          10.heightBox,
+                        ],
+                      ),
+                    ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      10.heightBox,
+                      customTextField(
+                          hint: "eg. Table 101",
+                          lable: "Table name",
+                          controller: controller.tnameController),
+                      10.heightBox,
+                      customTextField(
+                          hint: "eg. side corner view point",
+                          lable: "Label",
+                          isDesc: true,
+                          controller: controller.tdescController),
+                      10.heightBox,
+                      // Status =================
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
                         ),
-                      );
-                    },
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: FormField<String>(
+                          builder: (FormFieldState<String> state) {
+                            return InputDecorator(
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  hint: const Text("Status"),
+                                  value: controller.currentStatusValue,
+                                  isDense: true,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      controller.currentStatusValue = newValue;
+                                    });
+
+                                    // print(currentSelectedValue);
+                                  },
+                                  items: tableStatusList.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      10.heightBox,
+                      customTextField(
+                          hint: "eg. 21",
+                          lable: "Admin Notes",
+                          isDesc: true,
+                          controller: controller.tadminController),
+                      10.heightBox,
+                    ],
                   ),
-                ),
-                10.heightBox,
-                customTextField(
-                    hint: "eg. 21",
-                    lable: "Admin Notes",
-                    isDesc: true,
-                    controller: controller.tadminController),
-                10.heightBox,
-              ],
-            ),
           ),
         ),
       ),

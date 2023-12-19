@@ -9,6 +9,7 @@ import 'package:emart_seller/views/products_screen/product_details.dart';
 import 'package:emart_seller/views/subcategory_screen/add_subcategory.dart';
 import 'package:emart_seller/views/subcategory_screen/edit_subcategory.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
 import '../../controllers/subsategory_controller.dart';
@@ -77,71 +78,152 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                child: Column(children: [
-                  for (var index = 0; index < sublist.length; index++)
-                    Card(
-                      //
-                      color: (sublist[index]['status'] != null &&
-                              sublist[index]['status']
-                                      .toString()
-                                      .toLowerCase() ==
-                                  'inactive')
-                          ? Color.fromARGB(255, 255, 215, 212)
-                          : Colors.white,
-                      child: ListTile(
-                        onTap: () {
-                          // Get.to(() => EditCategory(
-                          //     data: data[index], productId: data[index].id));
-                        },
-                        leading: Image.network(sublist[index]['img'][0],
-                            width: 100, height: 100, fit: BoxFit.cover),
-                        title: boldText(
-                            text: "${sublist[index]['name']}", color: fontGrey),
-                        subtitle: Row(
-                          children: [
-                            normalText(
-                                text: "${sublist[index]['status']}",
-                                color: (sublist[index]['status'] == 'Active')
-                                    ? green
-                                    : red),
-                          ],
+                child: (kIsWeb)
+                    ? Center(
+                        child: Container(
+                          width: 800,
+                          child: Column(children: [
+                            for (var index = 0; index < sublist.length; index++)
+                              Card(
+                                //
+                                color: (sublist[index]['status'] != null &&
+                                        sublist[index]['status']
+                                                .toString()
+                                                .toLowerCase() ==
+                                            'inactive')
+                                    ? Color.fromARGB(255, 255, 215, 212)
+                                    : Colors.white,
+                                child: ListTile(
+                                  onTap: () {
+                                    // Get.to(() => EditCategory(
+                                    //     data: data[index], productId: data[index].id));
+                                  },
+                                  leading: Image.network(
+                                      sublist[index]['img'][0],
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover),
+                                  title: boldText(
+                                      text: "${sublist[index]['name']}",
+                                      color: fontGrey),
+                                  subtitle: Row(
+                                    children: [
+                                      normalText(
+                                          text: "${sublist[index]['status']}",
+                                          color: (sublist[index]['status'] ==
+                                                  'Active')
+                                              ? green
+                                              : red),
+                                    ],
+                                  ),
+                                  trailing: VxPopupMenu(
+                                    arrowSize: 0.0,
+                                    menuBuilder: () => Column(
+                                      children: List.generate(
+                                          catPopupMenuTitles.length,
+                                          (i) => Padding(
+                                                padding:
+                                                    const EdgeInsets.all(12.0),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      catPopupMenuIcons[i],
+                                                      color: darkGrey,
+                                                    ),
+                                                    10.widthBox,
+                                                    normalText(
+                                                        text:
+                                                            catPopupMenuTitles[
+                                                                i],
+                                                        color: darkGrey)
+                                                  ],
+                                                ).onTap(() async {
+                                                  switch (i) {
+                                                    // case 0:
+                                                    //   Get.to(() => EditSubCategory(
+                                                    //       data: data[index],
+                                                    //       productId: data[index].id));
+                                                    //   break;
+                                                    // default:
+                                                  }
+                                                }),
+                                              )),
+                                    ).box.white.rounded.width(200).make(),
+                                    clickType: VxClickType.singleClick,
+                                    child: const Icon(Icons.more_vert_rounded),
+                                  ),
+                                ),
+                              )
+                          ]),
                         ),
-                        trailing: VxPopupMenu(
-                          arrowSize: 0.0,
-                          menuBuilder: () => Column(
-                            children: List.generate(
-                                catPopupMenuTitles.length,
-                                (i) => Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            catPopupMenuIcons[i],
-                                            color: darkGrey,
-                                          ),
-                                          10.widthBox,
-                                          normalText(
-                                              text: catPopupMenuTitles[i],
-                                              color: darkGrey)
-                                        ],
-                                      ).onTap(() async {
-                                        switch (i) {
-                                          // case 0:
-                                          //   Get.to(() => EditSubCategory(
-                                          //       data: data[index],
-                                          //       productId: data[index].id));
-                                          //   break;
-                                          // default:
-                                        }
-                                      }),
-                                    )),
-                          ).box.white.rounded.width(200).make(),
-                          clickType: VxClickType.singleClick,
-                          child: const Icon(Icons.more_vert_rounded),
-                        ),
-                      ),
-                    )
-                ]),
+                      )
+                    : Column(children: [
+                        for (var index = 0; index < sublist.length; index++)
+                          Card(
+                            //
+                            color: (sublist[index]['status'] != null &&
+                                    sublist[index]['status']
+                                            .toString()
+                                            .toLowerCase() ==
+                                        'inactive')
+                                ? Color.fromARGB(255, 255, 215, 212)
+                                : Colors.white,
+                            child: ListTile(
+                              onTap: () {
+                                // Get.to(() => EditCategory(
+                                //     data: data[index], productId: data[index].id));
+                              },
+                              leading: Image.network(sublist[index]['img'][0],
+                                  width: 100, height: 100, fit: BoxFit.cover),
+                              title: boldText(
+                                  text: "${sublist[index]['name']}",
+                                  color: fontGrey),
+                              subtitle: Row(
+                                children: [
+                                  normalText(
+                                      text: "${sublist[index]['status']}",
+                                      color:
+                                          (sublist[index]['status'] == 'Active')
+                                              ? green
+                                              : red),
+                                ],
+                              ),
+                              trailing: VxPopupMenu(
+                                arrowSize: 0.0,
+                                menuBuilder: () => Column(
+                                  children: List.generate(
+                                      catPopupMenuTitles.length,
+                                      (i) => Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  catPopupMenuIcons[i],
+                                                  color: darkGrey,
+                                                ),
+                                                10.widthBox,
+                                                normalText(
+                                                    text: catPopupMenuTitles[i],
+                                                    color: darkGrey)
+                                              ],
+                                            ).onTap(() async {
+                                              switch (i) {
+                                                // case 0:
+                                                //   Get.to(() => EditSubCategory(
+                                                //       data: data[index],
+                                                //       productId: data[index].id));
+                                                //   break;
+                                                // default:
+                                              }
+                                            }),
+                                          )),
+                                ).box.white.rounded.width(200).make(),
+                                clickType: VxClickType.singleClick,
+                                child: const Icon(Icons.more_vert_rounded),
+                              ),
+                            ),
+                          )
+                      ]),
               ),
             ));
   }
