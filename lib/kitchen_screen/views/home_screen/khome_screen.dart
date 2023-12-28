@@ -653,7 +653,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                                                 size: 50.0,
                                                 fw: FontWeight.bold,
                                                 color: Colors.white)),
-                                        SizedBox(height: 6.0),
+                                        SizedBox(height: 7.0),
                                         Row(
                                           children: [
                                             Expanded(
