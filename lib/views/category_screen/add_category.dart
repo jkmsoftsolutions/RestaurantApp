@@ -8,6 +8,7 @@ import 'package:emart_seller/views/products_screen/components/product_images.dar
 import 'package:emart_seller/views/widgets/custom_textfield.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class AddCategory extends StatelessWidget {
@@ -55,56 +56,118 @@ class AddCategory extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                10.heightBox,
-                customTextField(
-                    hint: "eg. Food Name",
-                    lable: "Category name",
-                    controller: controller.cNameController),
-                10.heightBox,
-                customTextField(
-                    hint: "eg. nice product is very usefull",
-                    lable: "Descripttion",
-                    isDesc: true,
-                    controller: controller.cDescController),
-                10.heightBox,
-                10.heightBox,
-                const Divider(
-                  color: white,
-                ),
-                boldText(text: "Choose Category images"),
-                10.heightBox,
-                Obx(
-                  () => Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: List.generate(
-                      1,
-                      (index) => controller.pImagesList[index] != null
-                          ? Image.file(
-                              controller.pImagesList[index],
-                              width: 100,
-                            ).onTap(() {
-                              controller.cat_pickImage(index, context);
-                            })
-                          : productImages(lable: "${index + 1}").onTap(() {
-                              controller.cat_pickImage(index, context);
-                            }),
+            child: (kIsWeb)
+                ? Center(
+                    child: Container(
+                      width: 800,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. Food Name",
+                              lable: "Category name",
+                              controller: controller.cNameController),
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. nice product is very usefull",
+                              lable: "Descripttion",
+                              isDesc: true,
+                              controller: controller.cDescController),
+                          10.heightBox,
+                          10.heightBox,
+                          const Divider(
+                            color: white,
+                          ),
+                          boldText(text: "Choose Category images"),
+                          10.heightBox,
+                          Obx(
+                            () => Row(
+                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: List.generate(
+                                1,
+                                (index) => controller.pImagesList[index] != null
+                                    ? Image.file(
+                                        controller.pImagesList[index],
+                                        width: 100,
+                                      ).onTap(() {
+                                        controller.cat_pickImage(
+                                            index, context);
+                                      })
+                                    : productImages(lable: "${index + 1}")
+                                        .onTap(() {
+                                        controller.cat_pickImage(
+                                            index, context);
+                                      }),
+                              ),
+                            ),
+                          ),
+                          5.heightBox,
+                          normalText(
+                              text: "First image will be your display image"),
+                          const Divider(
+                            color: white,
+                          ),
+                          10.heightBox,
+                          catDropdown("Status", controller.statusList,
+                              controller.statusvalue, controller),
+                        ],
+                      ),
                     ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      10.heightBox,
+                      customTextField(
+                          hint: "eg. Food Name",
+                          lable: "Category name",
+                          controller: controller.cNameController),
+                      10.heightBox,
+                      customTextField(
+                          hint: "eg. nice product is very usefull",
+                          lable: "Descripttion",
+                          isDesc: true,
+                          controller: controller.cDescController),
+                      10.heightBox,
+                      10.heightBox,
+                      const Divider(
+                        color: white,
+                      ),
+                      boldText(text: "Choose Category images"),
+                      10.heightBox,
+                      Obx(
+                        () => Row(
+                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: List.generate(
+                            1,
+                            (index) => controller.pImagesList[index] != null
+                                ? Image.file(
+                                    controller.pImagesList[index],
+                                    width: 100,
+                                  ).onTap(() {
+                                    controller.cat_pickImage(index, context);
+                                  })
+                                : productImages(lable: "${index + 1}")
+                                    .onTap(() {
+                                    controller.cat_pickImage(index, context);
+                                  }),
+                          ),
+                        ),
+                      ),
+                      5.heightBox,
+                      normalText(
+                          text: "First image will be your display image"),
+                      const Divider(
+                        color: white,
+                      ),
+                      10.heightBox,
+                      catDropdown("Status", controller.statusList,
+                          controller.statusvalue, controller),
+                    ],
                   ),
-                ),
-                5.heightBox,
-                normalText(text: "First image will be your display image"),
-                const Divider(
-                  color: white,
-                ),
-                10.heightBox,
-                catDropdown("Status", controller.statusList,
-                    controller.statusvalue, controller),
-              ],
-            ),
           ),
         ),
       ),

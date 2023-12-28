@@ -5,6 +5,7 @@ import 'package:emart_seller/controllers/category_controller.dart';
 import 'package:emart_seller/controllers/products_controller.dart';
 import 'package:emart_seller/theme/function.dart';
 import 'package:emart_seller/theme/style.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/normal_text.dart';
@@ -82,55 +83,124 @@ class _EditCategoryState extends State<EditCategory> {
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    10.heightBox,
-                    customTextField(
-                        hint: "eg. Fast Food",
-                        lable: "Category name",
-                        controller: controller.cNameController),
-                    10.heightBox,
-                    customTextField(
-                        hint: "eg. nice Category is very usefull",
-                        lable: "Descripttion",
-                        isDesc: true,
-                        controller: controller.cDescController),
-                    30.heightBox,
-                    Obx(
-                      () => Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: List.generate(
-                          1,
-                          (index) => controller.pImagesList[index] != null
-                              ? matchString(
-                                      controller.pImagesList[index].toString(),
-                                      'https://')
-                                  ? Image.network(controller.pImagesList[index],
-                                          width: 100)
-                                      .onTap(() {
-                                      controller.cat_pickImage(index, context);
-                                    })
-                                  : Image.file(
-                                      controller.pImagesList[index],
-                                      width: 100,
-                                    ).onTap(() {
-                                      controller.cat_pickImage(index, context);
-                                    })
-                              : productImages(lable: "${index + 1}").onTap(() {
-                                  controller.cat_pickImage(index, context);
-                                }),
+                child: (kIsWeb)
+                    ? Center(
+                        child: Container(
+                          width: 800,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              10.heightBox,
+                              customTextField(
+                                  hint: "eg. Fast Food",
+                                  lable: "Category name",
+                                  controller: controller.cNameController),
+                              10.heightBox,
+                              customTextField(
+                                  hint: "eg. nice Category is very usefull",
+                                  lable: "Descripttion",
+                                  isDesc: true,
+                                  controller: controller.cDescController),
+                              30.heightBox,
+                              Obx(
+                                () => Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: List.generate(
+                                    1,
+                                    (index) => controller.pImagesList[index] !=
+                                            null
+                                        ? matchString(
+                                                controller.pImagesList[index]
+                                                    .toString(),
+                                                'https://')
+                                            ? Image.network(
+                                                    controller
+                                                        .pImagesList[index],
+                                                    width: 100)
+                                                .onTap(() {
+                                                controller.cat_pickImage(
+                                                    index, context);
+                                              })
+                                            : Image.file(
+                                                controller.pImagesList[index],
+                                                width: 100,
+                                              ).onTap(() {
+                                                controller.cat_pickImage(
+                                                    index, context);
+                                              })
+                                        : productImages(lable: "${index + 1}")
+                                            .onTap(() {
+                                            controller.cat_pickImage(
+                                                index, context);
+                                          }),
+                                  ),
+                                ),
+                              ),
+
+                              10.heightBox,
+                              catDropdown("Status", controller.statusList,
+                                  controller.statusvalue, controller),
+
+                              // Center(child: LoadingIndicator()),
+                            ],
+                          ),
                         ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. Fast Food",
+                              lable: "Category name",
+                              controller: controller.cNameController),
+                          10.heightBox,
+                          customTextField(
+                              hint: "eg. nice Category is very usefull",
+                              lable: "Descripttion",
+                              isDesc: true,
+                              controller: controller.cDescController),
+                          30.heightBox,
+                          Obx(
+                            () => Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: List.generate(
+                                1,
+                                (index) => controller.pImagesList[index] != null
+                                    ? matchString(
+                                            controller.pImagesList[index]
+                                                .toString(),
+                                            'https://')
+                                        ? Image.network(
+                                                controller.pImagesList[index],
+                                                width: 100)
+                                            .onTap(() {
+                                            controller.cat_pickImage(
+                                                index, context);
+                                          })
+                                        : Image.file(
+                                            controller.pImagesList[index],
+                                            width: 100,
+                                          ).onTap(() {
+                                            controller.cat_pickImage(
+                                                index, context);
+                                          })
+                                    : productImages(lable: "${index + 1}")
+                                        .onTap(() {
+                                        controller.cat_pickImage(
+                                            index, context);
+                                      }),
+                              ),
+                            ),
+                          ),
+
+                          10.heightBox,
+                          catDropdown("Status", controller.statusList,
+                              controller.statusvalue, controller),
+
+                          // Center(child: LoadingIndicator()),
+                        ],
                       ),
-                    ),
-
-                    10.heightBox,
-                    catDropdown("Status", controller.statusList,
-                        controller.statusvalue, controller),
-
-                    // Center(child: LoadingIndicator()),
-                  ],
-                ),
               ),
             ),
     );

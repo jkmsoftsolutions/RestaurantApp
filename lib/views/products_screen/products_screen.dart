@@ -10,6 +10,7 @@ import 'package:emart_seller/views/products_screen/edit_productscreen.dart';
 import 'package:emart_seller/views/products_screen/product_details.dart';
 import 'package:emart_seller/views/widgets/dashboard_button.dart';
 import 'package:emart_seller/views/widgets/loading_indicator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../const/const.dart';
 import '../widgets/appbar_widget.dart';
@@ -50,110 +51,259 @@ class ProductsScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: List.generate(data.length, (index) {
-                      var dataArr = data[index].data() as Map<dynamic, dynamic>;
-                      return Card(
-                        //
-                        color: (dataArr['status'] != null &&
-                                dataArr['status'].toString().toLowerCase() ==
-                                    'inactive')
-                            ? Color.fromARGB(255, 255, 215, 212)
-                            : Colors.white,
-                        child: ListTile(
-                            onTap: () {
-                              Get.to(() => ProductDetails(
-                                    data: data[index],
-                                  ));
-                            },
-                            leading: Image.network(data[index]['p_imgs'][0],
-                                width: 100, height: 100, fit: BoxFit.cover),
-                            title: boldText(
-                                text: "${data[index]['p_name']}",
-                                color: fontGrey),
-                            subtitle: Row(
-                              children: [
-                                normalText(
-                                    text: "₹${data[index]['p_price']}",
-                                    color: darkGrey),
-                                10.widthBox,
-                                boldText(
-                                    text: data[index]['is_featured'] == true
-                                        ? "Featured"
-                                        : '',
-                                    color: green),
-                              ],
+                  child: (kIsWeb)
+                      ? Center(
+                          child: Container(
+                            width: 800,
+                            child: Column(
+                              children: List.generate(data.length, (index) {
+                                var dataArr =
+                                    data[index].data() as Map<dynamic, dynamic>;
+                                return Card(
+                                  //
+                                  color: (dataArr['status'] != null &&
+                                          dataArr['status']
+                                                  .toString()
+                                                  .toLowerCase() ==
+                                              'inactive')
+                                      ? Color.fromARGB(255, 255, 215, 212)
+                                      : Colors.white,
+                                  child: ListTile(
+                                      onTap: () {
+                                        Get.to(() => ProductDetails(
+                                              data: data[index],
+                                            ));
+                                      },
+                                      leading: Image.network(
+                                          data[index]['p_imgs'][0],
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover),
+                                      title: boldText(
+                                          text: "${data[index]['p_name']}",
+                                          color: fontGrey),
+                                      subtitle: Row(
+                                        children: [
+                                          normalText(
+                                              text:
+                                                  "₹${data[index]['p_price']}",
+                                              color: darkGrey),
+                                          10.widthBox,
+                                          boldText(
+                                              text: data[index]
+                                                          ['is_featured'] ==
+                                                      true
+                                                  ? "Featured"
+                                                  : '',
+                                              color: green),
+                                        ],
+                                      ),
+                                      trailing: PopupMenuButton(
+                                          itemBuilder: (context) => [
+                                                for (var i = 0;
+                                                    i < popupMenuTitles.length;
+                                                    i++)
+                                                  PopupMenuItem(
+                                                    onTap: (() async {
+                                                      switch (i) {
+                                                        case 0:
+                                                          if (data[index][
+                                                                  'is_featured'] ==
+                                                              true) {
+                                                            controller
+                                                                .removeFeatured(
+                                                                    data[index]
+                                                                        .id);
+                                                            VxToast.show(
+                                                                context,
+                                                                msg: "Removed");
+                                                          } else {
+                                                            controller
+                                                                .addFeatured(
+                                                                    data[index]
+                                                                        .id);
+                                                            VxToast.show(
+                                                                context,
+                                                                msg: "Added");
+                                                          }
+                                                          break;
+                                                        case 1:
+                                                          await controller
+                                                              .CateData();
+                                                          //  await controller.getCategory();
+                                                          // controller.populateCategoryList();
+                                                          Get.to(() =>
+                                                              EditProductScreen(
+                                                                  data: data[
+                                                                      index],
+                                                                  productId:
+                                                                      data[index]
+                                                                          .id));
+                                                          break;
+                                                        case 2:
+                                                          controller
+                                                              .removeProduct(
+                                                                  data[index]
+                                                                      .id);
+                                                          VxToast.show(context,
+                                                              msg:
+                                                                  "Product removed");
+                                                          break;
+                                                        default:
+                                                      }
+                                                    }),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                          popupMenuIcons[i],
+                                                          color: data[index][
+                                                                          'featured_id'] ==
+                                                                      currentUser!
+                                                                          .uid &&
+                                                                  i == 0
+                                                              ? green
+                                                              : darkGrey,
+                                                        ),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                            data[index]['featured_id'] ==
+                                                                        currentUser!
+                                                                            .uid &&
+                                                                    i == 0
+                                                                ? 'Remove feature'
+                                                                : popupMenuTitles[
+                                                                    i],
+                                                            style: TextStyle(
+                                                                fontSize: 14.0,
+                                                                color:
+                                                                    darkGrey))
+                                                      ],
+                                                    ),
+                                                  ),
+                                              ])),
+                                );
+                              }),
                             ),
-                            trailing: PopupMenuButton(
-                                itemBuilder: (context) => [
-                                      for (var i = 0;
-                                          i < popupMenuTitles.length;
-                                          i++)
-                                        PopupMenuItem(
-                                          onTap: (() async {
-                                            switch (i) {
-                                              case 0:
-                                                if (data[index]
-                                                        ['is_featured'] ==
-                                                    true) {
-                                                  controller.removeFeatured(
-                                                      data[index].id);
-                                                  VxToast.show(context,
-                                                      msg: "Removed");
-                                                } else {
-                                                  controller.addFeatured(
-                                                      data[index].id);
-                                                  VxToast.show(context,
-                                                      msg: "Added");
-                                                }
-                                                break;
-                                              case 1:
-                                                await controller.CateData();
-                                                //  await controller.getCategory();
-                                                // controller.populateCategoryList();
-                                                Get.to(() => EditProductScreen(
-                                                    data: data[index],
-                                                    productId: data[index].id));
-                                                break;
-                                              case 2:
-                                                controller.removeProduct(
-                                                    data[index].id);
-                                                VxToast.show(context,
-                                                    msg: "Product removed");
-                                                break;
-                                              default:
-                                            }
-                                          }),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                popupMenuIcons[i],
-                                                color:
-                                                    data[index]['featured_id'] ==
-                                                                currentUser!
-                                                                    .uid &&
-                                                            i == 0
-                                                        ? green
-                                                        : darkGrey,
+                          ),
+                        )
+                      : Column(
+                          children: List.generate(data.length, (index) {
+                            var dataArr =
+                                data[index].data() as Map<dynamic, dynamic>;
+                            return Card(
+                              //
+                              color: (dataArr['status'] != null &&
+                                      dataArr['status']
+                                              .toString()
+                                              .toLowerCase() ==
+                                          'inactive')
+                                  ? Color.fromARGB(255, 255, 215, 212)
+                                  : Colors.white,
+                              child: ListTile(
+                                  onTap: () {
+                                    Get.to(() => ProductDetails(
+                                          data: data[index],
+                                        ));
+                                  },
+                                  leading: Image.network(
+                                      data[index]['p_imgs'][0],
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover),
+                                  title: boldText(
+                                      text: "${data[index]['p_name']}",
+                                      color: fontGrey),
+                                  subtitle: Row(
+                                    children: [
+                                      normalText(
+                                          text: "₹${data[index]['p_price']}",
+                                          color: darkGrey),
+                                      10.widthBox,
+                                      boldText(
+                                          text:
+                                              data[index]['is_featured'] == true
+                                                  ? "Featured"
+                                                  : '',
+                                          color: green),
+                                    ],
+                                  ),
+                                  trailing: PopupMenuButton(
+                                      itemBuilder: (context) => [
+                                            for (var i = 0;
+                                                i < popupMenuTitles.length;
+                                                i++)
+                                              PopupMenuItem(
+                                                onTap: (() async {
+                                                  switch (i) {
+                                                    case 0:
+                                                      if (data[index]
+                                                              ['is_featured'] ==
+                                                          true) {
+                                                        controller
+                                                            .removeFeatured(
+                                                                data[index].id);
+                                                        VxToast.show(context,
+                                                            msg: "Removed");
+                                                      } else {
+                                                        controller.addFeatured(
+                                                            data[index].id);
+                                                        VxToast.show(context,
+                                                            msg: "Added");
+                                                      }
+                                                      break;
+                                                    case 1:
+                                                      await controller
+                                                          .CateData();
+                                                      //  await controller.getCategory();
+                                                      // controller.populateCategoryList();
+                                                      Get.to(() =>
+                                                          EditProductScreen(
+                                                              data: data[index],
+                                                              productId:
+                                                                  data[index]
+                                                                      .id));
+                                                      break;
+                                                    case 2:
+                                                      controller.removeProduct(
+                                                          data[index].id);
+                                                      VxToast.show(context,
+                                                          msg:
+                                                              "Product removed");
+                                                      break;
+                                                    default:
+                                                  }
+                                                }),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      popupMenuIcons[i],
+                                                      color: data[index][
+                                                                      'featured_id'] ==
+                                                                  currentUser!
+                                                                      .uid &&
+                                                              i == 0
+                                                          ? green
+                                                          : darkGrey,
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Text(
+                                                        data[index]['featured_id'] ==
+                                                                    currentUser!
+                                                                        .uid &&
+                                                                i == 0
+                                                            ? 'Remove feature'
+                                                            : popupMenuTitles[
+                                                                i],
+                                                        style: TextStyle(
+                                                            fontSize: 14.0,
+                                                            color: darkGrey))
+                                                  ],
+                                                ),
                                               ),
-                                              SizedBox(width: 10),
-                                              Text(
-                                                  data[index]['featured_id'] ==
-                                                              currentUser!
-                                                                  .uid &&
-                                                          i == 0
-                                                      ? 'Remove feature'
-                                                      : popupMenuTitles[i],
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: darkGrey))
-                                            ],
-                                          ),
-                                        ),
-                                    ])),
-                      );
-                    }),
-                  ),
+                                          ])),
+                            );
+                          }),
+                        ),
                 ),
               );
             }

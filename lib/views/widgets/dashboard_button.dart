@@ -1,28 +1,50 @@
 import 'package:emart_seller/const/const.dart';
 import 'package:emart_seller/views/widgets/normal_text.dart';
+import 'package:flutter/foundation.dart';
 
 Widget dashboardButton(context, {title, count, icon}) {
   var size = MediaQuery.of(context).size;
-  return Row(
-    children: [
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+  return (kIsWeb)
+      ? Row(
           children: [
-            boldText(text: title, size: 16.0),
-            boldText(text: count, size: 20.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  boldText(text: title, size: 16.0),
+                  boldText(text: count, size: 20.0),
+                ],
+              ),
+            ),
+            Image.asset(icon, width: 40, color: white),
           ],
-        ),
-      ),
-      Image.asset(icon, width: 40, color: white),
-    ],
-  )
-      .box
-      .rounded
-      .size(size.width * 0.45, 90)
-      .padding(const EdgeInsets.all(8.0))
-      .make();
+        )
+          .box
+          .rounded
+          .size(size.width * 0.28, 100)
+          .padding(const EdgeInsets.all(8.0))
+          .make()
+      : Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  boldText(text: title, size: 16.0),
+                  boldText(text: count, size: 20.0),
+                ],
+              ),
+            ),
+            Image.asset(icon, width: 40, color: white),
+          ],
+        )
+          .box
+          .rounded
+          .size(size.width * 0.45, 90)
+          .padding(const EdgeInsets.all(8.0))
+          .make();
 }
 
 void nextScreen(context, page) async {

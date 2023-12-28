@@ -96,175 +96,39 @@ class _HomeScreenState extends State<HomeScreen> {
                             return LoadingIndicator();
                           } else {
                             var countData = snapshot.data;
-                            return Container(
-                              child: (kIsWeb)
-                                  ? Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => ProductsScreen());
-                                              },
-                                              child: Container(
-                                                width: 400,
-                                                child: dashboardButton(
-                                                  context,
-                                                  title: products,
-                                                  count:
-                                                      countData[0].toString(),
-                                                  icon: icProducts,
-                                                )
-                                                    .box
-                                                    .shadowLg
-                                                    .rounded
-                                                    .color(themeBG)
-                                                    .make(),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
-                                              child: Container(
-                                                width: 400,
-                                                child: dashboardButton(context,
-                                                        title: orders,
-                                                        count: countData[1]
-                                                            .toString(),
-                                                        icon: icOreders)
-                                                    .box
-                                                    .shadowLg
-                                                    .rounded
-                                                    .color(themeBG)
-                                                    .make(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        10.heightBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: 400,
-                                              child: dashboardButton(context,
-                                                      title: listUser,
-                                                      count: countData[2]
-                                                          .toString(),
-                                                      icon: icProfile)
+                            return (kIsWeb)
+                                ? Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => ProductsScreen());
+                                            },
+                                            child: Container(
+                                              child: dashboardButton(
+                                                context,
+                                                title: products,
+                                                count: countData[0].toString(),
+                                                icon: icProducts,
+                                              )
                                                   .box
                                                   .shadowLg
                                                   .rounded
                                                   .color(themeBG)
                                                   .make(),
                                             ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
-                                              child: Container(
-                                                width: 400,
-                                                child: dashboardButton(context,
-                                                        title: "Total Sale",
-                                                        count:
-                                                            '₹${controller.totalSale}',
-                                                        icon: trend)
-                                                    .box
-                                                    .shadowLg
-                                                    .rounded
-                                                    .color(themeBG)
-                                                    .make(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        10.heightBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
-                                              child: Container(
-                                                width: 400,
-                                                child: dashboardButton(context,
-                                                        title: 'Today Sales',
-                                                        count:
-                                                            '₹${controller.totayAmount}',
-                                                        icon: sale_icon)
-                                                    .box
-                                                    .shadowLg
-                                                    .rounded
-                                                    .color(themeBG)
-                                                    .make(),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
-                                              child: Container(
-                                                width: 400,
-                                                child: dashboardButton(context,
-                                                        title: 'Sales 30 Days',
-                                                        count:
-                                                            '₹${controller.lastayAmount}',
-                                                        icon: sale_icon)
-                                                    .box
-                                                    .shadowLg
-                                                    .rounded
-                                                    .color(themeBG)
-                                                    .make(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  : Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => ProductsScreen());
-                                              },
-                                              child: Container(
-                                                child: dashboardButton(
-                                                  context,
-                                                  title: products,
-                                                  count:
-                                                      countData[0].toString(),
-                                                  icon: icProducts,
-                                                )
-                                                    .box
-                                                    .shadowLg
-                                                    .rounded
-                                                    .color(themeBG)
-                                                    .make(),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: Container(
                                               child: dashboardButton(context,
                                                       title: orders,
                                                       count: countData[1]
@@ -276,14 +140,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .color(themeBG)
                                                   .make(),
                                             ),
-                                          ],
-                                        ),
-                                        10.heightBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            dashboardButton(context,
+                                          ),
+                                        ],
+                                      ),
+                                      10.heightBox,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: dashboardButton(context,
                                                     title: listUser,
                                                     count:
                                                         countData[2].toString(),
@@ -293,10 +159,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .rounded
                                                 .color(themeBG)
                                                 .make(),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: Container(
                                               child: dashboardButton(context,
                                                       title: "Total Sale",
                                                       count:
@@ -308,17 +179,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .color(themeBG)
                                                   .make(),
                                             ),
-                                          ],
-                                        ),
-                                        10.heightBox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
+                                          ),
+                                        ],
+                                      ),
+                                      10.heightBox,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: Container(
                                               child: dashboardButton(context,
                                                       title: 'Today Sales',
                                                       count:
@@ -330,10 +203,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .color(themeBG)
                                                   .make(),
                                             ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.to(() => OrdersScreen());
-                                              },
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: Container(
                                               child: dashboardButton(context,
                                                       title: 'Sales 30 Days',
                                                       count:
@@ -345,11 +223,123 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .color(themeBG)
                                                   .make(),
                                             ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                            );
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => ProductsScreen());
+                                            },
+                                            child: Container(
+                                              child: dashboardButton(
+                                                context,
+                                                title: products,
+                                                count: countData[0].toString(),
+                                                icon: icProducts,
+                                              )
+                                                  .box
+                                                  .shadowLg
+                                                  .rounded
+                                                  .color(themeBG)
+                                                  .make(),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: dashboardButton(context,
+                                                    title: orders,
+                                                    count:
+                                                        countData[1].toString(),
+                                                    icon: icOreders)
+                                                .box
+                                                .shadowLg
+                                                .rounded
+                                                .color(themeBG)
+                                                .make(),
+                                          ),
+                                        ],
+                                      ),
+                                      10.heightBox,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          dashboardButton(context,
+                                                  title: listUser,
+                                                  count:
+                                                      countData[2].toString(),
+                                                  icon: icProfile)
+                                              .box
+                                              .shadowLg
+                                              .rounded
+                                              .color(themeBG)
+                                              .make(),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: dashboardButton(context,
+                                                    title: "Total Sale",
+                                                    count:
+                                                        '₹${controller.totalSale}',
+                                                    icon: trend)
+                                                .box
+                                                .shadowLg
+                                                .rounded
+                                                .color(themeBG)
+                                                .make(),
+                                          ),
+                                        ],
+                                      ),
+                                      10.heightBox,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: dashboardButton(context,
+                                                    title: 'Today Sales',
+                                                    count:
+                                                        '₹${controller.totayAmount}',
+                                                    icon: sale_icon)
+                                                .box
+                                                .shadowLg
+                                                .rounded
+                                                .color(themeBG)
+                                                .make(),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(() => OrdersScreen());
+                                            },
+                                            child: dashboardButton(context,
+                                                    title: 'Sales 30 Days',
+                                                    count:
+                                                        '₹${controller.lastayAmount}',
+                                                    icon: sale_icon)
+                                                .box
+                                                .shadowLg
+                                                .rounded
+                                                .color(themeBG)
+                                                .make(),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
                           }
                         }),
                     10.heightBox,

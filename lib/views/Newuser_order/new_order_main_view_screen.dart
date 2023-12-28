@@ -23,7 +23,6 @@ import 'payment_screen.dart';
 class NewUserScreen extends StatefulWidget {
   final orderId;
   const NewUserScreen({super.key, this.orderId});
-
   @override
   State<NewUserScreen> createState() => _NewUserScreenState();
 }
@@ -287,29 +286,53 @@ class _NewUserScreenState extends State<NewUserScreen> {
                           },
                           icon: Icon(Icons.arrow_back)),
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      height: 30,
-                      width: MediaQuery.of(context).size.width - 130.0,
-                      color: lightGrey,
-                      child: TextFormField(
-                        controller: controller.searchController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          suffixIcon: const Icon(Icons.search),
-                          filled: true,
-                          fillColor: whiteColor,
-                          hintText: searchanything,
-                          hintStyle: const TextStyle(
-                            color: textfieldGrey,
+                    (kIsWeb)
+                        ? Container(
+                            alignment: Alignment.center,
+                            height: 30,
+                            width: 400,
+                            color: lightGrey,
+                            child: TextFormField(
+                              controller: controller.searchController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                suffixIcon: const Icon(Icons.search),
+                                filled: true,
+                                fillColor: whiteColor,
+                                hintText: searchanything,
+                                hintStyle: const TextStyle(
+                                  color: textfieldGrey,
+                                ),
+                              ),
+                              onChanged: (value) {
+                                controller.SearchFn(value);
+                                setState(() {});
+                              },
+                            ),
+                          )
+                        : Container(
+                            alignment: Alignment.center,
+                            height: 30,
+                            width: MediaQuery.of(context).size.width - 130.0,
+                            color: lightGrey,
+                            child: TextFormField(
+                              controller: controller.searchController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                suffixIcon: const Icon(Icons.search),
+                                filled: true,
+                                fillColor: whiteColor,
+                                hintText: searchanything,
+                                hintStyle: const TextStyle(
+                                  color: textfieldGrey,
+                                ),
+                              ),
+                              onChanged: (value) {
+                                controller.SearchFn(value);
+                                setState(() {});
+                              },
+                            ),
                           ),
-                        ),
-                        onChanged: (value) {
-                          controller.SearchFn(value);
-                          setState(() {});
-                        },
-                      ),
-                    ),
                   ],
                 ),
                 const Divider(

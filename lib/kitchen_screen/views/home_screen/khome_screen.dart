@@ -525,18 +525,15 @@ class _KHomeScreenState extends State<KHomeScreen> {
                     20.heightBox,
                     Expanded(
                       child: (kIsWeb)
-                          ? Row(
-                              children: [
-                                Container(
-                                  width: 700,
-                                  child: ListView(
-                                    physics: const BouncingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    children: List.generate(
-                                        data.length,
-                                        (index) => data[index]['order_code']
-                                                    .length ==
-                                                0
+                          ? Container(
+                              width: 700,
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                children: List.generate(
+                                    data.length,
+                                    (index) =>
+                                        data[index]['order_code'].length == 0
                                             ? const SizedBox()
                                             : kthemeOderListRowCon(
                                                 context, data[index],
@@ -544,9 +541,7 @@ class _KHomeScreenState extends State<KHomeScreen> {
                                                 rloadPage: fn_comon_init,
                                                 table_No: tablelist[data[index]
                                                     ['order_table']])),
-                                  ),
-                                ),
-                              ],
+                              ),
                             )
                           : ListView(
                               physics: const BouncingScrollPhysics(),
