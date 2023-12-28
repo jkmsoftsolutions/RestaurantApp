@@ -61,7 +61,9 @@ Widget kthemeOderListRowCon(context, data,
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
-                        color: (k['isPrepared'])?Color.fromARGB(255, 117, 224, 214): Color.fromARGB(255, 255, 189, 113)),
+                        color: (k['isPrepared'] == null)
+                            ? Color.fromARGB(255, 117, 224, 214)
+                            : Color.fromARGB(255, 255, 189, 113)),
                     child: Text(
                       "${capitalize(k['title'].toLowerCase())}",
                       style: TextStyle(
